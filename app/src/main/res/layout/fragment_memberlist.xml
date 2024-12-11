@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/teamNameTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="레스토랑 이름"
+        android:textSize="40sp"
+        android:padding="10dp"
+        android:layout_marginStart="30dp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/nameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:text="이름"
+        android:textSize="20sp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/teamNameTV"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/departmentTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:text="부서"
+        android:textSize="20sp"
+
+        app:layout_constraintStart_toEndOf="@id/nameTV"
+        app:layout_constraintTop_toBottomOf="@id/teamNameTV"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/staffLevelTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="95dp"
+        android:text="이름"
+        android:textSize="20sp"
+
+        app:layout_constraintStart_toEndOf="@id/departmentTV"
+        app:layout_constraintTop_toBottomOf="@id/teamNameTV"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/memberListRV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/nameTV"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/item_memberlist" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

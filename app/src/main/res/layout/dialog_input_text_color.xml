@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="10dp"
+    android:minWidth="300dp"
+    android:padding="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="텍스트 입력 힌트"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <RadioGroup
+        android:id="@+id/colorPickerRG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textField"
+        android:orientation="horizontal">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:checked="true"
+            android:id="@+id/color1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circle_button"
+            android:backgroundTint="#EF9A9A"
+            android:button="@null"
+            android:textAlignment="center"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"/>
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:checked="false"
+            android:id="@+id/color2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circle_button"
+            android:backgroundTint="#F48FB1"
+            android:button="@null"
+            android:textAlignment="center"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"/>
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:checked="false"
+            android:id="@+id/color3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circle_button"
+            android:backgroundTint="#CE93D8"
+            android:button="@null"
+            android:textAlignment="center"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"/>
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:checked="false"
+            android:id="@+id/color4"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circle_button"
+            android:backgroundTint="#B39DDB"
+            android:button="@null"
+            android:textAlignment="center"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"/>
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:checked="false"
+            android:id="@+id/color5"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circle_button"
+            android:backgroundTint="#9FA8DA"
+            android:button="@null"
+            android:textAlignment="center"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"/>
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:checked="false"
+            android:id="@+id/color6"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circle_button"
+            android:backgroundTint="#90CAF9"
+            android:button="@null"
+            android:textAlignment="center"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"/>
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:checked="false"
+            android:id="@+id/color7"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circle_button"
+            android:backgroundTint="#81D4FA"
+            android:button="@null"
+            android:textAlignment="center"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"/>
+    </RadioGroup>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/confirmBtn"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="7dp"
+        android:layout_weight="1"
+        android:text="확인"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@id/cancelBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/colorPickerRG" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancelBtn"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:text="취소"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/confirmBtn"
+        app:layout_constraintTop_toBottomOf="@+id/colorPickerRG" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
