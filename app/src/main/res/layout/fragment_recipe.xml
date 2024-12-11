@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.RecipeFragment">
 
     <com.google.android.material.tabs.TabLayout
         style="@style/Widget.Material3.TabLayout.Secondary"
@@ -16,16 +17,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/recipeTI"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:text="레시피" />
+            android:text="레시피" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/menuTI"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:text="메뉴" />
+            android:text="메뉴" />
 
     </com.google.android.material.tabs.TabLayout>
 

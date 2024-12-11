@@ -16,7 +16,7 @@
         android:title="레시피" />
 
     <item
-        android:id="@+id/orderListFragment"
+        android:id="@+id/orderFragment"
         android:icon="@drawable/baseline_assignment_add_24"
         android:title="발주목록" />
 

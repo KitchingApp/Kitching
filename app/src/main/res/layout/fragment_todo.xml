@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.TodoFragment">
 
     <com.google.android.material.tabs.TabLayout
         style="@style/Widget.Material3.TabLayout.Secondary"
@@ -16,16 +17,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/todoCategoryTI"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:text="카테고리" />
+            android:text="카테고리" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/todoListTI"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:text="할일" />
+            android:text="할일" />
 
     </com.google.android.material.tabs.TabLayout>
 

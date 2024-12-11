@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.OrderFragment">
 
     <com.google.android.material.tabs.TabLayout
         style="@style/Widget.Material3.TabLayout.Secondary"
@@ -16,16 +17,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/orderCategoryTI"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:text="대분류" />
+            android:text="대분류" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/orderListTI"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:text="제품" />
+            android:text="제품" />
 
     </com.google.android.material.tabs.TabLayout>
 
