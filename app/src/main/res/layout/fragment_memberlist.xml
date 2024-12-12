@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="레스토랑 이름"
-        android:textSize="40sp"
-        android:padding="10dp"
-        android:layout_marginStart="30dp"
+        android:textSize="@dimen/text_XXL"
+        android:padding="@dimen/padding_S"
+        android:layout_marginStart="@dimen/margin_L"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -56,7 +56,7 @@
         android:id="@+id/memberListRV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/margin_S"
         app:layout_constraintTop_toBottomOf="@+id/nameTV"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_memberlist" />

@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/recipeCV"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="15dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="5dp">
+    android:id="@+id/recipeCV"
+    style="@style/recipeCV"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
@@ -15,29 +13,26 @@
 
         <ImageView
             android:id="@+id/recipeIV"
-            android:layout_width="150dp"
-            android:layout_height="200dp"
+            android:layout_width="@dimen/recipeImageWidth"
+            android:layout_height="@dimen/recipeImageHeight"
             android:scaleType="fitXY"
             android:src="@drawable/pancake"
 
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/recipeNameTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            tools:text="팬케이크"
-            android:textSize="16sp"
+            android:layout_marginVertical="@dimen/margin_S"
+            android:textSize="@dimen/text_M"
+            app:layout_constraintEnd_toEndOf="parent"
 
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recipeIV"
-            />
+            tools:text="팬케이크" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

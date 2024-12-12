@@ -10,8 +10,12 @@ import com.kitchingapp.databinding.FragmentOrderBinding
 class OrderFragment : BaseFragment<FragmentOrderBinding>(FragmentOrderBinding::inflate){
     private lateinit var navController: NavController
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        navController = findNavController()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = findNavController()
     }
 }

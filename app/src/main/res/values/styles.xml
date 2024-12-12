@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="tabLayout" parent="@style/Widget.Material3.TabLayout.Secondary">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">70dp</item>
+        <item name="tabSelectedTextColor">@color/md_theme_primary</item>
+        <item name="tabGravity">fill</item>
+    </style>
+
+    <!--    dialog-->
+    <style name="dialogDefault">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_margin">@dimen/margin_S</item>
+        <item name="android:minWidth">@dimen/dialogMinWidth</item>
+        <item name="android:padding">@dimen/padding_S</item>
+    </style>
+    s
+
+    <style name="dialogConfirmBtn" parent="Widget.Material3.Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/dialogBtnHeight</item>
+        <item name="android:layout_marginEnd">@dimen/dialogBtnMarginEnd</item>
+        <item name="android:textSize">@dimen/text_M</item>
+        <item name="android:layout_marginTop">@dimen/margin_S</item>
+    </style>
+
+    <style name="dialogCancelBtn" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/dialogBtnHeight</item>
+        <item name="android:layout_marginEnd">@dimen/dialogBtnMarginEnd</item>
+        <item name="android:textSize">@dimen/text_M</item>
+        <item name="android:layout_marginTop">@dimen/margin_S</item>
+    </style>
+
+    <!--    cardView-->
+    <style name="memberItemCV" parent="@style/Widget.Material3.CardView.Outlined">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:paddingEnd">15dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <style name="noticeItemCV" parent="@style/Widget.Material3.CardView.Outlined">
+        <item name="android:layout_margin">15dp</item>
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardElevation">5dp</item>
+    </style>
+
+    <style name="smallCategoryCV" parent="@style/Widget.Material3.CardView.Outlined">
+        <item name="android:layout_width">250dp</item>
+        <item name="cardElevation">5dp</item>
+    </style>
+
+    <style name="bigCategoryCV" parent="@style/Widget.Material3.CardView.Outlined">
+        <item name="android:layout_width">match_parent</item>
+        <item name="cardElevation">5dp</item>
+    </style>
+
+    <style name="recipeCV">
+        <item name="android:layout_margin">15dp</item>
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardElevation">5dp</item>
+    </style>
+
+    <style name="scheduleListItemCV" parent="@style/Widget.Material3.CardView.Filled">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_margin">@dimen/margin_S</item>
+        <item name="android:paddingStart">@dimen/padding_S</item>
+        <item name="android:paddingEnd">@dimen/padding_S</item>
+    </style>
+
+    <style name="scheduleApplyListItemCV" parent="@style/Widget.Material3.CardView.Elevated">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_margin">@dimen/margin_S</item>
+        <item name="android:paddingStart">@dimen/padding_S</item>
+        <item name="android:paddingEnd">@dimen/padding_S</item>
+    </style>
+
+    <!--    other Buttons-->
+    <style name="otherListBtn">
+        <item name="android:layout_height">@dimen/otherListBtnHeight</item>
+        <item name="android:layout_marginTop">@dimen/margin_S</item>
+    </style>
+
+<!--    recipe Details-->
+    <style name="recipeDetailTitle">
+        <item name="android:textSize">@dimen/text_L</item>
+        <item name="android:layout_margin">@dimen/margin_S</item>
+    </style>
+
+    <style name="recipeIngredientsTable">
+        <item name="android:layout_width">0dp</item>
+        <item name="background">@drawable/border_box</item>
+        <item name="android:padding">@dimen/padding_S</item>
+        <item name="android:layout_height">@dimen/recipeDetailIngredientsTableHeight</item>
+    </style>
+
+    <style name="recipeOrder">
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+</resources>

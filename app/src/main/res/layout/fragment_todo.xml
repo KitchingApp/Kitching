@@ -7,11 +7,9 @@
     tools:context=".view.TodoFragment">
 
     <com.google.android.material.tabs.TabLayout
-        style="@style/Widget.Material3.TabLayout.Secondary"
+        style="@style/tabLayout"
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        app:tabGravity="fill"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -19,12 +17,12 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="카테고리" />
+            android:text="@string/category" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="할일" />
+            android:text="@string/prep" />
 
     </com.google.android.material.tabs.TabLayout>
 

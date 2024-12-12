@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_gravity="center"
-    android:minWidth="300dp"
-    android:padding="20dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    style="@style/dialogDefault"
+    android:layout_height="wrap_content">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/dateTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        tools:text="2024.12.04"
+        android:textSize="@dimen/text_L"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2024.12.04" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textField"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="이름"
+        android:hint="@string/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateTV">
@@ -38,28 +35,29 @@
         android:id="@+id/autoCompleteTV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/textField"
-        app:layout_constraintStart_toStartOf="parent"
+        android:completionThreshold="1"
+        android:minHeight="@dimen/autoCompleteTVMinHeight"
         app:layout_constraintEnd_toEndOf="parent"
-        android:completionThreshold="1"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textField" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/staffLevelTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="직급: 쫄병"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTV" />
+        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTV"
+        tools:text="직급: 쫄병" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/continuousDateTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="연속근무일수: 2일"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/staffLevelTV" />
+        app:layout_constraintTop_toBottomOf="@+id/staffLevelTV"
+        tools:text="연속근무일수: 2일" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroup"
@@ -96,27 +94,20 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirmBtn"
-        style="@style/Widget.Material3.Button"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="7dp"
+        style="@style/dialogConfirmBtn"
         android:layout_weight="1"
-        tools:text="확인"
-        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@id/cancelBtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/chipGroup"
+        tools:text="@string/confirm" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancelBtn"
-        style="@style/Widget.Material3.Button.OutlinedButton"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
+        style="@style/dialogCancelBtn"
         android:layout_weight="1"
-        tools:text="취소"
-        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/confirmBtn"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/chipGroup"
+        tools:text="@string/cancel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

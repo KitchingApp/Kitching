@@ -9,8 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="AJCU3659KHLD"
-        android:textSize="20sp"
-        android:layout_marginTop="30dp"
+        android:textSize="@dimen/text_L"
+        android:layout_marginTop="@dimen/margin_L"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
         android:id="@+id/sendBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="전송하기"
+        android:text="@string/send"
         android:layout_marginTop="40dp"
 
         app:layout_constraintStart_toStartOf="parent"

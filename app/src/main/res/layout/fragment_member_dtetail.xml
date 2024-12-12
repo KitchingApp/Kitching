@@ -8,19 +8,19 @@
         android:id="@+id/teamNameTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/margin_M"
         android:gravity="center"
-        android:padding="10dp"
+        android:padding="@dimen/padding_S"
         android:text="김채연"
-        android:textSize="40sp"
+        android:textSize="@dimen/text_XXL"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--    cornerRadius를 이미지뷰 크기의 절반 이상으로 설정하기-->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleCV"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="@dimen/memberDetailCircleImage"
+        android:layout_height="@dimen/memberDetailCircleImage"
+        android:layout_marginTop="@dimen/margin_M"
         android:src="@drawable/baseline_account_circle_24"
 
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,10 +31,10 @@
         android:id="@+id/memberBirthTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/margin_S"
 
         android:text="1995.05.25"
-        android:textSize="25sp"
+        android:textSize="@dimen/text_L"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/circleCV" />
@@ -44,8 +44,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="보건증 만료일 2025년 5월 25일"
-        android:textSize="25sp"
-        android:layout_marginTop="5dp"
+        android:textSize="@dimen/text_XL"
+        android:layout_marginTop="@dimen/margin_S"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="만료 한달 전 일주일 단위로 알림 발송"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/margin_S"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
