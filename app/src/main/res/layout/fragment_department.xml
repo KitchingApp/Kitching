@@ -16,13 +16,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/departmentTI"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:text="부서" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/staffLevelTI"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:text="직급" />
