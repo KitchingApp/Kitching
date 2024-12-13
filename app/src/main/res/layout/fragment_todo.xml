@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.TodoFragment">
+    tools:context=".view.fragment.todo.TodoFragment">
 
     <com.google.android.material.tabs.TabLayout
         style="@style/tabLayout"

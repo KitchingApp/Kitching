@@ -1,13 +1,13 @@
-package com.kitchingapp.view
+package com.kitchingapp.view.fragment.recipe
 
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.kitchingapp.common.BaseFragment
-import com.kitchingapp.databinding.FragmentOrderBinding
+import com.kitchingapp.databinding.FragmentRecipeBinding
 
-class OrderFragment : BaseFragment<FragmentOrderBinding>(FragmentOrderBinding::inflate){
+class RecipeFragment : BaseFragment<FragmentRecipeBinding>(FragmentRecipeBinding::inflate){
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
