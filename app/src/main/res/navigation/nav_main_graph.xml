@@ -2,20 +2,14 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_main_graph">
+    android:id="@+id/nav_main_graph"
+    app:startDestination="@id/scheduleFragment">
 
     <fragment
         android:id="@+id/scheduleFragment"
+        android:name="com.kitchingapp.view.ScheduleFragment"
         tools:layout="@layout/fragment_schedule"
         >
-        <argument
-            android:name="userId"
-            app:argType="string"
-            android:defaultValue=""/>
-        <argument
-            android:name="teamId"
-            app:argType="string"
-            android:defaultValue=""/>
         <action
             android:id="@+id/action_scheduleFragment_to_scheduleDepartmentFragment"
             app:destination="@id/scheduleDepartmentFragment" />
@@ -45,22 +39,9 @@
 
     <fragment
         android:id="@+id/todoFragment"
+        android:name="com.kitchingapp.view.TodoFragment"
         tools:layout="@layout/fragment_todo">
 
-        <argument
-            android:name="userId"
-            app:argType="string"
-            android:defaultValue=""/>
-        <argument
-            android:name="teamId"
-            app:argType="string"
-            android:defaultValue=""/>
-        <action
-            android:id="@+id/action_todoFragment_to_todoCategoryFragment"
-            app:destination="@id/todoCategoryFragment" />
-        <action
-            android:id="@+id/action_todoFragment_to_prepListFragment"
-            app:destination="@id/prepListFragment" />
     </fragment>
 
     <fragment
@@ -113,17 +94,10 @@
 
     <fragment
         android:id="@+id/recipeFragment"
+        android:name="com.kitchingapp.view.RecipeFragment"
         tools:layout="@layout/fragment_recipe"
         >
 
-        <argument
-            android:name="userId"
-            app:argType="string"
-            android:defaultValue=""/>
-        <argument
-            android:name="teamId"
-            app:argType="string"
-            android:defaultValue=""/>
         <action
             android:id="@+id/action_recipeFragment_to_recipeListFragment"
             app:destination="@id/recipeListFragment" />
@@ -172,17 +146,10 @@
 
     <fragment
         android:id="@+id/orderFragment"
+        android:name="com.kitchingapp.view.OrderFragment"
         tools:layout="@layout/fragment_order"
         >
 
-        <argument
-            android:name="userId"
-            app:argType="string"
-            android:defaultValue=""/>
-        <argument
-            android:name="teamId"
-            app:argType="string"
-            android:defaultValue=""/>
         <action
             android:id="@+id/action_orderFragment_to_orderCategoryFragment"
             app:destination="@id/orderCategoryFragment" />
@@ -238,20 +205,12 @@
         />
 
 
-
     <fragment
-        android:id="@+id/otherListFragment"
+        android:id="@+id/otherFragment"
+        android:name="com.kitchingapp.view.OtherFragment"
         tools:layout="@layout/fragment_other"
         >
 
-        <argument
-            android:name="userId"
-            app:argType="string"
-            android:defaultValue=""/>
-        <argument
-            android:name="teamId"
-            app:argType="string"
-            android:defaultValue=""/>
         <action
             android:id="@+id/action_otherListFragment_to_inviteCodeFragment"
             app:destination="@id/inviteCodeFragment" />

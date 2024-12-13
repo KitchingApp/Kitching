@@ -9,7 +9,7 @@
         android:id="@+id/departmentRV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:listitem="@layout/item_department"
+        tools:listitem="@layout/item_small_category"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,8 +21,7 @@
         android:id="@+id/createDepartmentBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="30dp"
+        android:layout_margin="@dimen/floatingActionBtnMargin"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

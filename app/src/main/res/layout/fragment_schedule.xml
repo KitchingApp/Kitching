@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/scheduleLayout">
+    android:id="@+id/scheduleLayout"
+    tools:context=".view.ScheduleFragment">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/prevDateBtn"
@@ -21,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        tools:text="2024.12.11"
+        android:text="2024.12.11"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,11 +38,8 @@
         style="@style/Widget.Material3.Button.IconButton" />
 
         <com.google.android.material.tabs.TabLayout
-            style="@style/Widget.Material3.TabLayout.Secondary"
-            app:tabSelectedTextColor="@color/md_theme_primary"
+            style="@style/tabLayout"
             android:id="@+id/scheduleTab"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
 
             app:tabGravity="center"
             app:tabMode="scrollable"
@@ -50,13 +48,11 @@
             app:layout_constraintTop_toBottomOf="@id/scheduleDateBtn">
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/TI1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="홀" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/TI2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="주방" />
