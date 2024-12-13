@@ -1,13 +1,13 @@
-package com.kitchingapp.view
+package com.kitchingapp.view.fragment.order
 
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.kitchingapp.common.BaseFragment
-import com.kitchingapp.databinding.FragmentTodoBinding
+import com.kitchingapp.databinding.FragmentOrderBinding
 
-class TodoFragment : BaseFragment<FragmentTodoBinding>(FragmentTodoBinding::inflate) {
+class OrderFragment : BaseFragment<FragmentOrderBinding>(FragmentOrderBinding::inflate){
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.kitchingapp.view
+package com.kitchingapp.view.fragment.schedule
 
 import android.os.Bundle
 import android.view.View
