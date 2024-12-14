@@ -3,6 +3,8 @@ package com.kitchingapp.view.fragment.todo
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.kitchingapp.R
 import com.kitchingapp.adapter.ScheduleApplyAdapter
 import com.kitchingapp.adapter.ScheduleFixAdapter
@@ -15,6 +17,7 @@ import com.kitchingapp.domain.entities.TodoCategory
 
 class TodoChildFragment: BaseFragment<ChildfragmentCategoryBinding>(
     ChildfragmentCategoryBinding::inflate){
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +25,7 @@ class TodoChildFragment: BaseFragment<ChildfragmentCategoryBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navController = findNavController()
 
 //        val todoMockData = Todo()
 
@@ -31,7 +35,7 @@ class TodoChildFragment: BaseFragment<ChildfragmentCategoryBinding>(
             with(categoryRV) {
                 setRvLayout(this)
 
-                val categoryAdapter = TodoCategoryAdapter()
+                val categoryAdapter = TodoCategoryAdapter(viewLifecycleOwner, navController)
 
                 categoryAdapter.submitList(todoCategoriesMockData)
 
