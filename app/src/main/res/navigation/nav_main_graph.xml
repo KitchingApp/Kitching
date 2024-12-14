@@ -224,30 +224,32 @@
         >
 
         <action
-            android:id="@+id/action_otherListFragment_to_inviteCodeFragment"
+            android:id="@+id/action_otherFragment_to_inviteCodeFragment"
             app:destination="@id/inviteCodeFragment" />
         <action
-            android:id="@+id/action_otherListFragment_to_noticeFragment"
+            android:id="@+id/action_otherFragment_to_noticeFragment"
             app:destination="@id/noticeFragment" />
         <action
-            android:id="@+id/action_otherListFragment_to_humanResourceFragment"
+            android:id="@+id/action_otherFragment_to_humanResourceFragment"
             app:destination="@id/humanResourceFragment" />
         <action
-            android:id="@+id/action_otherListFragment_to_scheduleTimeFragment"
+            android:id="@+id/action_otherFragment_to_scheduleTimeFragment"
             app:destination="@id/scheduleTimeFragment" />
         <action
-            android:id="@+id/action_otherListFragment_to_memberListFragment"
+            android:id="@+id/action_otherFragment_to_memberListFragment"
             app:destination="@id/memberListFragment" />
 
     </fragment>
 
     <fragment
         android:id="@+id/inviteCodeFragment"
+        android:name="com.kitchingapp.view.fragment.other.InviteCodeFragment"
         tools:layout="@layout/fragment_invite_code"
         />
 
     <fragment
         android:id="@+id/noticeFragment"
+        android:name="com.kitchingapp.view.fragment.other.NoticeFragment"
         tools:layout="@layout/fragment_notice"
         >
 
@@ -272,6 +274,7 @@
 
     <fragment
         android:id="@+id/humanResourceFragment"
+        android:name="com.kitchingapp.view.fragment.other.DepartmentFragment"
         tools:layout="@layout/fragment_department"
         >
 
