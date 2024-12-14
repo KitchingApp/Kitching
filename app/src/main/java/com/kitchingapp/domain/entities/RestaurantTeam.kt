@@ -46,7 +46,7 @@ data class Department(val name: String, val color: Int)
 
 data class Ingredient(val name: String, val once: Int, val twice: Int, val each: String)
 
-data class Recipe(val name: String, val ingredients: List<Ingredient>, val steps: List<String>)
+data class Recipe(val foodPicture: Int, val name: String, val ingredients: List<Ingredient>, val steps: List<String>)
 
 data class StaffLevel(val name: String, val department: Department)
 
