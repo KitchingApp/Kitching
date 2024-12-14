@@ -10,7 +10,7 @@
     >
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/departmentCV"
+        android:id="@+id/categoryCV"
         style="@style/smallCategoryCV"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
             >
 
             <TextView
-                android:id="@+id/departmentName"
+                android:id="@+id/categoryNameTV"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -43,7 +43,7 @@
                 android:src="@drawable/menu_dots_vertical_24"
                 android:background="@color/clear"
 
-                app:layout_constraintStart_toEndOf="@id/departmentName"
+                app:layout_constraintStart_toEndOf="@id/categoryNameTV"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
