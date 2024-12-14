@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scheduleCV"
+    android:layout_margin="@dimen/margin_S"
     style="@style/memberItemCV">
 
     <androidx.constraintlayout.widget.ConstraintLayout

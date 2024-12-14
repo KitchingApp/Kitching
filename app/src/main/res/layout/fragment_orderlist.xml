@@ -2,15 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.fragment.todo.TodoFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.fragment.order.OrderListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/todoCategoryRV"
+        android:id="@+id/orderListRV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_big_category"
+        tools:listitem="@layout/item_small_category"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,15 +19,13 @@
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/createTodoCategoryBtn"
+        android:id="@+id/createOrderListBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/floatingActionBtnMargin"
-        android:contentDescription="createCategoryBtn"
+        android:contentDescription="createTodoListBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
