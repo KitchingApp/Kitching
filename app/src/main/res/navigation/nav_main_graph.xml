@@ -42,6 +42,18 @@
         android:name="com.kitchingapp.view.fragment.todo.TodoFragment"
         tools:layout="@layout/fragment_todo">
 
+        <action
+            android:id="@+id/action_todoFragment_to_todoListFragment"
+            app:destination="@id/todoListFragment" />
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/todoListFragment"
+        android:name="com.kitchingapp.view.fragment.todo.TodoListFragment"
+        tools:layout="@layout/fragment_todo_list">
+
     </fragment>
 
     <fragment

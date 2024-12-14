@@ -9,38 +9,40 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.kitchingapp.R
+import com.kitchingapp.adapter.TodoAdapter
 import com.kitchingapp.adapter.TodoCategoryAdapter
 import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.databinding.FragmentTodoBinding
+import com.kitchingapp.databinding.FragmentTodoListBinding
+import com.kitchingapp.domain.entities.Todo
 import com.kitchingapp.domain.entities.TodoCategory
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.material.selections
 
-class TodoFragment : BaseFragment<FragmentTodoBinding>(FragmentTodoBinding::inflate) {
+class TodoListFragment : BaseFragment<FragmentTodoListBinding>(FragmentTodoListBinding::inflate) {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         navController = findNavController()
-//        childFragmentManager.beginTransaction().replace(R.id.todoChildFragmentContainer, TodoChildFragment()).commit()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val todoCategoriesMockData = listOf(
-            TodoCategory("콜드", Color.parseColor("#90CAF9")),
-            TodoCategory("핫", Color.parseColor("#EF9A9A"))
+        val todosMockData = listOf(
+            Todo("샐러드", TodoCategory("콜드", Color.parseColor("#90CAF9"))),
+            Todo("파스타", TodoCategory("핫", Color.parseColor("#EF9A9A")))
         )
 
         with(binding) {
             with(todoCategoryRV) {
                 setRvLayout(this)
 
-                val categoryAdapter = TodoCategoryAdapter(viewLifecycleOwner, navController)
-                categoryAdapter.submitList(todoCategoriesMockData)
-                this.adapter = categoryAdapter
+                val todoAdapter = TodoAdapter(viewLifecycleOwner)
+                todoAdapter.submitList(todosMockData)
+                this.adapter = todoAdapter
             }
         }
     }
