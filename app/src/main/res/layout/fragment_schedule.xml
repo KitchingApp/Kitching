@@ -8,6 +8,7 @@
     tools:context=".view.fragment.schedule.ScheduleFragment">
 
     <com.google.android.material.button.MaterialButton
+        android:contentDescription="@string/prevDateBtnDescription"
         android:id="@+id/prevDateBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,13 +23,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="2024.12.11"
+        tools:text="2024.12.11"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
+        android:contentDescription="@string/nextDateBtnDescription"
         android:id="@+id/nextDateBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,16 +49,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/scheduleDateBtn">
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="홀" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="주방" />
-
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.fragment.app.FragmentContainerView
@@ -66,7 +58,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scheduleTab" />
+            app:layout_constraintTop_toBottomOf="@+id/scheduleTab"
+            tools:layout="@layout/childfragment_schedule_department" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
