@@ -2,6 +2,8 @@ package com.kitchingapp.view.fragment.schedule
 
 import android.os.Bundle
 import android.view.View
+import com.kitchingapp.R
+import com.kitchingapp.adapter.ScheduleApplyAdapter
 import com.kitchingapp.adapter.ScheduleFixAdapter
 import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.databinding.ChildfragmentScheduleDepartmentBinding
@@ -16,18 +18,35 @@ class ScheduleChildFragment: BaseFragment<ChildfragmentScheduleDepartmentBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding.confirmedScheduleRecyclerView) {
-            setRvLayout(this@with)
 
-            val adapter = ScheduleFixAdapter()
+        val allSchedules = RestaurantGenerator.restaurantList()
+            .flatMap { it.schedules }
+        val fixSchedules = allSchedules.filter { it.isFix }
+        val applySchedules = allSchedules.filter { !it.isFix }
 
-            val allSchedules = RestaurantGenerator.restaurantList()
-                .flatMap { it.schedules }
-                .filter { it.isFix }
+        with(binding) {
+            val scheduleDepartmentPeopleText = getString(R.string.scheduleDepartmentPeople, fixSchedules.size)
+            scheduleDepartmentPeople.text = scheduleDepartmentPeopleText
 
-            adapter.submitList(allSchedules)
+            with(confirmedScheduleRecyclerView) {
+                setRvLayout(this)
 
-            this.adapter = adapter
+                val fixAdapter = ScheduleFixAdapter()
+
+                fixAdapter.submitList(fixSchedules)
+
+                this.adapter = fixAdapter
+            }
+
+            with(appliedScheduleRecyclerView) {
+                setRvLayout(this)
+
+                val applyAdapter = ScheduleApplyAdapter()
+
+                applyAdapter.submitList(applySchedules)
+
+                this.adapter = applyAdapter
+            }
         }
     }
 }

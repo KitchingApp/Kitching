@@ -29,7 +29,6 @@
     <style name="dialogCancelBtn" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">@dimen/dialogBtnHeight</item>
-        <item name="android:layout_marginEnd">@dimen/dialogBtnMarginEnd</item>
         <item name="android:textSize">@dimen/text_M</item>
         <item name="android:layout_marginTop">@dimen/margin_S</item>
     </style>

@@ -35,12 +35,12 @@ abstract class BaseFragment<VB : ViewBinding>(
     fun setRvLayout(recyclerView: RecyclerView){
         with(recyclerView){
             layoutManager = LinearLayoutManager(KitchingApplication.getAppContext())
-            addItemDecoration(
-                DividerItemDecoration(
-                    KitchingApplication.getAppContext(),
-                    LinearLayoutManager.VERTICAL
-                )
-            )
+//            addItemDecoration(
+//                DividerItemDecoration(
+//                    KitchingApplication.getAppContext(),
+//                    LinearLayoutManager.VERTICAL
+//                )
+//            )
         }
     }
 }
