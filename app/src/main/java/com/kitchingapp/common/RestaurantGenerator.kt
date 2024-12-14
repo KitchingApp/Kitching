@@ -15,6 +15,7 @@ import com.kitchingapp.domain.entities.TodoCategory
 import com.kitchingapp.domain.entities.User
 import java.time.LocalDate
 import java.time.LocalTime
+import com.kitchingapp.R
 
 class RestaurantGenerator {
     companion object {
@@ -99,6 +100,7 @@ class RestaurantGenerator {
 
             val recipes = (1..10).map {
                 Recipe(
+                    foodPicture = R.drawable.pancake,
                     name = "Recipe$it",
                     ingredients = (1..5).map { idx ->
                         Ingredient(

@@ -45,6 +45,9 @@
         <action
             android:id="@+id/action_todoFragment_to_todoListFragment"
             app:destination="@id/todoListFragment" />
+        <action
+            android:id="@+id/action_todoFragment_to_createTodoCategoryDialog"
+            app:destination="@id/createTodoCategoryDialog" />
 
 
     </fragment>
@@ -54,19 +57,6 @@
         android:name="com.kitchingapp.view.fragment.todo.TodoListFragment"
         tools:layout="@layout/fragment_todo_list">
 
-    </fragment>
-
-    <fragment
-        android:id="@+id/todoCategoryFragment"
-        tools:layout="@layout/childfragment_category">
-
-
-        <action
-            android:id="@+id/action_todoCategoryFragment_to_todoconfirmDialog"
-            app:destination="@id/todoConfirmDialog" />
-        <action
-            android:id="@+id/action_todoCategoryFragment_to_createTodoCategoryDialog"
-            app:destination="@id/createTodoCategoryDialog" />
     </fragment>
 
     <fragment
@@ -153,9 +143,6 @@
     </fragment>
 
 
-
-
-
     <fragment
         android:id="@+id/orderFragment"
         android:name="com.kitchingapp.view.fragment.order.OrderFragment"
@@ -163,38 +150,20 @@
         >
 
         <action
-            android:id="@+id/action_orderFragment_to_orderCategoryFragment"
-            app:destination="@id/orderCategoryFragment" />
-        <action
             android:id="@+id/action_orderFragment_to_orderListFragment"
             app:destination="@id/orderListFragment" />
-
-    </fragment>
-
-
-    <fragment
-        android:id="@+id/orderCategoryFragment"
-        tools:layout="@layout/childfragment_ordercategory">
-
-        <action
-            android:id="@+id/action_orderCategoryFragment_to_orderCategoryCreateDialog"
-            app:destination="@id/orderCategoryCreateDialog" />
-        <action
-            android:id="@+id/action_orderCategoryFragment_to_ordercategoryConfirmDialog"
-            app:destination="@id/ordercategoryConfirmDialog" />
     </fragment>
 
     <fragment
         android:id="@+id/orderListFragment"
-        tools:layout="@layout/childfragment_orderlist"
+        android:name="com.kitchingapp.view.fragment.order.OrderListFragment"
+        tools:layout="@layout/fragment_orderlist"
         >
-        <action
-            android:id="@+id/action_orderListFragment_to_orderListCreateDialog"
-            app:destination="@id/orderListCreateDialog" />
-        <action
-            android:id="@+id/action_orderListFragment_to_orderListConfirmDialog"
-            app:destination="@id/orderListConfirmDialog" />
+
     </fragment>
+
+
+
 
     <dialog
         android:id="@+id/ordercategoryConfirmDialog"
@@ -358,6 +327,7 @@
 
     <fragment
         android:id="@+id/memberListFragment"
+        android:name="com.kitchingapp.view.fragment.other.MemberFragment"
         tools:layout="@layout/fragment_memberlist"
         >
 

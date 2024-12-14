@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.kitchingapp.adapter.OrderAdapter
+import com.kitchingapp.adapter.OrderListAdapter
 import com.kitchingapp.common.BaseFragment
-import com.kitchingapp.databinding.FragmentOrderBinding
+import com.kitchingapp.databinding.FragmentOrderlistBinding
+import com.kitchingapp.domain.entities.Order
 import com.kitchingapp.domain.entities.OrderCategory
 
-class OrderFragment : BaseFragment<FragmentOrderBinding>(FragmentOrderBinding::inflate){
+class OrderListFragment: BaseFragment<FragmentOrderlistBinding>(FragmentOrderlistBinding::inflate) {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,17 +22,18 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(FragmentOrderBinding::i
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val orderCategoryMockData = listOf(
-            OrderCategory("수산물", Color.parseColor("#90CAF9")),
-            OrderCategory("육가공", Color.parseColor("#EF9A9A"))
+        val orderListMockData = listOf(
+            Order("돼지고기", OrderCategory("수산물", Color.parseColor("#90CAF9"))),
+            Order("소고기", OrderCategory("육가공", Color.parseColor("#EF9A9A")))
         )
 
-        with(binding.orderCategoryRV) {
+        with(binding.orderListRV) {
             setRvLayout(this)
 
-            val categoryAdapter = OrderAdapter(viewLifecycleOwner, navController)
-            categoryAdapter.submitList(orderCategoryMockData)
-            this.adapter = categoryAdapter
+            val orderListAdapter = OrderListAdapter(viewLifecycleOwner)
+            orderListAdapter.submitList(orderListMockData)
+            this.adapter = orderListAdapter
         }
+
     }
 }
