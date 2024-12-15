@@ -1,13 +1,20 @@
 package com.kitchingapp.view.fragment.schedule
 
+import android.app.Dialog
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
+import android.view.Window
+import androidx.lifecycle.lifecycleScope
 import com.kitchingapp.R
 import com.kitchingapp.adapter.ScheduleApplyAdapter
 import com.kitchingapp.adapter.ScheduleFixAdapter
 import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.databinding.ChildfragmentScheduleDepartmentBinding
 import com.kitchingapp.domain.entities.Schedule
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.view.clicks
 
 class ScheduleChildFragment: BaseFragment<ChildfragmentScheduleDepartmentBinding>(
     ChildfragmentScheduleDepartmentBinding::inflate){
@@ -46,6 +53,14 @@ class ScheduleChildFragment: BaseFragment<ChildfragmentScheduleDepartmentBinding
                 applyAdapter.submitList(applySchedules)
 
                 this.adapter = applyAdapter
+            }
+
+            with(createScheduleBtn) {
+                clicks().onEach {
+                    val dialog = ScheduleCreateDialog()
+                    dialog.show(activity?.supportFragmentManager!!, "dialog")
+
+                }.launchIn(lifecycleScope)
             }
         }
     }
