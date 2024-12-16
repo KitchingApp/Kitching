@@ -100,22 +100,9 @@
         tools:layout="@layout/fragment_recipe"
         >
 
-        <action
-            android:id="@+id/action_recipeFragment_to_recipeListFragment"
-            app:destination="@id/recipeListFragment" />
-        <action
-            android:id="@+id/action_recipeFragment_to_menuListFragment"
-            app:destination="@id/menuListFragment" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/recipeListFragment"
-        tools:layout="@layout/childfragment_recipe"
-        >
 
         <action
-            android:id="@+id/action_recipeListFragment_to_recipeDetailFragment"
+            android:id="@+id/action_recipeFragment_to_recipeDetailFragment"
             app:destination="@id/recipeDetailFragment" />
     </fragment>
 
@@ -132,8 +119,24 @@
 
     <fragment
         android:id="@+id/recipeDetailFragment"
+        android:name="com.kitchingapp.view.fragment.recipe.RecipeDetailFragment"
         tools:layout="@layout/fragment_recipe_detail"
         >
+        <argument
+            android:name="recipeImage"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+
+        <argument
+            android:name="recipeName"
+            app:argType="string"
+            android:defaultValue=""/>
+
+        <argument
+            android:name="recipeStep"
+            app:argType="string"
+            android:defaultValue=""/>
+
     </fragment>
 
     <fragment

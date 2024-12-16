@@ -19,6 +19,7 @@
     <dimen name="floatingActionBtnMargin">30dp</dimen>
     <dimen name="dialogBtnMarginEnd">10dp</dimen>
     <dimen name="dialogDefaultMargin">10dp</dimen>
+    <dimen name="margin_XS">5dp</dimen>
     <dimen name="margin_S">10dp</dimen>
     <dimen name="margin_M">20dp</dimen>
     <dimen name="margin_L">30dp</dimen>
