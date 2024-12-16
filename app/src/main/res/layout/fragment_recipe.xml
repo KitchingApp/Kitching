@@ -6,34 +6,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.fragment.recipe.RecipeFragment">
 
-    <com.google.android.material.tabs.TabLayout
-        style="@style/tabLayout"
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/recipe" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/menu" />
-
-    </com.google.android.material.tabs.TabLayout>
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/recipeFragmentContainer"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recipeRV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        tools:listitem="@layout/item_recipe"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabLayout"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
 

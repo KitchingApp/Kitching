@@ -27,12 +27,13 @@
             android:id="@+id/recipeNameTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_S"
+            android:layout_marginVertical="@dimen/margin_XS"
             android:textSize="@dimen/text_M"
-            app:layout_constraintEnd_toEndOf="parent"
 
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recipeIV"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="팬케이크" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
