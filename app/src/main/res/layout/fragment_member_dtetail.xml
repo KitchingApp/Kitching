@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="보건증 만료일 2025년 5월 25일"
-        android:textSize="@dimen/text_XL"
+        android:textSize="@dimen/text_L"
         android:layout_marginTop="@dimen/margin_S"
 
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="만료 한달 전 일주일 단위로 알림 발송"
-        android:layout_marginTop="@dimen/margin_S"
+        android:layout_marginTop="@dimen/margin_M"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
