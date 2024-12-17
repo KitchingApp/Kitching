@@ -39,17 +39,36 @@
         app:layout_constraintStart_toEndOf="@+id/scheduleDateBtn"
         style="@style/Widget.Material3.Button.IconButton" />
 
-        <com.google.android.material.tabs.TabLayout
-            style="@style/tabLayout"
-            android:id="@+id/scheduleTab"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/departmentSelectLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+        android:layout_width="300dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scheduleDateBtn"
+        android:hint="부서를 선택해주세요.">
 
-            app:tabGravity="center"
-            app:tabMode="scrollable"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/scheduleDateBtn">
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/departmentSelectDropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            />
 
-        </com.google.android.material.tabs.TabLayout>
+    </com.google.android.material.textfield.TextInputLayout>
+
+<!--        <com.google.android.material.tabs.TabLayout-->
+<!--            style="@style/tabLayout"-->
+<!--            android:id="@+id/scheduleTab"-->
+
+<!--            app:tabGravity="center"-->
+<!--            app:tabMode="scrollable"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/scheduleDateBtn">-->
+
+<!--        </com.google.android.material.tabs.TabLayout>-->
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerView"
@@ -58,7 +77,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scheduleTab"
+            app:layout_constraintTop_toBottomOf="@+id/departmentSelectLayout"
             tools:layout="@layout/childfragment_schedule_department" />
 
 

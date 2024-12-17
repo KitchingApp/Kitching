@@ -2,12 +2,15 @@ package com.kitchingapp.view.fragment.schedule
 
 import android.os.Build
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
+import com.kitchingapp.R
 import com.kitchingapp.common.BaseDialog
 import com.kitchingapp.databinding.DialogCreateScheduleBinding
 import kotlinx.coroutines.flow.launchIn
@@ -24,13 +27,20 @@ class ScheduleCreateDialog: BaseDialog<DialogCreateScheduleBinding>(DialogCreate
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val staffLevelListMockData = listOf("사원", "주임", "대리", "과장", "차장")
+        val scheduleTimeListMockData = listOf("A타임", "B타임", "C타임")
+
+        val autoCompleteAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, staffLevelListMockData)
+
         with(binding) {
             dateTV.text = LocalDate.now().toString()
-            staffLevelTV.text = "직급: 매니저"
             continuousDateTV.text = "연속근무일수: 2일"
+            autoCompleteTV.setAdapter(autoCompleteAdapter)
 
             // 타임별로 chip 생성
-            createChip("A타임")
+            scheduleTimeListMockData.forEach {
+                createChip(it)
+            }
 
             with(confirmBtn) {
                 clicks().onEach {
@@ -54,6 +64,7 @@ class ScheduleCreateDialog: BaseDialog<DialogCreateScheduleBinding>(DialogCreate
     private fun createChip(chipName: String) {
         val chip = Chip(requireContext())
         chip.text = chipName
+        chip.isCheckable = true
         binding.chipGroup.addView(chip)
     }
 }
