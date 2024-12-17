@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.kitchingapp.adapter.DepartmentAdapter
+import com.kitchingapp.adapter.StaffLevelAdapter
 import com.kitchingapp.common.BaseFragment
-import com.kitchingapp.databinding.FragmentDepartmentBinding
-import com.kitchingapp.databinding.FragmentInviteCodeBinding
+import com.kitchingapp.databinding.FragmentStafflevelBinding
 import com.kitchingapp.domain.entities.Department
-import com.kitchingapp.domain.entities.OrderCategory
+import com.kitchingapp.domain.entities.StaffLevel
 
-class DepartmentFragment : BaseFragment<FragmentDepartmentBinding>(FragmentDepartmentBinding::inflate) {
+class StaffLevelFragment : BaseFragment<FragmentStafflevelBinding>(FragmentStafflevelBinding::inflate) {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,17 +22,17 @@ class DepartmentFragment : BaseFragment<FragmentDepartmentBinding>(FragmentDepar
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val departmentMockData = listOf(
-            Department("홀", Color.parseColor("#90CAF9")),
-            Department("주방", Color.parseColor("#EF9A9A"))
+        val staffLevelMockData = listOf(
+            StaffLevel("쫄병", Department("홀", Color.parseColor("#90CAF9"))),
+            StaffLevel("대장", Department("주방", Color.parseColor("#EF9A9A")))
         )
 
         with(binding.departmentRV) {
             setRvLayout(this)
 
-            val departmentAdapter = DepartmentAdapter(viewLifecycleOwner, navController)
-            departmentAdapter.submitList(departmentMockData)
-            this.adapter = departmentAdapter
+            val staffLevelAdapter = StaffLevelAdapter(viewLifecycleOwner)
+            staffLevelAdapter.submitList(staffLevelMockData)
+            this.adapter = staffLevelAdapter
         }
     }
 }
