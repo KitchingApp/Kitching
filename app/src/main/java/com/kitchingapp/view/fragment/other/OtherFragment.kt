@@ -24,6 +24,10 @@ class OtherFragment : BaseFragment<FragmentOtherBinding>(FragmentOtherBinding::i
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
+            userDetailBtn.clicks().onEach {
+                navController.navigate(R.id.action_otherFragment_to_userDetailFragment)
+            }.launchIn(lifecycleScope)
+
             inviteCodeBtn.clicks().onEach {
                 navController.navigate(R.id.action_otherFragment_to_inviteCodeFragment)
             }.launchIn(lifecycleScope)

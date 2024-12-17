@@ -211,8 +211,17 @@
         <action
             android:id="@+id/action_otherFragment_to_memberListFragment"
             app:destination="@id/memberListFragment" />
+        <action
+            android:id="@+id/action_otherFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/userDetailFragment"
+        android:name="com.kitchingapp.view.fragment.other.UserDetailFragment"
+        tools:layout="@layout/fragment_member_dtetail"
+        />
 
     <fragment
         android:id="@+id/inviteCodeFragment"
@@ -261,7 +270,8 @@
 
     <fragment
         android:id="@+id/departmentFragment"
-        tools:layout="@layout/childfragment_department"
+        android:name="com.kitchingapp.view.fragment.other.StaffLevelFragment"
+        tools:layout="@layout/fragment_stafflevel"
         >
 
         <action
@@ -307,6 +317,7 @@
 
     <fragment
         android:id="@+id/scheduleTimeFragment"
+        android:name="com.kitchingapp.view.fragment.other.ScheduleTimeFragment"
         tools:layout="@layout/fragment_schedule_time"
         >
 
