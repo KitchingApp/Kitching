@@ -79,6 +79,7 @@
 
     <dialog
         android:id="@+id/createTodoCategoryDialog"
+        android:name="com.kitchingapp.view.fragment.todo.TodoCategoryCreateDialog"
         tools:layout="@layout/dialog_input_text_color"
         />
 

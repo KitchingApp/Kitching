@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.corbind)
     implementation(libs.corbind.material)
+    implementation(libs.corbind.appcompat)
     implementation(libs.circleimageview)
     implementation(libs.firebase.firestore)
     testImplementation(libs.junit)

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/todoCategoryNameTI"
+        android:id="@+id/todoCategoryNameTIL"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/name"
@@ -14,33 +14,30 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/todoCategoryNameTI"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/recipeNameTI"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:id="@+id/autoCompleteTIL"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/recipeHint"
+        android:hint="@string/recipe"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/todoCategoryNameTI">
+        app:layout_constraintTop_toBottomOf="@+id/todoCategoryNameTIL">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/autoCompleteTV"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:minHeight="@dimen/autoCompleteTVMinHeight" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.MaterialAutoCompleteTextView
-        android:id="@+id/autoCompleteTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:completionThreshold="1"
-        android:minHeight="@dimen/autoCompleteTVMinHeight"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipeNameTI" />
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirmButton"
@@ -49,7 +46,7 @@
         android:text="@string/confirm"
         app:layout_constraintEnd_toStartOf="@id/cancelButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTV" />
+        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTIL" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancelButton"
@@ -58,6 +55,6 @@
         android:text="@string/cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/confirmButton"
-        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTV" />
+        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTIL" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -44,16 +44,12 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         with(binding) {
             var currentDate = LocalDate.now()
 
-            with(scheduleTab) {
-                // 동적으로 탭 추가하기
-                val departmentsMockData = listOf<String>("홀", "주방")
+            with(departmentSelectDropdown) {
+                val departmentsMockData = arrayOf<String>("홀", "주방")
                 departmentsMockData.forEach {
-                    addTab(createNewTab(it))
+                    setText(departmentsMockData[0]) // 기본값 설정
+                    setSimpleItems(departmentsMockData)
                 }
-                //
-                selections().onEach {
-                    // 탭 클릭 시 동작 추가
-                }.launchIn(lifecycleScope)
             }
 
             with(prevDateBtn) {
@@ -90,13 +86,5 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
                 }.launchIn(lifecycleScope)
             }
         }
-    }
-
-    /** 동적으로 탭 생성하기 */
-    private fun createNewTab(tabName: String): TabLayout.Tab {
-        val newTab = binding.scheduleTab.newTab()
-        newTab.text = tabName
-
-        return newTab
     }
 }

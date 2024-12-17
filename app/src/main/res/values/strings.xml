@@ -30,4 +30,5 @@
     <string name="scheduleDepartmentPeople">확정 근무인원 총 %1$d명</string>
     <string name="nextDateBtnDescription">다음 날짜 버튼</string>
     <string name="prevDateBtnDescription">이전 날짜 버튼</string>
+    <string name="staffLevel">직급</string>
 </resources>

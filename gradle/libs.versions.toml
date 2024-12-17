@@ -20,6 +20,7 @@ firebaseFirestore = "25.1.1"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
 corbind = { module = "ru.ldralighieri.corbind:corbind", version.ref = "corbind" }
+corbind-appcompat = { module = "ru.ldralighieri.corbind:corbind-appcompat", version.ref = "corbind" }
 corbind-material = { module = "ru.ldralighieri.corbind:corbind-material", version.ref = "corbind" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
