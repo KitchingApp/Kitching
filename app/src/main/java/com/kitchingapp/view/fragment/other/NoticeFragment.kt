@@ -6,6 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.kitchingapp.R
+import com.kitchingapp.adapter.NoticeAdapter
 import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.databinding.FragmentInviteCodeBinding
 import com.kitchingapp.databinding.FragmentNoticeBinding
@@ -25,7 +26,14 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(FragmentNoticeBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding) {
+        val allNotice = RestaurantGenerator.restaurantList().flatMap { it.notices }
+
+        with(binding.noticeRV) {
+            setRvLayout(this)
+
+            val noticeAdapter = NoticeAdapter()
+            noticeAdapter.submitList(allNotice)
+            this.adapter = noticeAdapter
         }
     }
 }
