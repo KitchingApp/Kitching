@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.RadioButton
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.kitchingapp.R
@@ -16,7 +17,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
-open class ColorInputBaseDialog: BaseDialog<DialogInputTextColorBinding>(DialogInputTextColorBinding::inflate) {
+open class ColorInputBaseDialog(val argsRequestKeyName: String, val categoryKeyName: String, val categoryColorKeyName: String): BaseDialog<DialogInputTextColorBinding>(DialogInputTextColorBinding::inflate) {
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -40,6 +42,18 @@ open class ColorInputBaseDialog: BaseDialog<DialogInputTextColorBinding>(DialogI
                     setPadding(convertDpToPx(30), 0, convertDpToPx(30), 0)
                 }
                 colorPickerRG.addView(radioButton)
+            }
+
+            with(confirmBtn) {
+                clicks().onEach {
+                    val args = Bundle().apply {
+                        putString(categoryKeyName, textInputEditText.text.toString())
+                        putString(categoryColorKeyName, colorPickerRG.findViewById<RadioButton>(colorPickerRG.checkedRadioButtonId).tag.toString())
+                    }
+                    setFragmentResult(argsRequestKeyName, args)
+
+                    dismiss()
+                }.launchIn(lifecycleScope)
             }
         }
     }
