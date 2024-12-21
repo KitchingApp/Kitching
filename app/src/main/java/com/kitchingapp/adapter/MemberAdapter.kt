@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kitchingapp.data.database.dto.MemberDTO
 import com.kitchingapp.databinding.ItemMemberlistBinding
-import com.kitchingapp.domain.entities.User
 
-class MemberAdapter : ListAdapter<User, MemberAdapter.MemberViewHolder>(diffUtil){
+class MemberAdapter : ListAdapter<MemberDTO, MemberAdapter.MemberViewHolder>(diffUtil){
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -25,17 +25,17 @@ class MemberAdapter : ListAdapter<User, MemberAdapter.MemberViewHolder>(diffUtil
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<User>() {
+        val diffUtil = object : DiffUtil.ItemCallback<MemberDTO>() {
             override fun areItemsTheSame(
-                oldItem: User,
-                newItem: User
+                oldItem: MemberDTO,
+                newItem: MemberDTO
             ): Boolean {
-                return oldItem.name == newItem.name
+                return oldItem.userName == newItem.userName
             }
 
             override fun areContentsTheSame(
-                oldItem: User,
-                newItem: User
+                oldItem: MemberDTO,
+                newItem: MemberDTO
             ): Boolean {
                 return oldItem == newItem
             }
@@ -44,9 +44,9 @@ class MemberAdapter : ListAdapter<User, MemberAdapter.MemberViewHolder>(diffUtil
     }
 
     inner class MemberViewHolder(val binding: ItemMemberlistBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindMember(user: User) {
+        fun bindMember(member: MemberDTO) {
             with(binding) {
-                nameTV.text = user.name
+                nameTV.text = member.userName
             }
 
         }

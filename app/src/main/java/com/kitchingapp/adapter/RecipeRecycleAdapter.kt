@@ -8,14 +8,14 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kitchingapp.data.database.dto.RecipeDetailDTO
 import com.kitchingapp.databinding.ItemRecipeBinding
-import com.kitchingapp.domain.entities.Recipe
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 import com.kitchingapp.view.fragment.recipe.RecipeFragmentDirections
 import kotlinx.coroutines.flow.launchIn
 
-class RecipeRecycleAdapter(private val lifecycleOwner: LifecycleOwner, private val navController: NavController) : ListAdapter<Recipe, RecipeRecycleAdapter.RecipeViewHolder>(diffUtil) {
+class RecipeRecycleAdapter(private val lifecycleOwner: LifecycleOwner, private val navController: NavController) : ListAdapter<RecipeDetailDTO, RecipeRecycleAdapter.RecipeViewHolder>(diffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -32,17 +32,17 @@ class RecipeRecycleAdapter(private val lifecycleOwner: LifecycleOwner, private v
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Recipe>() {
+        val diffUtil = object : DiffUtil.ItemCallback<RecipeDetailDTO>() {
             override fun areItemsTheSame(
-                oldItem: Recipe,
-                newItem: Recipe
+                oldItem: RecipeDetailDTO,
+                newItem: RecipeDetailDTO
             ): Boolean {
-                return oldItem.name == newItem.name
+                return oldItem.recipeName == newItem.recipeName
             }
 
             override fun areContentsTheSame(
-                oldItem: Recipe,
-                newItem: Recipe
+                oldItem: RecipeDetailDTO,
+                newItem: RecipeDetailDTO
             ): Boolean {
                 return oldItem == newItem
             }
@@ -51,12 +51,12 @@ class RecipeRecycleAdapter(private val lifecycleOwner: LifecycleOwner, private v
 
     inner class RecipeViewHolder(val binding: ItemRecipeBinding) :
         RecyclerView.ViewHolder(binding.root) {
-            fun  bindRecipe(recipe: Recipe) {
+            fun  bindRecipe(recipe: RecipeDetailDTO) {
                 with(binding) {
-                    recipeIV.setImageResource(recipe.foodPicture)
-                    recipeNameTV.text = recipe.name
+//                    recipeIV.setImageResource(recipe.picture)
+                    recipeNameTV.text = recipe.recipeName
                     recipeCV.clicks().onEach {
-                        val argsAction = RecipeFragmentDirections.actionRecipeFragmentToRecipeDetailFragment(recipe.foodPicture, recipe.name,
+                        val argsAction = RecipeFragmentDirections.actionRecipeFragmentToRecipeDetailFragment(recipe.picture, recipe.recipeName,
                             recipe.steps.toString()
                         )
                         navController.navigate(argsAction)

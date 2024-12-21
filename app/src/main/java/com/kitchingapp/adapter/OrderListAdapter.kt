@@ -7,13 +7,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kitchingapp.data.database.dto.OrderDTO
 import com.kitchingapp.databinding.ItemSmallCategoryBinding
-import com.kitchingapp.domain.entities.Order
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
-class OrderListAdapter(private val lifecycleOwner: LifecycleOwner): ListAdapter<Order, OrderListAdapter.OrderViewHolder>(diffUtil) {
+class OrderListAdapter(private val lifecycleOwner: LifecycleOwner): ListAdapter<OrderDTO, OrderListAdapter.OrderViewHolder>(diffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -30,17 +30,17 @@ class OrderListAdapter(private val lifecycleOwner: LifecycleOwner): ListAdapter<
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Order>() {
+        val diffUtil = object : DiffUtil.ItemCallback<OrderDTO>() {
             override fun areItemsTheSame(
-                oldItem: Order,
-                newItem: Order
+                oldItem: OrderDTO,
+                newItem: OrderDTO
             ): Boolean {
-                return oldItem.name == newItem.name
+                return oldItem.orderName == newItem.orderName
             }
 
             override fun areContentsTheSame(
-                oldItem: Order,
-                newItem: Order
+                oldItem: OrderDTO,
+                newItem: OrderDTO
             ): Boolean {
                 return oldItem == newItem
             }
@@ -49,9 +49,9 @@ class OrderListAdapter(private val lifecycleOwner: LifecycleOwner): ListAdapter<
     }
 
     inner class OrderViewHolder(val binding: ItemSmallCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindSmallCategory(order: Order) {
+        fun bindSmallCategory(order: OrderDTO) {
             with(binding) {
-                categoryNameTV.text = order.name
+                categoryNameTV.text = order.orderName
                 categoryCV.clicks().onEach {
 
                 }.launchIn(lifecycleOwner.lifecycleScope)

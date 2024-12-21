@@ -1,5 +1,6 @@
 package com.kitchingapp.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -9,13 +10,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kitchingapp.R
+import com.kitchingapp.data.database.dto.DepartmentDTO
 import com.kitchingapp.databinding.ItemBigCategoryBinding
-import com.kitchingapp.domain.entities.Department
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
-class DepartmentAdapter(private val lifecycleOwner: LifecycleOwner, private val navController: NavController): ListAdapter<Department, DepartmentAdapter.DepartmentViewHolder>(diffUtil) {
+class DepartmentAdapter(private val lifecycleOwner: LifecycleOwner, private val navController: NavController): ListAdapter<DepartmentDTO, DepartmentAdapter.DepartmentViewHolder>(diffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -32,17 +33,17 @@ class DepartmentAdapter(private val lifecycleOwner: LifecycleOwner, private val 
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Department>() {
+        val diffUtil = object : DiffUtil.ItemCallback<DepartmentDTO>() {
             override fun areItemsTheSame(
-                oldItem: Department,
-                newItem: Department
+                oldItem: DepartmentDTO,
+                newItem: DepartmentDTO
             ): Boolean {
-                return oldItem.name == newItem.name
+                return oldItem.departmentId == newItem.departmentId
             }
 
             override fun areContentsTheSame(
-                oldItem: Department,
-                newItem: Department
+                oldItem: DepartmentDTO,
+                newItem: DepartmentDTO
             ): Boolean {
                 return oldItem == newItem
             }
@@ -51,10 +52,10 @@ class DepartmentAdapter(private val lifecycleOwner: LifecycleOwner, private val 
     }
 
     inner class DepartmentViewHolder(val binding: ItemBigCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindBigCategory(department: Department) {
+        fun bindBigCategory(department: DepartmentDTO) {
             with(binding) {
-                categoryNameTV.text = department.name
-                categoryCV.setCardBackgroundColor(department.color)
+                categoryNameTV.text = department.departmentName
+                categoryCV.setCardBackgroundColor(Color.parseColor(department.color))
                 categoryCV.clicks().onEach {
                     navController.navigate(R.id.action_humanResourceFragment_to_departmentFragment)
                 }.launchIn(lifecycleOwner.lifecycleScope)

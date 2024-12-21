@@ -6,10 +6,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kitchingapp.data.database.dto.StaffLevelDTO
 import com.kitchingapp.databinding.ItemSmallCategoryBinding
-import com.kitchingapp.domain.entities.StaffLevel
 
-class StaffLevelAdapter(private val lifecycleOwner: LifecycleOwner) : ListAdapter<StaffLevel, StaffLevelAdapter.StaffLevelViewHolder>(diffUtil) {
+class StaffLevelAdapter(private val lifecycleOwner: LifecycleOwner) : ListAdapter<StaffLevelDTO, StaffLevelAdapter.StaffLevelViewHolder>(diffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -26,17 +26,17 @@ class StaffLevelAdapter(private val lifecycleOwner: LifecycleOwner) : ListAdapte
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<StaffLevel>() {
+        val diffUtil = object : DiffUtil.ItemCallback<StaffLevelDTO>() {
             override fun areItemsTheSame(
-                oldItem: StaffLevel,
-                newItem: StaffLevel
+                oldItem: StaffLevelDTO,
+                newItem: StaffLevelDTO
             ): Boolean {
-                return oldItem.name == newItem.name
+                return oldItem.staffLevelName == newItem.staffLevelName
             }
 
             override fun areContentsTheSame(
-                oldItem: StaffLevel,
-                newItem: StaffLevel
+                oldItem: StaffLevelDTO,
+                newItem: StaffLevelDTO
             ): Boolean {
                 return oldItem == newItem
             }
@@ -45,9 +45,9 @@ class StaffLevelAdapter(private val lifecycleOwner: LifecycleOwner) : ListAdapte
     }
 
     inner class StaffLevelViewHolder(val binding: ItemSmallCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindSmallCategory(staffLevel: StaffLevel) {
+        fun bindSmallCategory(staffLevel: StaffLevelDTO) {
             with(binding) {
-                categoryNameTV.text = staffLevel.name
+                categoryNameTV.text = staffLevel.staffLevelName
             }
         }
     }

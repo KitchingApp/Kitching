@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kitchingapp.data.database.dto.ScheduleDTO
 import com.kitchingapp.databinding.ItemScheduleApplylistBinding
-import com.kitchingapp.domain.entities.Schedule
 
-class ScheduleApplyAdapter: ListAdapter<Schedule, ScheduleApplyAdapter.ScheduleViewHolder>(diffUtil) {
+class ScheduleApplyAdapter: ListAdapter<ScheduleDTO, ScheduleApplyAdapter.ScheduleViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduleViewHolder {
         val binding = ItemScheduleApplylistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ScheduleViewHolder(binding)
@@ -19,17 +19,17 @@ class ScheduleApplyAdapter: ListAdapter<Schedule, ScheduleApplyAdapter.ScheduleV
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Schedule>() {
+        val diffUtil = object : DiffUtil.ItemCallback<ScheduleDTO>() {
             override fun areItemsTheSame(
-                oldItem: Schedule,
-                newItem: Schedule
+                oldItem: ScheduleDTO,
+                newItem: ScheduleDTO
             ): Boolean {
-                return oldItem.applier == newItem.applier
+                return oldItem.scheduleId == newItem.scheduleId
             }
 
             override fun areContentsTheSame(
-                oldItem: Schedule,
-                newItem: Schedule
+                oldItem: ScheduleDTO,
+                newItem: ScheduleDTO
             ): Boolean {
                 return oldItem == newItem
             }
@@ -38,10 +38,10 @@ class ScheduleApplyAdapter: ListAdapter<Schedule, ScheduleApplyAdapter.ScheduleV
 
     inner class ScheduleViewHolder(val binding: ItemScheduleApplylistBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bindScheduleApply(schedule: Schedule) {
+        fun bindScheduleApply(schedule: ScheduleDTO) {
             with(binding) {
-                scheduleApplyNameTV.text = schedule.applier.name
-                scheduleApplyTimeTV.text = schedule.scheduleTime.name
+                scheduleApplyNameTV.text = schedule.userName
+                scheduleApplyTimeTV.text = schedule.scheduleTime
             }
         }
 
