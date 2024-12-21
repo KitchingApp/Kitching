@@ -26,13 +26,13 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(FragmentNoticeBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val allNotice = RestaurantGenerator.restaurantList().flatMap { it.notices }
+//        val allNotice = RestaurantGenerator.restaurantList().flatMap { it.notices }
 
         with(binding.noticeRV) {
             setRvLayout(this)
 
             val noticeAdapter = NoticeAdapter()
-            noticeAdapter.submitList(allNotice)
+//            noticeAdapter.submitList(allNotice)
             this.adapter = noticeAdapter
         }
     }

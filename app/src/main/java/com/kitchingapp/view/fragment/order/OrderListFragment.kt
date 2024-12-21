@@ -22,16 +22,16 @@ class OrderListFragment: BaseFragment<FragmentOrderlistBinding>(FragmentOrderlis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val orderListMockData = listOf(
-            Order("돼지고기", OrderCategory("수산물", Color.parseColor("#90CAF9"))),
-            Order("소고기", OrderCategory("육가공", Color.parseColor("#EF9A9A")))
-        )
+//        val orderListMockData = listOf(
+//            Order("돼지고기", OrderCategory("수산물", Color.parseColor("#90CAF9"))),
+//            Order("소고기", OrderCategory("육가공", Color.parseColor("#EF9A9A")))
+//        )
 
         with(binding.orderListRV) {
             setRvLayout(this)
 
             val orderListAdapter = OrderListAdapter(viewLifecycleOwner)
-            orderListAdapter.submitList(orderListMockData)
+//            orderListAdapter.submitList(orderListMockData)
             this.adapter = orderListAdapter
         }
 

@@ -22,16 +22,16 @@ class StaffLevelFragment : BaseFragment<FragmentStafflevelBinding>(FragmentStaff
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val staffLevelMockData = listOf(
-            StaffLevel("쫄병", Department("홀", Color.parseColor("#90CAF9"))),
-            StaffLevel("대장", Department("주방", Color.parseColor("#EF9A9A")))
-        )
+//        val staffLevelMockData = listOf(
+//            StaffLevel("쫄병", Department("홀", Color.parseColor("#90CAF9"))),
+//            StaffLevel("대장", Department("주방", Color.parseColor("#EF9A9A")))
+//        )
 
         with(binding.departmentRV) {
             setRvLayout(this)
 
             val staffLevelAdapter = StaffLevelAdapter(viewLifecycleOwner)
-            staffLevelAdapter.submitList(staffLevelMockData)
+//            staffLevelAdapter.submitList(staffLevelMockData)
             this.adapter = staffLevelAdapter
         }
     }

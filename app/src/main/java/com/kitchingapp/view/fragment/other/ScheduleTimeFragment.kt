@@ -20,13 +20,13 @@ class ScheduleTimeFragment : BaseFragment<FragmentScheduleTimeBinding>(FragmentS
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val allScheduleTime = RestaurantGenerator.restaurantList().flatMap { it.scheduleTimes }
+//        val allScheduleTime = RestaurantGenerator.restaurantList().flatMap { it.scheduleTimes }
 
         with(binding.scheduleTimeRV) {
             setRvLayout(this)
 
             val scheduleTimeAdapter = ScheduleTimeAdapter()
-            scheduleTimeAdapter.submitList(allScheduleTime)
+//            scheduleTimeAdapter.submitList(allScheduleTime)
             this.adapter = scheduleTimeAdapter
 
         }
