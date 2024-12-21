@@ -5,7 +5,7 @@ import java.time.LocalTime
 
 data class ScheduleDTO(
     val scheduleId: String,
-    val date: LocalDate,
+    val date: String,
     val departmentName: String,
     val userId: String,
     val userName: String,
