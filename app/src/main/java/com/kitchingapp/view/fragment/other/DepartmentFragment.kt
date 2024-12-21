@@ -23,16 +23,16 @@ class DepartmentFragment : BaseFragment<FragmentDepartmentBinding>(FragmentDepar
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val departmentMockData = listOf(
-            Department("홀", Color.parseColor("#90CAF9")),
-            Department("주방", Color.parseColor("#EF9A9A"))
-        )
+//        val departmentMockData = listOf(
+//            Department("홀", Color.parseColor("#90CAF9")),
+//            Department("주방", Color.parseColor("#EF9A9A"))
+//        )
 
         with(binding.departmentRV) {
             setRvLayout(this)
 
             val departmentAdapter = DepartmentAdapter(viewLifecycleOwner, navController)
-            departmentAdapter.submitList(departmentMockData)
+//            departmentAdapter.submitList(departmentMockData)
             this.adapter = departmentAdapter
         }
     }

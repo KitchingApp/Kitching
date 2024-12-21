@@ -22,12 +22,12 @@ class RecipeFragment : BaseFragment<FragmentRecipeBinding>(FragmentRecipeBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recipeDate = RestaurantGenerator.restaurantList().flatMap { it.recipes }
+//        val recipeDate = RestaurantGenerator.restaurantList().flatMap { it.recipes }
 
         with(binding.recipeRV) {
             layoutManager = GridLayoutManager(KitchingApplication.getAppContext(), 2)
             val recipeAdapter = RecipeRecycleAdapter(viewLifecycleOwner, navController)
-            recipeAdapter.submitList(recipeDate)
+//            recipeAdapter.submitList(recipeDate)
             this.adapter = recipeAdapter
         }
     }

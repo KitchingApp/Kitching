@@ -19,13 +19,13 @@ class MemberFragment: BaseFragment<FragmentMemberlistBinding>(FragmentMemberlist
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val allUsers = RestaurantGenerator.restaurantList().flatMap { it.members }
+//        val allUsers = RestaurantGenerator.restaurantList().flatMap { it.members }
 
         with(binding.memberListRV) {
             setRvLayout(this)
 
             val memberAdapter = MemberAdapter()
-            memberAdapter.submitList(allUsers)
+//            memberAdapter.submitList(allUsers)
             this.adapter = memberAdapter
         }
     }

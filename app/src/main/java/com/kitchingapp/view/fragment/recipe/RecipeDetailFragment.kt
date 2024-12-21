@@ -21,7 +21,7 @@ class RecipeDetailFragment: BaseFragment<FragmentRecipeDetailBinding>(FragmentRe
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            recipeIV.setImageResource(args.recipeImage)
+//            recipeIV.setImageResource(args.recipeImage)
             recipeNameTV.text = args.recipeName
             recipeOrderTV1.text = args.recipeStep
         }

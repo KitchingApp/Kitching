@@ -21,16 +21,16 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(FragmentOrderBinding::i
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val orderCategoryMockData = listOf(
-            OrderCategory("수산물", Color.parseColor("#90CAF9")),
-            OrderCategory("육가공", Color.parseColor("#EF9A9A"))
-        )
+//        val orderCategoryMockData = listOf(
+//            OrderCategory("수산물", Color.parseColor("#90CAF9")),
+//            OrderCategory("육가공", Color.parseColor("#EF9A9A"))
+//        )
 
         with(binding.orderCategoryRV) {
             setRvLayout(this)
 
             val categoryAdapter = OrderAdapter(viewLifecycleOwner, navController)
-            categoryAdapter.submitList(orderCategoryMockData)
+//            categoryAdapter.submitList(orderCategoryMockData)
             this.adapter = categoryAdapter
         }
     }

@@ -26,21 +26,21 @@ class ScheduleChildFragment: BaseFragment<ChildfragmentScheduleDepartmentBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val allSchedules = RestaurantGenerator.restaurantList()
-            .flatMap { it.schedules }
-        val fixSchedules = allSchedules.filter { it.isFix }
-        val applySchedules = allSchedules.filter { !it.isFix }
+//        val allSchedules = RestaurantGenerator.restaurantList()
+//            .flatMap { it.schedules }
+//        val fixSchedules = allSchedules.filter { it.isFix }
+//        val applySchedules = allSchedules.filter { !it.isFix }
 
         with(binding) {
-            val scheduleDepartmentPeopleText = getString(R.string.scheduleDepartmentPeople, fixSchedules.size)
-            scheduleDepartmentPeople.text = scheduleDepartmentPeopleText
+//            val scheduleDepartmentPeopleText = getString(R.string.scheduleDepartmentPeople, fixSchedules.size)
+//            scheduleDepartmentPeople.text = scheduleDepartmentPeopleText
 
             with(confirmedScheduleRecyclerView) {
                 setRvLayout(this)
 
                 val fixAdapter = ScheduleFixAdapter()
 
-                fixAdapter.submitList(fixSchedules)
+//                fixAdapter.submitList(fixSchedules)
 
                 this.adapter = fixAdapter
             }
@@ -50,7 +50,7 @@ class ScheduleChildFragment: BaseFragment<ChildfragmentScheduleDepartmentBinding
 
                 val applyAdapter = ScheduleApplyAdapter()
 
-                applyAdapter.submitList(applySchedules)
+//                applyAdapter.submitList(applySchedules)
 
                 this.adapter = applyAdapter
             }
