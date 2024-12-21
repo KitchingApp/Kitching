@@ -1,11 +1,5 @@
 package com.kitchingapp.data.database.dto
 
-data class RecipeDTO(
-    val recipeId: String,
-    val recipeName: String,
-    val picture: String,
-)
-
 data class RecipeDetailDTO(
     val recipeId: String,
     val recipeName: String,
