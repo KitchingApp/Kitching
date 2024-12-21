@@ -48,4 +48,3 @@ data class Ingredient(
     val twice: Int,
     val unit: String
 )
-
