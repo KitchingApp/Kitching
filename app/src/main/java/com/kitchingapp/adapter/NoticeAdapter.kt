@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kitchingapp.data.database.dto.NoticeDTO
 import com.kitchingapp.databinding.ItemNoticeBinding
-import com.kitchingapp.domain.entities.Notice
 
-class NoticeAdapter : ListAdapter<Notice, NoticeAdapter.NoticeViewHolder>(diffUtil){
+class NoticeAdapter : ListAdapter<NoticeDTO, NoticeAdapter.NoticeViewHolder>(diffUtil){
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -25,17 +25,17 @@ class NoticeAdapter : ListAdapter<Notice, NoticeAdapter.NoticeViewHolder>(diffUt
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Notice>() {
+        val diffUtil = object : DiffUtil.ItemCallback<NoticeDTO>() {
             override fun areItemsTheSame(
-                oldItem: Notice,
-                newItem: Notice
+                oldItem: NoticeDTO,
+                newItem: NoticeDTO
             ): Boolean {
                 return oldItem.title == newItem.title
             }
 
             override fun areContentsTheSame(
-                oldItem: Notice,
-                newItem: Notice
+                oldItem: NoticeDTO,
+                newItem: NoticeDTO
             ): Boolean {
                 return oldItem == newItem
             }
@@ -44,10 +44,10 @@ class NoticeAdapter : ListAdapter<Notice, NoticeAdapter.NoticeViewHolder>(diffUt
     }
 
     inner class NoticeViewHolder(val binding: ItemNoticeBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindNotice(notice: Notice) {
+        fun bindNotice(notice: NoticeDTO) {
             with(binding) {
                 dateTV.text = notice.date.toString()
-                writerTV.text = notice.writer.name
+                writerTV.text = notice.writerName
                 noticeTitleTV.text = notice.title
                 noticeContentPreviewTV.text = notice.content
             }

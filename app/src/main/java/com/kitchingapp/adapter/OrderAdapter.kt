@@ -1,5 +1,6 @@
 package com.kitchingapp.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -9,13 +10,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kitchingapp.R
+import com.kitchingapp.data.database.dto.OrderCategoryDTO
 import com.kitchingapp.databinding.ItemBigCategoryBinding
-import com.kitchingapp.domain.entities.OrderCategory
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
-class OrderAdapter(private val lifecycleOwner: LifecycleOwner, private val navController: NavController): ListAdapter<OrderCategory, OrderAdapter.OrderViewHolder>(diffUtil) {
+class OrderAdapter(private val lifecycleOwner: LifecycleOwner, private val navController: NavController): ListAdapter<OrderCategoryDTO, OrderAdapter.OrderViewHolder>(diffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -32,17 +33,17 @@ class OrderAdapter(private val lifecycleOwner: LifecycleOwner, private val navCo
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<OrderCategory>() {
+        val diffUtil = object : DiffUtil.ItemCallback<OrderCategoryDTO>() {
             override fun areItemsTheSame(
-                oldItem: OrderCategory,
-                newItem: OrderCategory
+                oldItem: OrderCategoryDTO,
+                newItem: OrderCategoryDTO
             ): Boolean {
-                return oldItem.name == newItem.name
+                return oldItem.categoryName == newItem.categoryName
             }
 
             override fun areContentsTheSame(
-                oldItem: OrderCategory,
-                newItem: OrderCategory
+                oldItem: OrderCategoryDTO,
+                newItem: OrderCategoryDTO
             ): Boolean {
                 return oldItem == newItem
             }
@@ -51,10 +52,10 @@ class OrderAdapter(private val lifecycleOwner: LifecycleOwner, private val navCo
     }
 
     inner class OrderViewHolder(val binding: ItemBigCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindBigCategory(orderCategory: OrderCategory) {
+        fun bindBigCategory(orderCategory: OrderCategoryDTO) {
             with(binding) {
-                categoryNameTV.text = orderCategory.name
-                categoryCV.setCardBackgroundColor(orderCategory.color)
+                categoryNameTV.text = orderCategory.categoryName
+                categoryCV.setCardBackgroundColor(Color.parseColor(orderCategory.color))
                 categoryCV.clicks().onEach {
                     navController.navigate(R.id.action_orderFragment_to_orderListFragment)
                 }.launchIn(lifecycleOwner.lifecycleScope)

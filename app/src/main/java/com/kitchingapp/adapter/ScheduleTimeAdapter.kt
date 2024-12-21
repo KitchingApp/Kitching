@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kitchingapp.data.database.dto.ScheduleTimeDTO
 import com.kitchingapp.databinding.ItemBigCategoryBinding
-import com.kitchingapp.domain.entities.ScheduleTime
 
-class ScheduleTimeAdapter : ListAdapter<ScheduleTime, ScheduleTimeAdapter.ScheduleTimeViewHolder>(diffUtil) {
+class ScheduleTimeAdapter : ListAdapter<ScheduleTimeDTO, ScheduleTimeAdapter.ScheduleTimeViewHolder>(diffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -25,17 +25,17 @@ class ScheduleTimeAdapter : ListAdapter<ScheduleTime, ScheduleTimeAdapter.Schedu
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<ScheduleTime>() {
+        val diffUtil = object : DiffUtil.ItemCallback<ScheduleTimeDTO>() {
             override fun areItemsTheSame(
-                oldItem: ScheduleTime,
-                newItem: ScheduleTime
+                oldItem: ScheduleTimeDTO,
+                newItem: ScheduleTimeDTO
             ): Boolean {
-                return oldItem.name == newItem.name
+                return oldItem.scheduleTimeName == newItem.scheduleTimeName
             }
 
             override fun areContentsTheSame(
-                oldItem: ScheduleTime,
-                newItem: ScheduleTime
+                oldItem: ScheduleTimeDTO,
+                newItem: ScheduleTimeDTO
             ): Boolean {
                 return oldItem == newItem
             }
@@ -43,9 +43,9 @@ class ScheduleTimeAdapter : ListAdapter<ScheduleTime, ScheduleTimeAdapter.Schedu
     }
 
     inner class ScheduleTimeViewHolder(val binding: ItemBigCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindBigCategory(scheduleTime: ScheduleTime) {
+        fun bindBigCategory(scheduleTime: ScheduleTimeDTO) {
             with(binding) {
-                categoryNameTV.text = scheduleTime.name
+                categoryNameTV.text = scheduleTime.scheduleTimeName
             }
         }
     }

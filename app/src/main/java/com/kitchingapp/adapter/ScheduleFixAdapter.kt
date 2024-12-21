@@ -5,13 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.protobuf.Internal
 import com.kitchingapp.adapter.ScheduleFixAdapter.ScheduleViewHolder
+import com.kitchingapp.data.database.dto.ScheduleDTO
 import com.kitchingapp.databinding.ItemScheduleListBinding
-import com.kitchingapp.domain.entities.RestaurantTeam
-import com.kitchingapp.domain.entities.Schedule
 
-class ScheduleFixAdapter : ListAdapter<Schedule, ScheduleViewHolder>(diffUtil) {
+class ScheduleFixAdapter : ListAdapter<ScheduleDTO, ScheduleViewHolder>(diffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -28,17 +26,17 @@ class ScheduleFixAdapter : ListAdapter<Schedule, ScheduleViewHolder>(diffUtil) {
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Schedule>() {
+        val diffUtil = object : DiffUtil.ItemCallback<ScheduleDTO>() {
             override fun areItemsTheSame(
-                oldItem: Schedule,
-                newItem: Schedule
+                oldItem: ScheduleDTO,
+                newItem: ScheduleDTO
             ): Boolean {
-                return oldItem.applier == newItem.applier
+                return oldItem.scheduleId == newItem.scheduleId
             }
 
             override fun areContentsTheSame(
-                oldItem: Schedule,
-                newItem: Schedule
+                oldItem: ScheduleDTO,
+                newItem: ScheduleDTO
             ): Boolean {
                 return oldItem == newItem
             }
@@ -47,10 +45,10 @@ class ScheduleFixAdapter : ListAdapter<Schedule, ScheduleViewHolder>(diffUtil) {
 
     inner class ScheduleViewHolder(val binding: ItemScheduleListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-            fun bindScheduleFix(schedule: Schedule) {
+            fun bindScheduleFix(schedule: ScheduleDTO) {
                 with(binding) {
-                    scheduleNameTV.text = schedule.applier.name
-                    scheduleTimeTV.text = schedule.scheduleTime.name
+                    scheduleNameTV.text = schedule.userName
+                    scheduleTimeTV.text = schedule.scheduleTime
                     scheduleContinuousDateTV.text = "연속근무일수 1일"
                 }
             }
