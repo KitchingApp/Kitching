@@ -27,7 +27,7 @@ class ScheduleViewModel(private val remoteType: RemoteType): ViewModel() {
 
     fun rejectSchedule(scheduleId: String) {
         viewModelScope.launch {
-            if(remoteRepository.deleteSchedule(scheduleId)) getSchedules(teamId, dateString)
+            if(remoteRepository.deleteSchedule(scheduleId)) getSchedules(teamId = "", dateString = "")
         }
     }
 }
