@@ -48,7 +48,7 @@ class ScheduleFixAdapter : ListAdapter<ScheduleDTO, ScheduleViewHolder>(diffUtil
             fun bindScheduleFix(schedule: ScheduleDTO) {
                 with(binding) {
                     scheduleNameTV.text = schedule.userName
-                    scheduleTimeTV.text = schedule.scheduleTime
+                    scheduleTimeTV.text = schedule.scheduleTimeName
                     scheduleContinuousDateTV.text = "연속근무일수 1일"
                 }
             }

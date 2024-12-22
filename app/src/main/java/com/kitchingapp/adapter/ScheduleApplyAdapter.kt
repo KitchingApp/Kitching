@@ -41,7 +41,7 @@ class ScheduleApplyAdapter: ListAdapter<ScheduleDTO, ScheduleApplyAdapter.Schedu
         fun bindScheduleApply(schedule: ScheduleDTO) {
             with(binding) {
                 scheduleApplyNameTV.text = schedule.userName
-                scheduleApplyTimeTV.text = schedule.scheduleTime
+                scheduleApplyTimeTV.text = schedule.scheduleTimeName
             }
         }
 
