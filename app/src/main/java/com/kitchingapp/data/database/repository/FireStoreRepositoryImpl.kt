@@ -4,13 +4,13 @@ import com.kitchingapp.data.database.datasource.FireStoreDataSourceImpl
 import com.kitchingapp.data.database.dto.ScheduleDTO
 import com.kitchingapp.domain.entities.Team
 
-class FireStoreRepository(private val dataSource: FireStoreDataSourceImpl) {
+class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): RemoteRepository {
 
-    suspend fun getTeamsByUserId(userId: String): List<Team> {
+    override suspend fun getTeamsByUserId(userId: String): List<Team> {
         return dataSource.getTeams(userId)
     }
 
-    suspend fun getScheduleDTO(teamId: String, date: String): List<ScheduleDTO> {
+    override suspend fun getSchedules(teamId: String, date: String): List<ScheduleDTO> {
         val scheduleDTOList = mutableListOf<ScheduleDTO>()
 
         dataSource.getTeamSchedules(teamId, date).forEach {
@@ -20,12 +20,16 @@ class FireStoreRepository(private val dataSource: FireStoreDataSourceImpl) {
                 departmentName = dataSource.getDepartmentName(teamId, dataSource.getDepartmentId(teamId, it.userId)),
                 userId = it.userId,
                 userName = dataSource.getUserName(it.userId),
-                scheduleTime = dataSource.getScheduleTimeName(teamId, it.scheduleTimeId),
+                scheduleTimeName = dataSource.getScheduleTimeName(teamId, it.scheduleTimeId),
                 isFix = it.isFix
             )
             scheduleDTOList.add(scheduleDTO)
         }
 
         return scheduleDTOList
+    }
+
+    override suspend fun deleteSchedule(scheduleId: String): Boolean {
+        return dataSource.deleteSchedule(scheduleId)
     }
 }

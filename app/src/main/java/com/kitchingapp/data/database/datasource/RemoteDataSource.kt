@@ -2,7 +2,6 @@ package com.kitchingapp.data.database.datasource
 
 import com.kitchingapp.domain.entities.Schedule
 import com.kitchingapp.domain.entities.Team
-import java.time.LocalDate
 
 interface RemoteDataSource {
     suspend fun getTeams(userId: String): List<Team>
