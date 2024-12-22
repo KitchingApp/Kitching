@@ -9,7 +9,7 @@ data class ScheduleDTO(
     val departmentName: String,
     val userId: String,
     val userName: String,
-    val scheduleTime: String,
+    val scheduleTimeName: String,
     val isFix: Boolean
 )
 

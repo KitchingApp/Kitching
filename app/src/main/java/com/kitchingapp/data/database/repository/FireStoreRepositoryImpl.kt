@@ -10,7 +10,7 @@ class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): 
         return dataSource.getTeams(userId)
     }
 
-    override suspend fun getScheduleDTO(teamId: String, date: String): List<ScheduleDTO> {
+    override suspend fun getSchedules(teamId: String, date: String): List<ScheduleDTO> {
         val scheduleDTOList = mutableListOf<ScheduleDTO>()
 
         dataSource.getTeamSchedules(teamId, date).forEach {
@@ -27,5 +27,9 @@ class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): 
         }
 
         return scheduleDTOList
+    }
+
+    override suspend fun deleteSchedule(scheduleId: String): Boolean {
+        return dataSource.deleteSchedule(scheduleId)
     }
 }

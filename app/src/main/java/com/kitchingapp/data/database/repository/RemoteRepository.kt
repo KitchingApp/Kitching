@@ -7,5 +7,7 @@ interface RemoteRepository {
 
     suspend fun getTeamsByUserId(userId: String): List<Team>
 
-    suspend fun getScheduleDTO(teamId: String, date: String): List<ScheduleDTO>
+    suspend fun getSchedules(teamId: String, date: String): List<ScheduleDTO>
+
+    suspend fun deleteSchedule(scheduleId: String): Boolean
 }
