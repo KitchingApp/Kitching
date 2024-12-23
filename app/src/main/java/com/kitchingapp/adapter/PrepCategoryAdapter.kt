@@ -63,7 +63,7 @@ class PrepCategoryAdapter(
                 categoryNameTV.text = todoCategory.categoryName
                 categoryCV.setCardBackgroundColor(Color.parseColor(todoCategory.color))
                 categoryCV.clicks().onEach {
-                    navController.navigate(R.id.action_todoFragment_to_todoListFragment)
+                    navController.navigate(R.id.action_prepFragment_to_prepListFragment)
                 }.launchIn(lifecycleOwner.lifecycleScope)
                 optionBtn.clicks().onEach {
                     showMenu(optionBtn, R.menu.option_menu, adapterPosition)

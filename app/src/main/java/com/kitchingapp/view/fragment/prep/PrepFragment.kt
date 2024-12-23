@@ -44,7 +44,7 @@ class PrepFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBinding::infl
 
             with(createTodoCategoryBtn) {
                 clicks().onEach {
-                    navController.navigate(R.id.createPrepCategoryDialog)
+//                    navController.navigate(R.id.createPrepCategoryDialog)
                 }.launchIn(lifecycleScope)
             }
 

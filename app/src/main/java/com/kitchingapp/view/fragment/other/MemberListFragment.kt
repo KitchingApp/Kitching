@@ -8,7 +8,7 @@ import com.kitchingapp.adapter.MemberAdapter
 import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.databinding.FragmentMemberlistBinding
 
-class MemberFragment: BaseFragment<FragmentMemberlistBinding>(FragmentMemberlistBinding::inflate) {
+class MemberListFragment: BaseFragment<FragmentMemberlistBinding>(FragmentMemberlistBinding::inflate) {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {

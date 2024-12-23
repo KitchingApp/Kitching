@@ -24,12 +24,9 @@ class OtherFragment : BaseFragment<FragmentOtherBinding>(FragmentOtherBinding::i
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            userDetailBtn.clicks().onEach {
-                navController.navigate(R.id.action_otherFragment_to_userDetailFragment)
-            }.launchIn(lifecycleScope)
 
             inviteCodeBtn.clicks().onEach {
-                navController.navigate(R.id.action_otherFragment_to_inviteCodeFragment)
+                navController.navigate(R.id.action_otherFragment_to_inviteFragment)
             }.launchIn(lifecycleScope)
 
             noticeBtn.clicks().onEach {
@@ -37,7 +34,7 @@ class OtherFragment : BaseFragment<FragmentOtherBinding>(FragmentOtherBinding::i
             }.launchIn(lifecycleScope)
 
             departmentManagementBtn.clicks().onEach {
-                navController.navigate(R.id.action_otherFragment_to_humanResourceFragment)
+                navController.navigate(R.id.action_otherFragment_to_departmentFragment)
             }.launchIn(lifecycleScope)
 
             scheduleTimeBtn.clicks().onEach {

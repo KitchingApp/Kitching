@@ -27,13 +27,13 @@ class MainActivity : AppCompatActivity() {
         navController = navHost.navController
 
         with(binding) {
-            with(included.bottomNavi) {
+            with(bottomNavi) {
                 setupWithNavController(navController)
             }
 
-            setSupportActionBar(included.toolbar)
+            setSupportActionBar(toolbar)
             val toggle = ActionBarDrawerToggle(
-                this@MainActivity, drawerLayout, included.toolbar,
+                this@MainActivity, drawerLayout, toolbar,
                 R.string.openDrawer,
                 R.string.closeDrawer
             )
