@@ -57,7 +57,7 @@ class DepartmentAdapter(private val lifecycleOwner: LifecycleOwner, private val 
                 categoryNameTV.text = department.departmentName
                 categoryCV.setCardBackgroundColor(Color.parseColor(department.color))
                 categoryCV.clicks().onEach {
-                    navController.navigate(R.id.action_humanResourceFragment_to_departmentFragment)
+                    navController.navigate(R.id.action_otherFragment_to_departmentFragment)
                 }.launchIn(lifecycleOwner.lifecycleScope)
             }
         }

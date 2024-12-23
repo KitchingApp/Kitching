@@ -32,7 +32,6 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         navController = findNavController()
-        childFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, ScheduleChildFragment()).commit()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
