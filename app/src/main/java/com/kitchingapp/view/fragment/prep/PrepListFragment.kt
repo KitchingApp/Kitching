@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.kitchingapp.adapter.PrepAdapter
 import com.kitchingapp.common.BaseFragment
-import com.kitchingapp.databinding.FragmentTodoListBinding
+import com.kitchingapp.databinding.FragmentPrepListBinding
 
-class PrepListFragment : BaseFragment<FragmentTodoListBinding>(FragmentTodoListBinding::inflate) {
+class PrepListFragment : BaseFragment<FragmentPrepListBinding>(FragmentPrepListBinding::inflate) {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,9 +28,9 @@ class PrepListFragment : BaseFragment<FragmentTodoListBinding>(FragmentTodoListB
             with(todoCategoryRV) {
                 setRvLayout(this)
 
-                val todoAdapter = TodoAdapter(viewLifecycleOwner)
+                val prepAdapter = PrepAdapter(viewLifecycleOwner)
 //                todoAdapter.submitList(todosMockData)
-                this.adapter = todoAdapter
+                this.adapter = prepAdapter
             }
         }
     }
