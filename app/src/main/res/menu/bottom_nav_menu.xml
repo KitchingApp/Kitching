@@ -6,7 +6,7 @@
         android:title="스케줄" />
 
     <item
-        android:id="@+id/todoFragment"
+        android:id="@+id/prepFragment"
         android:icon="@drawable/baseline_checklist_24"
         android:title="할일" />
 

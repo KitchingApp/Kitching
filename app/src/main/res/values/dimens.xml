@@ -23,6 +23,7 @@
     <dimen name="margin_S">10dp</dimen>
     <dimen name="margin_M">20dp</dimen>
     <dimen name="margin_L">30dp</dimen>
+    <dimen name="margin_XL">40dp</dimen>
 
 <!--    height-->
     <dimen name="dialogBtnHeight">50dp</dimen>
