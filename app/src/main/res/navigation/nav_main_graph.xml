@@ -10,90 +10,27 @@
         android:name="com.kitchingapp.view.fragment.schedule.ScheduleFragment"
         tools:layout="@layout/fragment_schedule"
         >
-        <action
-            android:id="@+id/action_scheduleFragment_to_scheduleDepartmentFragment"
-            app:destination="@id/scheduleDepartmentFragment" />
+
     </fragment>
 
     <fragment
-        android:id="@+id/scheduleDepartmentFragment"
-        tools:layout="@layout/childfragment_schedule_department"
+        android:id="@+id/prepFragment"
+        android:name="com.kitchingapp.view.fragment.prep.PrepFragment"
+        tools:layout="@layout/fragment_prep"
         >
-        <action
-            android:id="@+id/action_scheduleDepartmentFragment_to_scheduleConfirmDialog"
-            app:destination="@id/scheduleConfirmDialog" />
-        <action
-            android:id="@+id/action_scheduleDepartmentFragment_to_scheduleCreateDialog"
-            app:destination="@id/scheduleCreateDialog" />
-    </fragment>
-
-    <dialog
-        android:id="@+id/scheduleConfirmDialog"
-        tools:layout="@layout/dialog_input_text"
-        />
-
-    <dialog
-        android:id="@+id/scheduleCreateDialog"
-        tools:layout="@layout/dialog_create_schedule"
-        />
-
-    <fragment
-        android:id="@+id/todoFragment"
-        android:name="com.kitchingapp.view.fragment.todo.TodoFragment"
-        tools:layout="@layout/fragment_todo">
 
         <action
-            android:id="@+id/action_todoFragment_to_todoListFragment"
-            app:destination="@id/todoListFragment" />
-        <action
-            android:id="@+id/action_todoFragment_to_createTodoCategoryDialog"
-            app:destination="@id/createTodoCategoryDialog" />
-
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/todoListFragment"
-        android:name="com.kitchingapp.view.fragment.todo.TodoListFragment"
-        tools:layout="@layout/fragment_todo_list">
-
+            android:id="@+id/action_prepFragment_to_prepListFragment"
+            app:destination="@id/prepListFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/prepListFragment"
-        tools:layout="@layout/childfragment_preplist">
+        android:name="com.kitchingapp.view.fragment.prep.PrepListFragment"
+        tools:layout="@layout/fragment_prep_list"
+        >
 
-
-        <action
-            android:id="@+id/action_prepListFragment_to_prepListConfirmDialog"
-            app:destination="@id/prepListConfirmDialog" />
-        <action
-            android:id="@+id/action_prepListFragment_to_todoPrepListDialog"
-            app:destination="@id/todoPrepListDialog" />
     </fragment>
-
-    <dialog
-        android:id="@+id/todoConfirmDialog"
-        tools:layout="@layout/dialog_confirm"
-        />
-
-    <dialog
-        android:id="@+id/createTodoCategoryDialog"
-        android:name="com.kitchingapp.view.fragment.todo.TodoCategoryCreateDialog"
-        tools:layout="@layout/dialog_input_text_color"
-        />
-
-    <dialog
-        android:id="@+id/todoPrepListDialog"
-        tools:layout="@layout/dialog_create_todo"
-        />
-
-    <dialog
-        android:id="@+id/prepListConfirmDialog"
-        tools:layout="@layout/dialog_confirm"
-        />
-
-
 
     <fragment
         android:id="@+id/recipeFragment"
@@ -108,50 +45,37 @@
     </fragment>
 
     <fragment
-        android:id="@+id/menuListFragment"
-        tools:layout="@layout/childfragment_recipe"
-        >
-
-
-        <action
-            android:id="@+id/action_menuListFragment_to_menuDetailFragment"
-            app:destination="@id/menuDetailFragment" />
-    </fragment>
-
-    <fragment
         android:id="@+id/recipeDetailFragment"
         android:name="com.kitchingapp.view.fragment.recipe.RecipeDetailFragment"
         tools:layout="@layout/fragment_recipe_detail"
         >
+
         <argument
             android:name="recipeImage"
             app:argType="string"
-            android:defaultValue="-1"/>
+            android:defaultValue=""
+            />
 
         <argument
             android:name="recipeName"
             app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            />
 
         <argument
             android:name="recipeStep"
             app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            />
 
     </fragment>
-
-    <fragment
-        android:id="@+id/menuDetailFragment"
-        tools:layout="@layout/fragment_recipe_detail"
-        >
-    </fragment>
-
 
     <fragment
         android:id="@+id/orderFragment"
         android:name="com.kitchingapp.view.fragment.order.OrderFragment"
         tools:layout="@layout/fragment_order"
         >
+
 
         <action
             android:id="@+id/action_orderFragment_to_orderListFragment"
@@ -166,30 +90,6 @@
 
     </fragment>
 
-
-
-
-    <dialog
-        android:id="@+id/ordercategoryConfirmDialog"
-        tools:layout="@layout/dialog_confirm"
-        />
-
-    <dialog
-        android:id="@+id/orderCategoryCreateDialog"
-        tools:layout="@layout/dialog_input_text_color"
-        />
-
-    <dialog
-        android:id="@+id/orderListConfirmDialog"
-        tools:layout="@layout/dialog_confirm"
-        />
-
-    <dialog
-        android:id="@+id/orderListCreateDialog"
-        tools:layout="@layout/dialog_create_todo"
-        />
-
-
     <fragment
         android:id="@+id/otherFragment"
         android:name="com.kitchingapp.view.fragment.other.OtherFragment"
@@ -197,37 +97,29 @@
         >
 
         <action
-            android:id="@+id/action_otherFragment_to_inviteCodeFragment"
-            app:destination="@id/inviteCodeFragment" />
+            android:id="@+id/action_otherFragment_to_inviteFragment"
+            app:destination="@id/inviteFragment" />
         <action
             android:id="@+id/action_otherFragment_to_noticeFragment"
             app:destination="@id/noticeFragment" />
         <action
-            android:id="@+id/action_otherFragment_to_humanResourceFragment"
-            app:destination="@id/humanResourceFragment" />
+            android:id="@+id/action_otherFragment_to_departmentFragment"
+            app:destination="@id/departmentFragment" />
         <action
             android:id="@+id/action_otherFragment_to_scheduleTimeFragment"
             app:destination="@id/scheduleTimeFragment" />
         <action
             android:id="@+id/action_otherFragment_to_memberListFragment"
             app:destination="@id/memberListFragment" />
-        <action
-            android:id="@+id/action_otherFragment_to_userDetailFragment"
-            app:destination="@id/userDetailFragment" />
-
     </fragment>
 
     <fragment
-        android:id="@+id/userDetailFragment"
-        android:name="com.kitchingapp.view.fragment.other.UserDetailFragment"
-        tools:layout="@layout/fragment_member_dtetail"
-        />
-
-    <fragment
-        android:id="@+id/inviteCodeFragment"
+        android:id="@+id/inviteFragment"
         android:name="com.kitchingapp.view.fragment.other.InviteCodeFragment"
         tools:layout="@layout/fragment_invite_code"
-        />
+        >
+
+    </fragment>
 
     <fragment
         android:id="@+id/noticeFragment"
@@ -235,85 +127,15 @@
         tools:layout="@layout/fragment_notice"
         >
 
-        <action
-            android:id="@+id/action_noticeFragment_to_createNoticeDialog"
-            app:destination="@id/createNoticeDialog" />
-        <action
-            android:id="@+id/action_noticeFragment_to_noticeConfirmDialog"
-            app:destination="@id/noticeConfirmDialog" />
-    </fragment>
-
-    <dialog
-        android:id="@+id/createNoticeDialog"
-        tools:layout="@layout/dialog_create_notice"
-        />
-
-    <dialog
-        android:id="@+id/noticeConfirmDialog"
-        tools:layout="@layout/dialog_confirm"
-        />
-
-
-    <fragment
-        android:id="@+id/humanResourceFragment"
-        android:name="com.kitchingapp.view.fragment.other.DepartmentFragment"
-        tools:layout="@layout/fragment_department"
-        >
-
-        <action
-            android:id="@+id/action_humanResourceFragment_to_departmentFragment"
-            app:destination="@id/departmentFragment" />
-        <action
-            android:id="@+id/action_humanResourceFragment_to_staffLevelFragment"
-            app:destination="@id/staffLevelFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/departmentFragment"
-        android:name="com.kitchingapp.view.fragment.other.StaffLevelFragment"
-        tools:layout="@layout/fragment_stafflevel"
+        android:name="com.kitchingapp.view.fragment.other.DepartmentFragment"
+        tools:layout="@layout/fragment_department"
         >
 
-        <action
-            android:id="@+id/action_departmentFragment_to_departmentCreateDialog"
-            app:destination="@id/departmentCreateDialog" />
-        <action
-            android:id="@+id/action_departmentFragment_to_departmentConfirmDialog"
-            app:destination="@id/departmentConfirmDialog" />
     </fragment>
-
-    <fragment
-        android:id="@+id/staffLevelFragment"
-        tools:layout="@layout/childfragment_stafflevel"
-        >
-
-        <action
-            android:id="@+id/action_staffLevelFragment_to_staffLevelCreateDialog"
-            app:destination="@id/staffLevelCreateDialog" />
-        <action
-            android:id="@+id/action_staffLevelFragment_to_staffLevelConfirmDialog"
-            app:destination="@id/staffLevelConfirmDialog" />
-    </fragment>
-
-    <dialog
-        android:id="@+id/departmentCreateDialog"
-        tools:layout="@layout/dialog_input_text"
-        />
-
-    <dialog
-        android:id="@+id/departmentConfirmDialog"
-        tools:layout="@layout/dialog_confirm"
-        />
-
-    <dialog
-        android:id="@+id/staffLevelCreateDialog"
-        tools:layout="@layout/dialog_input_text"
-        />
-
-    <dialog
-        android:id="@+id/staffLevelConfirmDialog"
-        tools:layout="@layout/dialog_confirm"
-        />
 
     <fragment
         android:id="@+id/scheduleTimeFragment"
@@ -321,39 +143,14 @@
         tools:layout="@layout/fragment_schedule_time"
         >
 
-
-        <action
-            android:id="@+id/action_scheduleTimeFragment_to_scheduleTimeCreateDialog"
-            app:destination="@id/scheduleTimeCreateDialog" />
-        <action
-            android:id="@+id/action_scheduleTimeFragment_to_scheduleTimeConfirmDialog"
-            app:destination="@id/scheduleTimeConfirmDialog" />
     </fragment>
-
-    <dialog
-        android:id="@+id/scheduleTimeCreateDialog"
-        tools:layout="@layout/dialog_create_schedule_time"
-        />
-
-    <dialog
-        android:id="@+id/scheduleTimeConfirmDialog"
-        tools:layout="@layout/dialog_confirm"
-        />
 
     <fragment
         android:id="@+id/memberListFragment"
-        android:name="com.kitchingapp.view.fragment.other.MemberFragment"
+        android:name="com.kitchingapp.view.fragment.other.MemberListFragment"
         tools:layout="@layout/fragment_memberlist"
         >
 
-        <action
-            android:id="@+id/action_memberListFragment_to_memberDetailFragment"
-            app:destination="@id/memberDetailFragment" />
     </fragment>
-
-    <fragment
-        android:id="@+id/memberDetailFragment"
-        tools:layout="@layout/fragment_member_dtetail"
-        />
 
 </navigation>
