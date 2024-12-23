@@ -20,10 +20,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
-class TodoCategoryAdapter(
+class PrepCategoryAdapter(
     private val lifecycleOwner: LifecycleOwner,
     private val navController: NavController
-) : ListAdapter<PrepCategoryDTO, TodoCategoryAdapter.TodoCategoryViewHolder>(diffUtil) {
+) : ListAdapter<PrepCategoryDTO, PrepCategoryAdapter.TodoCategoryViewHolder>(diffUtil) {
 
     private lateinit var context: Context
 

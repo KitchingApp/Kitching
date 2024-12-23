@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
-class TodoAdapter(private val lifecycleOwner: LifecycleOwner): ListAdapter<PrepDTO, TodoAdapter.TodoViewHolder>(diffUtil) {
+class PrepAdapter(private val lifecycleOwner: LifecycleOwner): ListAdapter<PrepDTO, PrepAdapter.TodoViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         val binding = ItemSmallCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TodoViewHolder(binding)

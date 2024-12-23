@@ -1,4 +1,4 @@
-package com.kitchingapp.view.fragment.todo
+package com.kitchingapp.view.fragment.prep
 
 import android.graphics.Color
 import android.os.Bundle
@@ -7,17 +7,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.kitchingapp.R
-import com.kitchingapp.adapter.TodoCategoryAdapter
+import com.kitchingapp.adapter.PrepCategoryAdapter
 import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.common.TODO_CATEGORY_ARGS_REQUEST_KEY
 import com.kitchingapp.common.TODO_CATEGORY_COLOR_KEY
 import com.kitchingapp.common.TODO_CATEGORY_NAME_KEY
-import com.kitchingapp.databinding.FragmentTodoBinding
+import com.kitchingapp.databinding.FragmentPrepBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
-class TodoFragment : BaseFragment<FragmentTodoBinding>(FragmentTodoBinding::inflate) {
+class PrepFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBinding::inflate) {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,14 +37,14 @@ class TodoFragment : BaseFragment<FragmentTodoBinding>(FragmentTodoBinding::infl
             with(todoCategoryRV) {
                 setRvLayout(this)
 
-                val categoryAdapter = TodoCategoryAdapter(viewLifecycleOwner, navController)
+                val categoryAdapter = PrepCategoryAdapter(viewLifecycleOwner, navController)
 //                categoryAdapter.submitList(todoCategoriesMockData)
                 this.adapter = categoryAdapter
             }
 
             with(createTodoCategoryBtn) {
                 clicks().onEach {
-                    navController.navigate(R.id.createTodoCategoryDialog)
+                    navController.navigate(R.id.createPrepCategoryDialog)
                 }.launchIn(lifecycleScope)
             }
 

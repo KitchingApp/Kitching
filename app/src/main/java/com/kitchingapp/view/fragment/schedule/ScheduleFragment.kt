@@ -1,28 +1,22 @@
 package com.kitchingapp.view.fragment.schedule
 
 import android.app.DatePickerDialog
-import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.Lifecycle
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.tabs.TabLayout
 import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.databinding.FragmentScheduleBinding
 import com.kitchingapp.R
-import com.kitchingapp.domain.entities.Department
 import com.kitchingapp.domain.entities.User
-import kotlinx.coroutines.Dispatchers
+import com.kitchingapp.view.model.ScheduleViewModel
+import com.kitchingapp.view.model.factory.scheduleViewModelFactory
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import ru.ldralighieri.corbind.material.selections
 import ru.ldralighieri.corbind.view.clicks
 import java.time.LocalDate
 
@@ -30,6 +24,10 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
     private lateinit var navController: NavController
 
     inner class DepartmentMock(val name: String, val color: Int, val members: List<User>)
+
+    private val viewModel by viewModels<ScheduleViewModel> {
+        scheduleViewModelFactory
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,5 +84,7 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
                 }.launchIn(lifecycleScope)
             }
         }
+
+
     }
 }

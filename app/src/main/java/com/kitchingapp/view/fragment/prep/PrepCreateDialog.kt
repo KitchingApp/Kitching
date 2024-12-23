@@ -1,20 +1,18 @@
-package com.kitchingapp.view.fragment.todo
+package com.kitchingapp.view.fragment.prep
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.chip.Chip
 import com.kitchingapp.common.BaseDialog
-import com.kitchingapp.databinding.DialogCreateTodoBinding
+import com.kitchingapp.databinding.DialogCreatePrepBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
-class TodoCreateDialog: BaseDialog<DialogCreateTodoBinding>(DialogCreateTodoBinding::inflate) {
+class PrepCreateDialog: BaseDialog<DialogCreatePrepBinding>(DialogCreatePrepBinding::inflate) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

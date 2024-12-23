@@ -1,14 +1,13 @@
-package com.kitchingapp.view.fragment.todo
+package com.kitchingapp.view.fragment.prep
 
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.kitchingapp.adapter.TodoAdapter
 import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.databinding.FragmentTodoListBinding
 
-class TodoListFragment : BaseFragment<FragmentTodoListBinding>(FragmentTodoListBinding::inflate) {
+class PrepListFragment : BaseFragment<FragmentTodoListBinding>(FragmentTodoListBinding::inflate) {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
