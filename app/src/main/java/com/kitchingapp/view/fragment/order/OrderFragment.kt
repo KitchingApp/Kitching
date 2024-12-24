@@ -3,15 +3,27 @@ package com.kitchingapp.view.fragment.order
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.kitchingapp.adapter.OrderAdapter
 import com.kitchingapp.common.BaseFragment
+import com.kitchingapp.data.database.dto.OrderCategoryDTO
 import com.kitchingapp.databinding.FragmentOrderBinding
 import com.kitchingapp.domain.entities.OrderCategory
+import com.kitchingapp.view.model.OrderViewModel
+import com.kitchingapp.view.model.factory.orderViewModelFactory
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class OrderFragment : BaseFragment<FragmentOrderBinding>(FragmentOrderBinding::inflate){
     private lateinit var navController: NavController
+    private val viewModel by viewModels<OrderViewModel> {
+        orderViewModelFactory
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,16 +33,22 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(FragmentOrderBinding::i
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val orderCategoryMockData = listOf(
-//            OrderCategory("수산물", Color.parseColor("#90CAF9")),
-//            OrderCategory("육가공", Color.parseColor("#EF9A9A"))
-//        )
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.orderCategory.collectLatest {
+                    notifyOrderCategory(it)
+                }
+            }
+        }
+        viewModel.getOrderCategory(teamId = "3uM01g5GSz8lC49JA6vq")
+    }
 
+    private fun notifyOrderCategory(orderCategory: List<OrderCategoryDTO>) {
         with(binding.orderCategoryRV) {
             setRvLayout(this)
 
             val categoryAdapter = OrderAdapter(viewLifecycleOwner, navController)
-//            categoryAdapter.submitList(orderCategoryMockData)
+            categoryAdapter.submitList(orderCategory)
             this.adapter = categoryAdapter
         }
     }

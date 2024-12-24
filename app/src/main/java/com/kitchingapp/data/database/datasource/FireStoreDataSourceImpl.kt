@@ -1,6 +1,8 @@
 package com.kitchingapp.data.database.datasource
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.kitchingapp.data.database.dto.OrderCategoryDTO
+import com.kitchingapp.domain.entities.OrderCategory
 import com.kitchingapp.domain.entities.Schedule
 import com.kitchingapp.domain.entities.Team
 import kotlinx.coroutines.tasks.await
@@ -64,5 +66,13 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
             .addOnSuccessListener { deleteTaskResult = true }
 
         return deleteTaskResult
+    }
+
+    /** Order Page */
+
+    override suspend fun getOrderCategory(teamId: String): MutableList<OrderCategory> {
+        val orderCategory = db.collection("orderCategory").whereEqualTo("teamId", teamId).get().await()
+        return (if (orderCategory.isEmpty) mutableListOf()
+        else orderCategory.toObjects(OrderCategory::class.java)) as MutableList<OrderCategory>
     }
 }
