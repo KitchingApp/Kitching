@@ -1,6 +1,8 @@
 package com.kitchingapp.data.database.datasource
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.kitchingapp.domain.entities.Order
+import com.kitchingapp.domain.entities.OrderCategory
 import com.kitchingapp.domain.entities.Department
 import com.kitchingapp.domain.entities.Schedule
 import com.kitchingapp.domain.entities.Team
@@ -73,5 +75,20 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
             .addOnSuccessListener { deleteTaskResult = true }
 
         return deleteTaskResult
+    }
+
+    /** Order Page */
+
+    override suspend fun getOrderCategory(teamId: String): MutableList<OrderCategory> {
+        val orderCategory = db.collection("orderCategory").whereEqualTo("teamId", teamId).get().await()
+        return if (orderCategory.isEmpty) mutableListOf()
+        else orderCategory.toObjects(OrderCategory::class.java) as MutableList<OrderCategory>
+    }
+
+    override suspend fun getOrderList(categoryId: String): MutableList<Order> {
+        val orderList = db.collection("order").whereEqualTo("categoryId", categoryId).get().await()
+        return if (orderList.isEmpty) mutableListOf()
+        else orderList.toObjects(Order::class.java) as MutableList<Order>
+
     }
 }

@@ -1,5 +1,7 @@
 package com.kitchingapp.data.database.datasource
 
+import com.kitchingapp.domain.entities.Order
+import com.kitchingapp.domain.entities.OrderCategory
 import com.kitchingapp.domain.entities.Department
 import com.kitchingapp.domain.entities.Schedule
 import com.kitchingapp.domain.entities.Team
@@ -22,4 +24,10 @@ interface RemoteDataSource {
     suspend fun createSchedule(schedule: Schedule): Boolean
 
     suspend fun deleteSchedule(scheduleId: String): Boolean
+
+    /** Order Page */
+
+    suspend fun getOrderCategory(teamId: String): MutableList<OrderCategory>
+
+    suspend fun getOrderList(categoryId: String): MutableList<Order>
 }

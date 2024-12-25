@@ -88,6 +88,12 @@
         tools:layout="@layout/fragment_orderlist"
         >
 
+        <argument
+            android:name="orderCategoryId"
+            app:argType="string"
+            android:defaultValue=""
+            />
+
     </fragment>
 
     <fragment
