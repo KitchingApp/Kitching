@@ -1,6 +1,7 @@
 package com.kitchingapp.data.database.datasource
 
 import com.kitchingapp.data.database.dto.OrderCategoryDTO
+import com.kitchingapp.domain.entities.Order
 import com.kitchingapp.domain.entities.OrderCategory
 import com.kitchingapp.domain.entities.Schedule
 import com.kitchingapp.domain.entities.Team
@@ -25,4 +26,6 @@ interface RemoteDataSource {
     /** Order Page */
 
     suspend fun getOrderCategory(teamId: String): MutableList<OrderCategory>
+
+    suspend fun getOrderList(categoryId: String): MutableList<Order>
 }

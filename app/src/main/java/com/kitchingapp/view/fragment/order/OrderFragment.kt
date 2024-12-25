@@ -1,6 +1,5 @@
 package com.kitchingapp.view.fragment.order
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -9,11 +8,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.kitchingapp.adapter.OrderAdapter
+import com.kitchingapp.adapter.OrderCategoryAdapter
 import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.data.database.dto.OrderCategoryDTO
 import com.kitchingapp.databinding.FragmentOrderBinding
-import com.kitchingapp.domain.entities.OrderCategory
 import com.kitchingapp.view.model.OrderViewModel
 import com.kitchingapp.view.model.factory.orderViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
@@ -47,7 +45,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(FragmentOrderBinding::i
         with(binding.orderCategoryRV) {
             setRvLayout(this)
 
-            val categoryAdapter = OrderAdapter(viewLifecycleOwner, navController)
+            val categoryAdapter = OrderCategoryAdapter(viewLifecycleOwner, navController)
             categoryAdapter.submitList(orderCategory)
             this.adapter = categoryAdapter
         }
