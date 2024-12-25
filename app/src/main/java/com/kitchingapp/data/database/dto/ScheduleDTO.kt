@@ -19,3 +19,8 @@ data class ScheduleTimeDTO(
     val startTime: LocalTime,
     val endTime: LocalTime
 )
+
+data class dropDownDepartmentsDTO(
+    val departmentId: String,
+    val departmentName: String
+)

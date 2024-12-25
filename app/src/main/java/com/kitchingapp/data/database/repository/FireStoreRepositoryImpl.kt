@@ -3,6 +3,7 @@ package com.kitchingapp.data.database.repository
 import com.kitchingapp.data.database.datasource.FireStoreDataSourceImpl
 import com.kitchingapp.data.database.dto.ScheduleDTO
 import com.kitchingapp.data.database.dto.TeamDTO
+import com.kitchingapp.data.database.dto.dropDownDepartmentsDTO
 
 class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): RemoteRepository {
 
@@ -16,15 +17,15 @@ class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): 
         return teamDTOList
     }
 
-//    override suspend fun getDepartments(teamId: String): List<dropDownDepartmentsDTO> {
-//        val departmentDTOList = mutableListOf<dropDownDepartmentsDTO>()
-//
-//        dataSource.getDepartments(teamId).forEach {
-//            departmentDTOList.add(dropDownDepartmentsDTO(it.id, it.name))
-//        }
-//
-//        return departmentDTOList
-//    }
+    override suspend fun getDepartments(teamId: String): List<dropDownDepartmentsDTO> {
+        val departmentDTOList = mutableListOf<dropDownDepartmentsDTO>()
+
+        dataSource.getDepartments(teamId).forEach {
+            departmentDTOList.add(dropDownDepartmentsDTO(it.id, it.name))
+        }
+
+        return departmentDTOList
+    }
 
     override suspend fun getSchedules(teamId: String, date: String): List<ScheduleDTO> {
         val scheduleDTOList = mutableListOf<ScheduleDTO>()

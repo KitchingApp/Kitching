@@ -4,43 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scheduleCV"
     style="@style/scheduleListItemCV"
-    android:layout_width="match_parent"
->
+    android:layout_width="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:padding="@dimen/padding_S"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_S">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/scheduleNameTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="김채연"
-            app:layout_constraintEnd_toStartOf="@id/scheduleTimeTV"
+            android:textSize="@dimen/text_M"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            tools:text="이름" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/scheduleTimeTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="A타임"
             android:layout_marginHorizontal="@dimen/margin_S"
+            android:textSize="@dimen/text_M"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/rejectBtn"
             app:layout_constraintStart_toEndOf="@+id/scheduleNameTV"
-            app:layout_constraintEnd_toStartOf="@id/scheduleContinuousDateTV"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            tools:text="타임" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/scheduleContinuousDateTV"
+        <Button
+            android:id="@+id/rejectBtn"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_S"
-            tools:text="연속근무일수 1일"
-            app:layout_constraintStart_toEndOf="@+id/scheduleTimeTV"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:textSize="@dimen/text_M"
+            app:icon="@drawable/baseline_clear_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,6 +1,7 @@
 package com.kitchingapp.data.database.datasource
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.kitchingapp.domain.entities.Department
 import com.kitchingapp.domain.entities.Schedule
 import com.kitchingapp.domain.entities.Team
 import kotlinx.coroutines.tasks.await
@@ -14,8 +15,16 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
         else teams.toObjects(Team::class.java)
     }
 
+    override suspend fun getDepartments(teamId: String): List<Department> {
+        val departments = db.collection("department").whereEqualTo("teamId", teamId).get().await()
+
+        return if(departments.isEmpty) emptyList()
+        else departments.toObjects(Department::class.java)
+    }
+
     override suspend fun getTeamSchedules(teamId: String, date: String): List<Schedule> {
         val schedules = db.collection("schedule").whereEqualTo("teamId", teamId).whereEqualTo("date", date).get().await()
+
         return if(schedules.isEmpty) emptyList()
         else schedules.toObjects(Schedule::class.java)
     }

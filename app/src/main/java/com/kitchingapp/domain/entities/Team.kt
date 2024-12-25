@@ -1,5 +1,7 @@
 package com.kitchingapp.domain.entities
 
+import androidx.annotation.Keep
+
 data class Team(val id: String = "", val inviteCode: String = "", val ownerId: String = "", val teamName: String = "")
 
 data class Schedule(
@@ -8,6 +10,7 @@ data class Schedule(
     val scheduleTimeId: String = "",
     val teamId: String = "",
     val userId: String = "",
+    @field:JvmField
     val isFix: Boolean = false
 )
 
