@@ -37,6 +37,7 @@ class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): 
             scheduleDTOList.add(scheduleDTO)
         }
 
+//        Log.d("repository", scheduleDTOList.toString())
         return scheduleDTOList
     }
 

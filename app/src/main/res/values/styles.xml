@@ -67,7 +67,10 @@
     <style name="scheduleListItemCV" parent="@style/Widget.Material3.CardView.Filled">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">50dp</item>
-        <item name="android:layout_margin">@dimen/margin_S</item>
+        <item name="android:layout_marginStart">@dimen/margin_S</item>
+        <item name="android:layout_marginEnd">@dimen/margin_S</item>
+        <item name="android:layout_marginTop">@dimen/margin_XS</item>
+        <item name="android:layout_marginBottom">@dimen/margin_XS</item>
         <item name="android:paddingStart">@dimen/padding_S</item>
         <item name="android:paddingEnd">@dimen/padding_S</item>
     </style>
@@ -75,7 +78,10 @@
     <style name="scheduleApplyListItemCV" parent="@style/Widget.Material3.CardView.Elevated">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">50dp</item>
-        <item name="android:layout_margin">@dimen/margin_S</item>
+        <item name="android:layout_marginStart">@dimen/margin_S</item>
+        <item name="android:layout_marginEnd">@dimen/margin_S</item>
+        <item name="android:layout_marginTop">@dimen/margin_XS</item>
+        <item name="android:layout_marginBottom">@dimen/margin_XS</item>
         <item name="android:paddingStart">@dimen/padding_S</item>
         <item name="android:paddingEnd">@dimen/padding_S</item>
     </style>

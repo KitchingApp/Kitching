@@ -24,6 +24,7 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
 
     override suspend fun getTeamSchedules(teamId: String, date: String): List<Schedule> {
         val schedules = db.collection("schedule").whereEqualTo("teamId", teamId).whereEqualTo("date", date).get().await()
+
         return if(schedules.isEmpty) emptyList()
         else schedules.toObjects(Schedule::class.java)
     }
