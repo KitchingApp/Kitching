@@ -2,11 +2,13 @@ package com.kitchingapp.data.database.repository
 
 import com.kitchingapp.data.database.dto.ScheduleDTO
 import com.kitchingapp.data.database.dto.dropDownDepartmentsDTO
-import com.kitchingapp.domain.entities.Team
+import com.kitchingapp.data.database.dto.TeamDTO
 
 interface RemoteRepository {
 
-    suspend fun getTeamsByUserId(userId: String): List<Team>
+    suspend fun getTeamsByUserId(userId: String): List<TeamDTO>
+
+//    suspend fun getDepartments(teamId: String): List<dropDownDepartmentsDTO>
 
     suspend fun getDepartments(teamId: String): List<dropDownDepartmentsDTO>
 
