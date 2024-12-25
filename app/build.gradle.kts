@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.preferences.core)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
