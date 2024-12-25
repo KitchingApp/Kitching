@@ -1,13 +1,15 @@
 package com.kitchingapp.data.database.datasource
 
-import com.kitchingapp.data.database.dto.OrderCategoryDTO
 import com.kitchingapp.domain.entities.Order
 import com.kitchingapp.domain.entities.OrderCategory
+import com.kitchingapp.domain.entities.Department
 import com.kitchingapp.domain.entities.Schedule
 import com.kitchingapp.domain.entities.Team
 
 interface RemoteDataSource {
     suspend fun getTeams(userId: String): List<Team>
+
+    suspend fun getDepartments(teamId: String): List<Department>
 
     suspend fun getTeamSchedules(teamId: String, date: String): List<Schedule>
 
