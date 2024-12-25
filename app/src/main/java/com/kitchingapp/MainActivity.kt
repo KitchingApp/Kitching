@@ -67,7 +67,6 @@ class MainActivity : AppCompatActivity() {
                 launch {
                     val teams = viewModel.getTeams(userId)
                     viewModel.teams.collectLatest {
-                        Log.d("teams", it.toString())
                         teamAdapter.submitList(it)
                     }
                 }

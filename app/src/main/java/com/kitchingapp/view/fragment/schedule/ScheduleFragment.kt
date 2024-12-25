@@ -14,6 +14,9 @@ import com.kitchingapp.adapter.ScheduleApplyAdapter
 import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.databinding.FragmentScheduleBinding
 import com.kitchingapp.adapter.ScheduleFixAdapter
+import com.kitchingapp.data.database.repository.LocalRepository
+import com.kitchingapp.data.database.usecase.LocalType
+import com.kitchingapp.data.database.usecase.LocalTypeUseCase
 import com.kitchingapp.view.model.ScheduleViewModel
 import com.kitchingapp.view.model.factory.scheduleViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
@@ -24,13 +27,15 @@ import ru.ldralighieri.corbind.view.clicks
 import ru.ldralighieri.corbind.widget.itemClickEvents
 import java.time.LocalDate
 
-val teamId = "3uM01g5GSz8lC49JA6vq"
-
 class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentScheduleBinding::inflate) {
     private lateinit var navController: NavController
 
     private val viewModel by viewModels<ScheduleViewModel> {
         scheduleViewModelFactory
+    }
+
+    private val localRepository: LocalRepository by lazy {
+        LocalTypeUseCase(requireContext()).selectLocalType(LocalType.DATASTORE)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,11 +46,23 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
     private val fixAdapter = ScheduleFixAdapter()
     private val applyAdapter = ScheduleApplyAdapter()
 
+    private lateinit var teamId: String
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    localRepository.teamId.collectLatest {
+                        if(it != null) {
+                            teamId = it
+                            viewModel.getDepartments(teamId)
+                            viewModel.getSchedules(teamId, LocalDate.now().toString())
+                        }
+                    }
+                }
+
                 launch {
                     viewModel.schedules.collectLatest { schedules ->
                         fixAdapter.submitList(schedules.filter { it.isFix })
@@ -65,9 +82,6 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
                 }
             }
         }
-
-        viewModel.getDepartments(teamId)
-        viewModel.getSchedules(teamId, LocalDate.now().toString())
 
         with(binding) {
             var currentDate = LocalDate.now()
