@@ -105,7 +105,9 @@ class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): 
         dataSource.getPrepList(categoryId).forEach {
             val prepDTO = PrepDTO(
                 prepId = it.id,
-                prepName = it.name
+                prepName = it.name,
+                recipeId = it.recipeId,
+                recipeName = it.recipeId?.let { id -> dataSource.getRecipeName(id) }
             )
             prepDTOList.add(prepDTO)
         }
@@ -119,8 +121,8 @@ class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): 
             val memberDTO = MemberDTO(
                 userId = it.userId,
                 userName = dataSource.getUserName(it.userId),
-                departmentName = dataSource.getDepartmentName(teamId, it.departmentId),
-                staffLevelName = dataSource.getStaffLevelName(it.staffLevelId)
+                departmentName = if(it.departmentId !== null) dataSource.getDepartmentName(teamId, it.departmentId) else null,
+                staffLevelName = if(it.staffLevelId !== null) dataSource.getStaffLevelName(it.staffLevelId) else null
             )
             memberList.add(memberDTO)
         }

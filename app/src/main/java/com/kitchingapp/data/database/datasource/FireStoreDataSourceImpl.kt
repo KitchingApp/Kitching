@@ -136,4 +136,10 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
         return if(memberList.isEmpty) mutableListOf()
         else memberList.toObjects(UserTeam::class.java) as MutableList<UserTeam>
     }
+
+    override suspend fun getRecipeName(recipeId: String): String {
+        val recipeName = db.collection("recipe").whereEqualTo("id", recipeId).get().await().documents.firstOrNull()
+
+        return recipeName?.getString("name")!!
+    }
 }
