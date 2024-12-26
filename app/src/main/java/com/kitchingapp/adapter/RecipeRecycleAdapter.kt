@@ -1,6 +1,5 @@
 package com.kitchingapp.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -59,8 +58,8 @@ class RecipeRecycleAdapter(private val lifecycleOwner: LifecycleOwner, private v
                     recipeIV.setImageResource(picture)
                     recipeNameTV.text = recipe.recipeName
                     recipeCV.clicks().onEach {
-                        val argsAction = RecipeFragmentDirections.actionRecipeFragmentToRecipeDetailFragment(recipe.picture, recipe.recipeName,
-                            recipe.steps.toString()
+                        val argsAction = RecipeFragmentDirections.actionRecipeFragmentToRecipeDetailFragment(
+                            recipe.picture, recipe.recipeName, recipe.ingredients.joinToString("|").toString(), recipe.steps.joinToString("|").toString()
                         )
                         navController.navigate(argsAction)
                     }.launchIn(lifecycleOwner.lifecycleScope)
