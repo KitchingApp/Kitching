@@ -49,3 +49,12 @@ data class Ingredient(
     val twice: Int = -1,
     val each: String = ""
 )
+
+data class Notice(
+    val id: String = "",
+    val date: String = "",
+    val writerId: String = "",
+    val teamId: String = "",
+    val title: String = "",
+    val content: String = ""
+)
