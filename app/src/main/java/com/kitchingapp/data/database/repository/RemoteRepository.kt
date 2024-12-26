@@ -2,6 +2,8 @@ package com.kitchingapp.data.database.repository
 
 import com.kitchingapp.data.database.dto.OrderCategoryDTO
 import com.kitchingapp.data.database.dto.OrderDTO
+import com.kitchingapp.data.database.dto.PrepCategoryDTO
+import com.kitchingapp.data.database.dto.PrepDTO
 import com.kitchingapp.data.database.dto.ScheduleDTO
 import com.kitchingapp.data.database.dto.dropDownDepartmentsDTO
 import com.kitchingapp.data.database.dto.TeamDTO
@@ -9,8 +11,6 @@ import com.kitchingapp.data.database.dto.TeamDTO
 interface RemoteRepository {
 
     suspend fun getTeamsByUserId(userId: String): List<TeamDTO>
-
-//    suspend fun getDepartments(teamId: String): List<dropDownDepartmentsDTO>
 
     suspend fun getDepartments(teamId: String): List<dropDownDepartmentsDTO>
 
@@ -23,4 +23,10 @@ interface RemoteRepository {
     suspend fun getOrderCategory(teamId: String): MutableList<OrderCategoryDTO>
 
     suspend fun getOrderList(categoryId: String): MutableList<OrderDTO>
+
+    /** Prep */
+
+    suspend fun getPrepCategory(teamId: String): MutableList<PrepCategoryDTO>
+
+    suspend fun getPrepList(categoryId: String): MutableList<PrepDTO>
 }
