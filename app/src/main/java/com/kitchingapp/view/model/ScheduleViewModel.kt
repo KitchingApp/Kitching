@@ -30,7 +30,7 @@ class ScheduleViewModel(private val remoteType: RemoteType) : ViewModel(),
 
     fun getDepartments(teamId: String) {
         viewModelScope.launch {
-            _departments.value = remoteRepository.getDepartments(teamId)
+            _departments.value = remoteRepository.getDepartmentsForDropDown(teamId)
         }
     }
 

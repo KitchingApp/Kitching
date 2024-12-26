@@ -1,7 +1,9 @@
 package com.kitchingapp.data.database.repository
 
+import android.util.Log
 import com.kitchingapp.common.timeFormatter
 import com.kitchingapp.data.database.datasource.FireStoreDataSourceImpl
+import com.kitchingapp.data.database.dto.DepartmentDTO
 import com.kitchingapp.data.database.dto.MemberDTO
 import com.kitchingapp.data.database.dto.MemberListDTO
 import com.kitchingapp.data.database.dto.OrderCategoryDTO
@@ -10,6 +12,7 @@ import com.kitchingapp.data.database.dto.PrepCategoryDTO
 import com.kitchingapp.data.database.dto.PrepDTO
 import com.kitchingapp.data.database.dto.ScheduleDTO
 import com.kitchingapp.data.database.dto.ScheduleTimeListDTO
+import com.kitchingapp.data.database.dto.StaffLevelDTO
 import com.kitchingapp.data.database.dto.TeamDTO
 import com.kitchingapp.data.database.dto.dropDownDepartmentsDTO
 import java.time.LocalTime
@@ -26,7 +29,7 @@ class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): 
         return teamDTOList
     }
 
-    override suspend fun getDepartments(teamId: String): List<dropDownDepartmentsDTO> {
+    override suspend fun getDepartmentsForDropDown(teamId: String): List<dropDownDepartmentsDTO> {
         val departmentDTOList = mutableListOf<dropDownDepartmentsDTO>()
 
         dataSource.getDepartments(teamId).forEach {
@@ -148,5 +151,34 @@ class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): 
         }
 
         return scheduleTimeList
+    }
+
+    override suspend fun getDepartments(teamId: String): MutableList<DepartmentDTO> {
+        val departmentList = mutableListOf<DepartmentDTO>()
+
+        dataSource.getDepartments(teamId).forEach {
+            val departmentDTO = DepartmentDTO(
+                departmentId = it.id,
+                departmentName = it.name,
+                color = it.color
+            )
+            departmentList.add(departmentDTO)
+        }
+
+        return departmentList
+    }
+
+    override suspend fun getStaffLevels(departmentId: String): MutableList<StaffLevelDTO> {
+        val staffLevelList = mutableListOf<StaffLevelDTO>()
+
+        dataSource.getStaffLevels(departmentId).forEach {
+            val staffLevelDTO = StaffLevelDTO(
+                staffLevelId = it.id,
+                staffLevelName = it.name
+            )
+            staffLevelList.add(staffLevelDTO)
+        }
+
+        return staffLevelList
     }
 }
