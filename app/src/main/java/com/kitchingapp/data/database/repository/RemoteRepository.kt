@@ -2,6 +2,7 @@ package com.kitchingapp.data.database.repository
 
 import com.kitchingapp.data.database.dto.DepartmentDTO
 import com.kitchingapp.data.database.dto.MemberListDTO
+import com.kitchingapp.data.database.dto.NoticeDTO
 import com.kitchingapp.data.database.dto.OrderCategoryDTO
 import com.kitchingapp.data.database.dto.OrderDTO
 import com.kitchingapp.data.database.dto.RecipeDetailDTO
@@ -49,4 +50,5 @@ interface RemoteRepository {
 
     suspend fun getStaffLevels(departmentId: String): MutableList<StaffLevelDTO>
 
+    suspend fun getNotices(teamId: String): MutableList<NoticeDTO>
 }

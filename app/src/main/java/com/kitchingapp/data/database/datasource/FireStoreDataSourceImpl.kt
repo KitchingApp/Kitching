@@ -1,12 +1,12 @@
 package com.kitchingapp.data.database.datasource
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kitchingapp.domain.entities.Order
 import com.kitchingapp.domain.entities.OrderCategory
 import com.kitchingapp.domain.entities.Department
 import com.kitchingapp.domain.entities.Ingredient
 import com.kitchingapp.domain.entities.Recipe
+import com.kitchingapp.domain.entities.Notice
 import com.kitchingapp.domain.entities.Prep
 import com.kitchingapp.domain.entities.PrepCategory
 import com.kitchingapp.domain.entities.Schedule
@@ -141,6 +141,7 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
             )
         }
         return recipes
+    }
 
     /** Prep */
 
@@ -181,10 +182,17 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
     }
 
     /** department / staff level management */
-    override suspend fun getStaffLevels(departmentId: String): List<StaffLevel> {
+    override suspend fun getStaffLevels(departmentId: String): MutableList<StaffLevel> {
         val staffLevels = db.collection("staffLevel").whereEqualTo("departmentId", departmentId).get().await()
 
-        return if (staffLevels.isEmpty) emptyList()
+        return if (staffLevels.isEmpty) mutableListOf()
         else staffLevels.toObjects(StaffLevel::class.java)
+    }
+
+    override suspend fun getNotices(teamId: String): MutableList<Notice> {
+        val notices = db.collection("notice").whereEqualTo("teamId", teamId).get().await()
+
+        return if (notices.isEmpty) mutableListOf()
+        else notices.toObjects(Notice::class.java)
     }
 }

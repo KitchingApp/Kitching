@@ -1,16 +1,14 @@
 package com.kitchingapp.data.database.repository
 
-import android.util.Log
 import com.kitchingapp.data.database.datasource.FireStoreDataSourceImpl
 import com.kitchingapp.data.database.dto.IngredientDTO
-import com.kitchingapp.data.database.dto.OrderCategoryDTO
-import com.kitchingapp.data.database.dto.OrderDTO
 import com.kitchingapp.data.database.dto.RecipeDetailDTO
+import com.kitchingapp.common.dateFormatter
 import com.kitchingapp.common.timeFormatter
-import com.kitchingapp.data.database.datasource.FireStoreDataSourceImpl
 import com.kitchingapp.data.database.dto.DepartmentDTO
 import com.kitchingapp.data.database.dto.MemberDTO
 import com.kitchingapp.data.database.dto.MemberListDTO
+import com.kitchingapp.data.database.dto.NoticeDTO
 import com.kitchingapp.data.database.dto.OrderCategoryDTO
 import com.kitchingapp.data.database.dto.OrderDTO
 import com.kitchingapp.data.database.dto.PrepCategoryDTO
@@ -20,6 +18,7 @@ import com.kitchingapp.data.database.dto.ScheduleTimeListDTO
 import com.kitchingapp.data.database.dto.StaffLevelDTO
 import com.kitchingapp.data.database.dto.TeamDTO
 import com.kitchingapp.data.database.dto.dropDownDepartmentsDTO
+import java.time.LocalDate
 import java.time.LocalTime
 
 class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): RemoteRepository {
@@ -119,6 +118,8 @@ class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): 
             recipeDTOList.add(recipeDTO)
         }
         return recipeDTOList
+
+    }
       
     /** Prep */
 
@@ -211,5 +212,23 @@ class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): 
         }
 
         return staffLevelList
+    }
+
+    override suspend fun getNotices(teamId: String): MutableList<NoticeDTO> {
+        val noticeList = mutableListOf<NoticeDTO>()
+
+        dataSource.getNotices(teamId).forEach {
+            val noticeDTO = NoticeDTO(
+                noticeId = it.id,
+                title = it.title,
+                content = it.content,
+                date = LocalDate.parse(it.date, dateFormatter),
+                writerId = it.writerId,
+                writerName = dataSource.getUserName(it.writerId)
+            )
+            noticeList.add(noticeDTO)
+        }
+
+        return noticeList
     }
 }

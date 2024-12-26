@@ -6,6 +6,7 @@ import java.time.LocalTime
 data class NoticeDTO(
     val date: LocalDate,
     val noticeId: String,
+    val writerId: String,
     val writerName: String,
     val title: String,
     val content: String
