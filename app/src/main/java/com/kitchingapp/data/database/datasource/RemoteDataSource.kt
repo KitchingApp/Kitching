@@ -49,4 +49,6 @@ interface RemoteDataSource {
     /** other */
 
     suspend fun getAllMembers(teamId: String): MutableList<UserTeam>
+
+    suspend fun getRecipeName(recipeId: String): String
 }

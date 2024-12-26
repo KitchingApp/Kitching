@@ -29,7 +29,7 @@ data class Order(val categoryId: String = "", val id: String = "", val name: Str
 
 data class PrepCategory(val color: String = "", val id: String = "", val name: String = "", val teamId: String = "")
 
-data class Prep(val categoryId: String = "", val id: String = "", val name: String = "", val recipeId: String = "")
+data class Prep(val categoryId: String = "", val id: String = "", val name: String = "", val recipeId: String? = "")
 
 data class Department(val color: String = "", val id: String = "", val name: String = "", val teamId: String = "")
 
