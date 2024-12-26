@@ -14,7 +14,7 @@ interface RemoteRepository {
 
     suspend fun getTeamsByUserId(userId: String): List<TeamDTO>
 
-    suspend fun getDepartments(teamId: String): List<dropDownDepartmentsDTO>
+    suspend fun getDepartmentsForDropDown(teamId: String): List<dropDownDepartmentsDTO>
 
     suspend fun getSchedules(teamId: String, date: String): List<ScheduleDTO>
 

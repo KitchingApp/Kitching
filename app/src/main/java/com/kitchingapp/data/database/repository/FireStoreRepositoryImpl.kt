@@ -26,7 +26,7 @@ class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): 
         return teamDTOList
     }
 
-    override suspend fun getDepartments(teamId: String): List<dropDownDepartmentsDTO> {
+    override suspend fun getDepartmentsForDropDown(teamId: String): List<dropDownDepartmentsDTO> {
         val departmentDTOList = mutableListOf<dropDownDepartmentsDTO>()
 
         dataSource.getDepartments(teamId).forEach {
