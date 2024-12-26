@@ -6,6 +6,7 @@ import com.kitchingapp.domain.entities.Department
 import com.kitchingapp.domain.entities.Prep
 import com.kitchingapp.domain.entities.PrepCategory
 import com.kitchingapp.domain.entities.Schedule
+import com.kitchingapp.domain.entities.ScheduleTime
 import com.kitchingapp.domain.entities.Team
 import com.kitchingapp.domain.entities.UserTeam
 
@@ -51,4 +52,6 @@ interface RemoteDataSource {
     suspend fun getAllMembers(teamId: String): MutableList<UserTeam>
 
     suspend fun getRecipeName(recipeId: String): String
+
+    suspend fun getScheduleTimes(teamId: String): MutableList<ScheduleTime>
 }
