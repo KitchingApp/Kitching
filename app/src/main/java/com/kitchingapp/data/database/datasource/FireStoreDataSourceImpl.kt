@@ -4,6 +4,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.kitchingapp.domain.entities.Order
 import com.kitchingapp.domain.entities.OrderCategory
 import com.kitchingapp.domain.entities.Department
+import com.kitchingapp.domain.entities.Prep
+import com.kitchingapp.domain.entities.PrepCategory
 import com.kitchingapp.domain.entities.Schedule
 import com.kitchingapp.domain.entities.Team
 import kotlinx.coroutines.tasks.await
@@ -90,5 +92,21 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
         return if (orderList.isEmpty) mutableListOf()
         else orderList.toObjects(Order::class.java) as MutableList<Order>
 
+    }
+
+    /** Prep */
+
+    override suspend fun getPrepCategory(teamId: String): MutableList<PrepCategory> {
+        val prepCategory = db.collection("prepCategory").whereEqualTo("teamId", teamId).get().await()
+
+        return if (prepCategory.isEmpty) mutableListOf()
+        else prepCategory.toObjects(PrepCategory::class.java) as MutableList<PrepCategory>
+    }
+
+    override suspend fun getPrepList(categoryId: String): MutableList<Prep> {
+        val prepList = db.collection("prep").whereEqualTo("categoryId", categoryId).get().await()
+
+        return if (prepList.isEmpty) mutableListOf()
+        else prepList.toObjects(Prep::class.java) as MutableList<Prep>
     }
 }

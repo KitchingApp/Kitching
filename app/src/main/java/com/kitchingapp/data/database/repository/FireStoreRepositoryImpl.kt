@@ -3,6 +3,8 @@ package com.kitchingapp.data.database.repository
 import com.kitchingapp.data.database.datasource.FireStoreDataSourceImpl
 import com.kitchingapp.data.database.dto.OrderCategoryDTO
 import com.kitchingapp.data.database.dto.OrderDTO
+import com.kitchingapp.data.database.dto.PrepCategoryDTO
+import com.kitchingapp.data.database.dto.PrepDTO
 import com.kitchingapp.data.database.dto.ScheduleDTO
 import com.kitchingapp.data.database.dto.TeamDTO
 import com.kitchingapp.data.database.dto.dropDownDepartmentsDTO
@@ -77,5 +79,34 @@ class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): 
             orderDTOList.add(orderDTO)
         }
         return orderDTOList
+    }
+
+    /** Prep */
+
+    override suspend fun getPrepCategory(teamId: String): MutableList<PrepCategoryDTO> {
+        val prepCategoryDTOList = mutableListOf<PrepCategoryDTO>()
+
+        dataSource.getPrepCategory(teamId).forEach {
+            val prepCategoryDTO = PrepCategoryDTO(
+                categoryId = it.id,
+                categoryName = it.name,
+                color = it.color
+            )
+            prepCategoryDTOList.add(prepCategoryDTO)
+        }
+        return prepCategoryDTOList
+    }
+
+    override suspend fun getPrepList(categoryId: String): MutableList<PrepDTO> {
+        val prepDTOList = mutableListOf<PrepDTO>()
+
+        dataSource.getPrepList(categoryId).forEach {
+            val prepDTO = PrepDTO(
+                prepId = it.id,
+                prepName = it.name
+            )
+            prepDTOList.add(prepDTO)
+        }
+        return prepDTOList
     }
 }
