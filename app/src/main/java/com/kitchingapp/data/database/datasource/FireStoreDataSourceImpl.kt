@@ -9,6 +9,7 @@ import com.kitchingapp.domain.entities.Prep
 import com.kitchingapp.domain.entities.PrepCategory
 import com.kitchingapp.domain.entities.Schedule
 import com.kitchingapp.domain.entities.ScheduleTime
+import com.kitchingapp.domain.entities.StaffLevel
 import com.kitchingapp.domain.entities.Team
 import com.kitchingapp.domain.entities.UserTeam
 import kotlinx.coroutines.tasks.await
@@ -151,5 +152,13 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
 
         return if (scheduleTime.isEmpty) mutableListOf()
         else scheduleTime.toObjects(ScheduleTime::class.java) as MutableList<ScheduleTime>
+    }
+
+    /** department / staff level management */
+    override suspend fun getStaffLevels(departmentId: String): List<StaffLevel> {
+        val staffLevels = db.collection("staffLevel").whereEqualTo("departmentId", departmentId).get().await()
+
+        return if (staffLevels.isEmpty) emptyList()
+        else staffLevels.toObjects(StaffLevel::class.java)
     }
 }
