@@ -3,6 +3,7 @@ package com.kitchingapp.data.database.datasource
 import com.kitchingapp.domain.entities.Order
 import com.kitchingapp.domain.entities.OrderCategory
 import com.kitchingapp.domain.entities.Department
+import com.kitchingapp.domain.entities.Recipe
 import com.kitchingapp.domain.entities.Prep
 import com.kitchingapp.domain.entities.PrepCategory
 import com.kitchingapp.domain.entities.Schedule
@@ -42,6 +43,10 @@ interface RemoteDataSource {
 
     suspend fun getOrderList(categoryId: String): MutableList<Order>
 
+    /** Recipe Page */
+
+    suspend fun getRecipeList(teamId: String): MutableList<Recipe>
+  
     /** Prep */
 
     suspend fun getPrepCategory(teamId: String): MutableList<PrepCategory>
@@ -57,4 +62,5 @@ interface RemoteDataSource {
     suspend fun getScheduleTimes(teamId: String): MutableList<ScheduleTime>
 
     suspend fun getStaffLevels(departmentId: String): List<StaffLevel>
+
 }

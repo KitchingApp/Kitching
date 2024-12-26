@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="레시피 이름"
-            app:layout_constraintTop_toBottomOf="@+id/recipeIV" />
+            app:layout_constraintTop_toBottomOf="@id/recipeIV" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/recipeIngredientsTitleTV"
@@ -31,171 +31,66 @@
             android:layout_height="wrap_content"
             style="@style/recipeDetailTitle"
             android:text="@string/ingredients"
-            app:layout_constraintTop_toBottomOf="@+id/recipeNameTV" />
+            app:layout_constraintTop_toBottomOf="@id/recipeNameTV" />
+
+        <GridLayout
+            android:id="@+id/gridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:columnCount="4"
+            android:orientation="horizontal"
+            style="@style/recipeDetailTitle"
+
+            app:layout_constraintTop_toBottomOf="@id/recipeIngredientsTitleTV"
+            >
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recipeIngredientsTV1"
+                android:text="X 1"
+                android:background="@drawable/border_box"
+                android:layout_columnWeight="1"
+                style="@style/recipeIngredientsTable"
+                />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recipeIngredientsTV2"
+                android:text="X 2"
+                android:layout_columnWeight="1"
+                android:background="@drawable/border_box"
+                style="@style/recipeIngredientsTable"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recipeIngredientsTV3"
+                android:text="Unit"
+                android:layout_columnWeight="1"
+                android:background="@drawable/border_box"
+                style="@style/recipeIngredientsTable"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recipeIngredientsTV4"
+                android:text="Ingredients"
+                android:layout_columnWeight="2.5"
+                android:background="@drawable/border_box"
+                style="@style/recipeIngredientsNameTable"
+                />
+
+        </GridLayout>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/onceTitleTV"
-            style="@style/recipeIngredientsTable"
-            android:gravity="end"
-            android:background="@drawable/border_box"
-            android:text="1X"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/twiceTitleTV"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recipeIngredientsTitleTV" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/twiceTitleTV"
-            android:gravity="end"
-            android:background="@drawable/border_box"
-            android:text="2X"
-            android:textStyle="bold"
-            style="@style/recipeIngredientsTable"
-            app:layout_constraintEnd_toStartOf="@id/unitTitleTV"
-            app:layout_constraintStart_toEndOf="@+id/onceTitleTV"
-            app:layout_constraintTop_toBottomOf="@id/recipeIngredientsTitleTV" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/unitTitleTV"
-            android:background="@drawable/border_box"
-            android:gravity="center"
-            style="@style/recipeIngredientsTable"
-            android:text="Unit"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/ingredientsTitleTV"
-            app:layout_constraintStart_toEndOf="@+id/twiceTitleTV"
-            app:layout_constraintTop_toBottomOf="@id/recipeIngredientsTitleTV" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/ingredientsTitleTV"
-            android:background="@drawable/border_box"
-            android:gravity="center"
-            android:text="재료명"
-            android:textStyle="bold"
-            style="@style/recipeIngredientsTable"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/unitTitleTV"
-            app:layout_constraintTop_toBottomOf="@id/recipeIngredientsTitleTV" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/onceTV1"
-            android:background="@drawable/border_box"
-            android:gravity="end"
-            style="@style/recipeIngredientsTable"
-            android:text="1"
-            app:layout_constraintEnd_toStartOf="@+id/twiceTitleTV"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/onceTitleTV" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/twiceTV1"
-            android:background="@drawable/border_box"
-            android:gravity="end"
-            style="@style/recipeIngredientsTable"
-            android:text="2"
-            app:layout_constraintEnd_toStartOf="@id/unitTitleTV"
-            app:layout_constraintStart_toEndOf="@+id/onceTitleTV"
-            app:layout_constraintTop_toBottomOf="@id/onceTitleTV" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/unitTV1"
-            android:background="@drawable/border_box"
-            android:gravity="center"
-            style="@style/recipeIngredientsTable"
-            android:text="g"
-            app:layout_constraintEnd_toStartOf="@id/ingredientsTitleTV"
-            app:layout_constraintStart_toEndOf="@+id/twiceTitleTV"
-            app:layout_constraintTop_toBottomOf="@id/onceTitleTV" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/ingredientsTV1"
-            android:background="@drawable/border_box"
-            android:gravity="center"
-            style="@style/recipeIngredientsTable"
-            android:text="설탕"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/unitTitleTV"
-            app:layout_constraintTop_toBottomOf="@id/onceTitleTV" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/onceTV2"
-            android:background="@drawable/border_box"
-            android:gravity="end"
-            style="@style/recipeIngredientsTable"
-            android:text="2"
-            app:layout_constraintEnd_toStartOf="@+id/twiceTitleTV"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/onceTV1" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/twiceTV2"
-            android:background="@drawable/border_box"
-            android:gravity="end"
-            style="@style/recipeIngredientsTable"
-            android:text="4"
-            app:layout_constraintEnd_toStartOf="@id/unitTitleTV"
-            app:layout_constraintStart_toEndOf="@+id/onceTitleTV"
-            app:layout_constraintTop_toBottomOf="@id/onceTV1" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/unitTV2"
-            android:background="@drawable/border_box"
-            android:gravity="center"
-            style="@style/recipeIngredientsTable"
-            android:text="Ea"
-            app:layout_constraintEnd_toStartOf="@id/ingredientsTitleTV"
-            app:layout_constraintStart_toEndOf="@+id/twiceTitleTV"
-            app:layout_constraintTop_toBottomOf="@id/onceTV1" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/ingredientsTV2"
-            android:background="@drawable/border_box"
-            android:gravity="center"
-            style="@style/recipeIngredientsTable"
-            android:text="계란"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/unitTitleTV"
-            app:layout_constraintTop_toBottomOf="@id/onceTV1" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/recipeOrderTitleTV"
+            android:id="@+id/recipeStepTV1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/recipeDetailTitle"
             android:text="순서"
-            app:layout_constraintTop_toBottomOf="@+id/onceTV2" />
+            app:layout_constraintTop_toBottomOf="@id/gridLayout" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/recipeOrderTV1"
+            android:id="@+id/recipeStepTV2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="1. Aaaaaaaaaaaa"
             style="@style/recipeOrder"
-            app:layout_constraintTop_toBottomOf="@+id/recipeOrderTitleTV" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/recipeOrderTV2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="2. Bbbbbb"
-            style="@style/recipeOrder"
-            app:layout_constraintTop_toBottomOf="@+id/recipeOrderTV1" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/recipeOrderTV3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="3. Cccccccccccccc"
-            style="@style/recipeOrder"
-            app:layout_constraintTop_toBottomOf="@+id/recipeOrderTV2" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/recipeOrderTV4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="4. Dddddddd"
-            style="@style/recipeOrder"
-            app:layout_constraintTop_toBottomOf="@+id/recipeOrderTV3" />
+            app:layout_constraintTop_toBottomOf="@id/recipeStepTV1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

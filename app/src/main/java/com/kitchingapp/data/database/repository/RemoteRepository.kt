@@ -4,6 +4,7 @@ import com.kitchingapp.data.database.dto.DepartmentDTO
 import com.kitchingapp.data.database.dto.MemberListDTO
 import com.kitchingapp.data.database.dto.OrderCategoryDTO
 import com.kitchingapp.data.database.dto.OrderDTO
+import com.kitchingapp.data.database.dto.RecipeDetailDTO
 import com.kitchingapp.data.database.dto.PrepCategoryDTO
 import com.kitchingapp.data.database.dto.PrepDTO
 import com.kitchingapp.data.database.dto.ScheduleDTO
@@ -28,6 +29,10 @@ interface RemoteRepository {
 
     suspend fun getOrderList(categoryId: String): MutableList<OrderDTO>
 
+    /** Recipe Page */
+
+    suspend fun getRecipeList(teamId: String): MutableList<RecipeDetailDTO>
+
     /** Prep */
 
     suspend fun getPrepCategory(teamId: String): MutableList<PrepCategoryDTO>
@@ -43,4 +48,5 @@ interface RemoteRepository {
     suspend fun getDepartments(teamId: String): MutableList<DepartmentDTO>
 
     suspend fun getStaffLevels(departmentId: String): MutableList<StaffLevelDTO>
+
 }

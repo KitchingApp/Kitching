@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 import com.kitchingapp.view.fragment.recipe.RecipeFragmentDirections
 import kotlinx.coroutines.flow.launchIn
+import com.kitchingapp.R
 
 class RecipeRecycleAdapter(private val lifecycleOwner: LifecycleOwner, private val navController: NavController) : ListAdapter<RecipeDetailDTO, RecipeRecycleAdapter.RecipeViewHolder>(diffUtil) {
     override fun onCreateViewHolder(
@@ -53,11 +54,12 @@ class RecipeRecycleAdapter(private val lifecycleOwner: LifecycleOwner, private v
         RecyclerView.ViewHolder(binding.root) {
             fun  bindRecipe(recipe: RecipeDetailDTO) {
                 with(binding) {
-//                    recipeIV.setImageResource(recipe.picture)
+                    val picture = R.drawable.pancake
+                    recipeIV.setImageResource(picture)
                     recipeNameTV.text = recipe.recipeName
                     recipeCV.clicks().onEach {
-                        val argsAction = RecipeFragmentDirections.actionRecipeFragmentToRecipeDetailFragment(recipe.picture, recipe.recipeName,
-                            recipe.steps.toString()
+                        val argsAction = RecipeFragmentDirections.actionRecipeFragmentToRecipeDetailFragment(
+                            recipe.picture, recipe.recipeName, recipe.ingredients.joinToString("|").toString(), recipe.steps.joinToString("|").toString()
                         )
                         navController.navigate(argsAction)
                     }.launchIn(lifecycleOwner.lifecycleScope)

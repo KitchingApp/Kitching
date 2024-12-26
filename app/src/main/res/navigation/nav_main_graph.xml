@@ -67,6 +67,12 @@
             />
 
         <argument
+            android:name="recipeIngredients"
+            app:argType="string"
+            android:defaultValue=""
+            />
+
+        <argument
             android:name="recipeStep"
             app:argType="string"
             android:defaultValue=""
