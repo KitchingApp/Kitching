@@ -1,7 +1,5 @@
 package com.kitchingapp.domain.entities
 
-import androidx.annotation.Keep
-
 data class Team(val id: String = "", val inviteCode: String = "", val ownerId: String = "", val teamName: String = "")
 
 data class Schedule(
@@ -49,5 +47,5 @@ data class Ingredient(
     val name: String = "",
     val once: Int = -1,
     val twice: Int = -1,
-    val unit: String = ""
+    val each: String = ""
 )

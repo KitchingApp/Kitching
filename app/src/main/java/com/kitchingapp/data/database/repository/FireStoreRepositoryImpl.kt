@@ -1,8 +1,11 @@
 package com.kitchingapp.data.database.repository
 
+import android.util.Log
 import com.kitchingapp.data.database.datasource.FireStoreDataSourceImpl
+import com.kitchingapp.data.database.dto.IngredientDTO
 import com.kitchingapp.data.database.dto.OrderCategoryDTO
 import com.kitchingapp.data.database.dto.OrderDTO
+import com.kitchingapp.data.database.dto.RecipeDetailDTO
 import com.kitchingapp.data.database.dto.ScheduleDTO
 import com.kitchingapp.data.database.dto.TeamDTO
 import com.kitchingapp.data.database.dto.dropDownDepartmentsDTO
@@ -77,5 +80,32 @@ class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): 
             orderDTOList.add(orderDTO)
         }
         return orderDTOList
+    }
+
+    /** Recipe Page */
+    override suspend fun getRecipeList(teamId: String): MutableList<RecipeDetailDTO> {
+        val recipeDTOList = mutableListOf<RecipeDetailDTO>()
+        dataSource.getRecipeList(teamId).forEach {
+            val ingredientDTOList = mutableListOf<IngredientDTO>()
+            it.ingredients.forEach { ingredient ->
+                val ingredientDTO = IngredientDTO(
+                    ingredientId = ingredient.id,
+                    ingredientName = ingredient.name,
+                    once = ingredient.once,
+                    twice = ingredient.twice,
+                    each = ingredient.each
+                )
+                ingredientDTOList.add(ingredientDTO)
+            }
+            val recipeDTO = RecipeDetailDTO(
+                recipeId = it.id,
+                recipeName = it.name,
+                picture = it.picture,
+                ingredients = ingredientDTOList,
+                steps = it.steps
+            )
+            recipeDTOList.add(recipeDTO)
+        }
+        return recipeDTOList
     }
 }

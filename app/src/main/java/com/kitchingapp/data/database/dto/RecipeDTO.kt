@@ -13,5 +13,5 @@ data class IngredientDTO(
     val ingredientName: String,
     val once: Int,
     val twice: Int,
-    val unit: String
+    val each: String
 )

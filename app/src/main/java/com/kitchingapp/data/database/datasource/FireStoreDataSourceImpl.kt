@@ -1,9 +1,12 @@
 package com.kitchingapp.data.database.datasource
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kitchingapp.domain.entities.Order
 import com.kitchingapp.domain.entities.OrderCategory
 import com.kitchingapp.domain.entities.Department
+import com.kitchingapp.domain.entities.Ingredient
+import com.kitchingapp.domain.entities.Recipe
 import com.kitchingapp.domain.entities.Schedule
 import com.kitchingapp.domain.entities.Team
 import kotlinx.coroutines.tasks.await
@@ -90,5 +93,30 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
         return if (orderList.isEmpty) mutableListOf()
         else orderList.toObjects(Order::class.java) as MutableList<Order>
 
+    }
+
+    /** Recipe Page */
+    override suspend fun getRecipeList(teamId: String): MutableList<Recipe> {
+        val recipeListSnapshot = db.collection("recipe")
+            .whereEqualTo("teamId", teamId)
+            .get()
+            .await()
+
+        val recipes = mutableListOf<Recipe>()
+
+        for (document in recipeListSnapshot.documents) {
+            // 기본 Recipe 필드 가져오기
+            val recipe = document.toObject(Recipe::class.java) ?: continue
+
+            // 하위 컬렉션 'ingredient' 가져오기
+            val ingredientSnapshot = document.reference.collection("ingredient").get().await()
+            val ingredients = ingredientSnapshot.toObjects(Ingredient::class.java)
+
+            // Recipe에 하위 컬렉션 데이터를 추가
+            recipes.add(
+                recipe.copy(ingredients = ingredients) // 데이터 클래스 복사로 값 설정
+            )
+        }
+        return recipes
     }
 }
