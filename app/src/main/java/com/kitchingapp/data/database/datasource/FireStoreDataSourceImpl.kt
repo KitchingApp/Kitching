@@ -8,6 +8,7 @@ import com.kitchingapp.domain.entities.Department
 import com.kitchingapp.domain.entities.Prep
 import com.kitchingapp.domain.entities.PrepCategory
 import com.kitchingapp.domain.entities.Schedule
+import com.kitchingapp.domain.entities.ScheduleTime
 import com.kitchingapp.domain.entities.Team
 import com.kitchingapp.domain.entities.UserTeam
 import kotlinx.coroutines.tasks.await
@@ -141,5 +142,14 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
         val recipeName = db.collection("recipe").whereEqualTo("id", recipeId).get().await().documents.firstOrNull()
 
         return recipeName?.getString("name")!!
+    }
+
+    /** schedule time */
+
+    override suspend fun getScheduleTimes(teamId: String): MutableList<ScheduleTime> {
+        val scheduleTime = db.collection("scheduleTime").whereEqualTo("teamId", teamId).orderBy("startTime").get().await()
+
+        return if (scheduleTime.isEmpty) mutableListOf()
+        else scheduleTime.toObjects(ScheduleTime::class.java) as MutableList<ScheduleTime>
     }
 }

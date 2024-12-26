@@ -1,5 +1,6 @@
 package com.kitchingapp.data.database.repository
 
+import com.kitchingapp.common.timeFormatter
 import com.kitchingapp.data.database.datasource.FireStoreDataSourceImpl
 import com.kitchingapp.data.database.dto.MemberDTO
 import com.kitchingapp.data.database.dto.MemberListDTO
@@ -8,8 +9,10 @@ import com.kitchingapp.data.database.dto.OrderDTO
 import com.kitchingapp.data.database.dto.PrepCategoryDTO
 import com.kitchingapp.data.database.dto.PrepDTO
 import com.kitchingapp.data.database.dto.ScheduleDTO
+import com.kitchingapp.data.database.dto.ScheduleTimeListDTO
 import com.kitchingapp.data.database.dto.TeamDTO
 import com.kitchingapp.data.database.dto.dropDownDepartmentsDTO
+import java.time.LocalTime
 
 class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): RemoteRepository {
 
@@ -128,5 +131,22 @@ class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): 
         }
 
         return MemberListDTO(dataSource.getTeamName(teamId), memberList.toList())
+    }
+
+    override suspend fun getScheduleTimeList(teamId: String): MutableList<ScheduleTimeListDTO> {
+        val scheduleTimeList = mutableListOf<ScheduleTimeListDTO>()
+
+        dataSource.getScheduleTimes(teamId).forEach {
+            val scheduleTimeDTO = ScheduleTimeListDTO(
+                scheduleTimeId = it.id,
+                scheduleTimeName = it.name,
+                color = it.color,
+                startTime = LocalTime.parse(it.startTime, timeFormatter),
+                endTime = LocalTime.parse(it.endTime, timeFormatter)
+            )
+            scheduleTimeList.add(scheduleTimeDTO)
+        }
+
+        return scheduleTimeList
     }
 }
