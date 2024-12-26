@@ -99,8 +99,16 @@
     </style>
 
     <style name="recipeIngredientsTable">
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">80dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/padding_S</item>
+        <item name="android:layout_height">@dimen/recipeDetailIngredientsTableHeight</item>
+    </style>
+
+    <style name="recipeIngredientsNameTable">
+        <item name="android:layout_width">150dp</item>
         <item name="background">@drawable/border_box</item>
+        <item name="android:gravity">center</item>
         <item name="android:padding">@dimen/padding_S</item>
         <item name="android:layout_height">@dimen/recipeDetailIngredientsTableHeight</item>
     </style>
