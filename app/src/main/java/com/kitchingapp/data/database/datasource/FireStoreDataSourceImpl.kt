@@ -7,8 +7,13 @@ import com.kitchingapp.domain.entities.OrderCategory
 import com.kitchingapp.domain.entities.Department
 import com.kitchingapp.domain.entities.Ingredient
 import com.kitchingapp.domain.entities.Recipe
+import com.kitchingapp.domain.entities.Prep
+import com.kitchingapp.domain.entities.PrepCategory
 import com.kitchingapp.domain.entities.Schedule
+import com.kitchingapp.domain.entities.ScheduleTime
+import com.kitchingapp.domain.entities.StaffLevel
 import com.kitchingapp.domain.entities.Team
+import com.kitchingapp.domain.entities.UserTeam
 import kotlinx.coroutines.tasks.await
 
 class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSource {
@@ -18,6 +23,12 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
 
         return if(teams.isEmpty) emptyList()
         else teams.toObjects(Team::class.java)
+    }
+
+    override suspend fun getTeamName(teamId: String): String {
+        val teamName = db.collection("team").whereEqualTo("id", teamId).get().await().documents.firstOrNull()
+
+        return teamName?.getString("teamName")!!
     }
 
     override suspend fun getDepartments(teamId: String): List<Department> {
@@ -48,6 +59,18 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
 
     override suspend fun getDepartmentName(teamId: String, departmentId: String): String {
         val department = db.collection("department").whereEqualTo("id", departmentId).get().await().documents.firstOrNull()
+
+        return department?.getString("name")!!
+    }
+
+    override suspend fun getStaffLevelId(teamId: String, userId: String): String {
+        val userTeam = db.collection("user-team").whereEqualTo("teamId", teamId).whereEqualTo("userId", userId).get().await().documents.firstOrNull()
+
+        return userTeam?.getString("staffLevelId")!!
+    }
+
+    override suspend fun getStaffLevelName(staffLevelId: String): String {
+        val department = db.collection("staffLevel").whereEqualTo("id", staffLevelId).get().await().documents.firstOrNull()
 
         return department?.getString("name")!!
     }
@@ -118,5 +141,50 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
             )
         }
         return recipes
+
+    /** Prep */
+
+    override suspend fun getPrepCategory(teamId: String): MutableList<PrepCategory> {
+        val prepCategory = db.collection("prepCategory").whereEqualTo("teamId", teamId).get().await()
+
+        return if (prepCategory.isEmpty) mutableListOf()
+        else prepCategory.toObjects(PrepCategory::class.java) as MutableList<PrepCategory>
+    }
+
+    override suspend fun getPrepList(categoryId: String): MutableList<Prep> {
+        val prepList = db.collection("prep").whereEqualTo("categoryId", categoryId).get().await()
+
+        return if (prepList.isEmpty) mutableListOf()
+        else prepList.toObjects(Prep::class.java) as MutableList<Prep>
+    }
+
+    override suspend fun getAllMembers(teamId: String): MutableList<UserTeam> {
+        val memberList = db.collection("user-team").whereEqualTo("teamId", teamId).get().await()
+
+        return if(memberList.isEmpty) mutableListOf()
+        else memberList.toObjects(UserTeam::class.java) as MutableList<UserTeam>
+    }
+
+    override suspend fun getRecipeName(recipeId: String): String {
+        val recipeName = db.collection("recipe").whereEqualTo("id", recipeId).get().await().documents.firstOrNull()
+
+        return recipeName?.getString("name")!!
+    }
+
+    /** schedule time */
+
+    override suspend fun getScheduleTimes(teamId: String): MutableList<ScheduleTime> {
+        val scheduleTime = db.collection("scheduleTime").whereEqualTo("teamId", teamId).orderBy("startTime").get().await()
+
+        return if (scheduleTime.isEmpty) mutableListOf()
+        else scheduleTime.toObjects(ScheduleTime::class.java) as MutableList<ScheduleTime>
+    }
+
+    /** department / staff level management */
+    override suspend fun getStaffLevels(departmentId: String): List<StaffLevel> {
+        val staffLevels = db.collection("staffLevel").whereEqualTo("departmentId", departmentId).get().await()
+
+        return if (staffLevels.isEmpty) emptyList()
+        else staffLevels.toObjects(StaffLevel::class.java)
     }
 }

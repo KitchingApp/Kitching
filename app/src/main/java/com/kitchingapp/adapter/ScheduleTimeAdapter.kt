@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kitchingapp.data.database.dto.ScheduleTimeDTO
+import com.kitchingapp.data.database.dto.ScheduleTimeListDTO
 import com.kitchingapp.databinding.ItemBigCategoryBinding
 
-class ScheduleTimeAdapter : ListAdapter<ScheduleTimeDTO, ScheduleTimeAdapter.ScheduleTimeViewHolder>(diffUtil) {
+class ScheduleTimeAdapter : ListAdapter<ScheduleTimeListDTO, ScheduleTimeAdapter.ScheduleTimeViewHolder>(diffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -25,17 +25,17 @@ class ScheduleTimeAdapter : ListAdapter<ScheduleTimeDTO, ScheduleTimeAdapter.Sch
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<ScheduleTimeDTO>() {
+        val diffUtil = object : DiffUtil.ItemCallback<ScheduleTimeListDTO>() {
             override fun areItemsTheSame(
-                oldItem: ScheduleTimeDTO,
-                newItem: ScheduleTimeDTO
+                oldItem: ScheduleTimeListDTO,
+                newItem: ScheduleTimeListDTO
             ): Boolean {
                 return oldItem.scheduleTimeName == newItem.scheduleTimeName
             }
 
             override fun areContentsTheSame(
-                oldItem: ScheduleTimeDTO,
-                newItem: ScheduleTimeDTO
+                oldItem: ScheduleTimeListDTO,
+                newItem: ScheduleTimeListDTO
             ): Boolean {
                 return oldItem == newItem
             }
@@ -43,7 +43,7 @@ class ScheduleTimeAdapter : ListAdapter<ScheduleTimeDTO, ScheduleTimeAdapter.Sch
     }
 
     inner class ScheduleTimeViewHolder(val binding: ItemBigCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindBigCategory(scheduleTime: ScheduleTimeDTO) {
+        fun bindBigCategory(scheduleTime: ScheduleTimeListDTO) {
             with(binding) {
                 categoryNameTV.text = scheduleTime.scheduleTimeName
             }

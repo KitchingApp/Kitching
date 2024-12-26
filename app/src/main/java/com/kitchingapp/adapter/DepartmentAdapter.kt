@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kitchingapp.R
 import com.kitchingapp.data.database.dto.DepartmentDTO
 import com.kitchingapp.databinding.ItemBigCategoryBinding
+import com.kitchingapp.view.fragment.other.DepartmentFragmentDirections
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
@@ -57,7 +58,8 @@ class DepartmentAdapter(private val lifecycleOwner: LifecycleOwner, private val 
                 categoryNameTV.text = department.departmentName
                 categoryCV.setCardBackgroundColor(Color.parseColor(department.color))
                 categoryCV.clicks().onEach {
-                    navController.navigate(R.id.action_otherFragment_to_departmentFragment)
+                    val argActions = DepartmentFragmentDirections.actionDepartmentFragmentToStaffLevelFragment(department.departmentId)
+                    navController.navigate(argActions)
                 }.launchIn(lifecycleOwner.lifecycleScope)
             }
         }

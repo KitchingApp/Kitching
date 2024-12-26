@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/departmentRV"
+        android:id="@+id/staffLevelRV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         tools:listitem="@layout/item_small_category"
@@ -18,7 +18,7 @@
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/createDepartmentBtn"
+        android:id="@+id/createStaffLevelBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/floatingActionBtnMargin"

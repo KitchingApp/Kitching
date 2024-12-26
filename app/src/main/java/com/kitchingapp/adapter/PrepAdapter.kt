@@ -13,13 +13,13 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
-class PrepAdapter(private val lifecycleOwner: LifecycleOwner): ListAdapter<PrepDTO, PrepAdapter.TodoViewHolder>(diffUtil) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
+class PrepAdapter(private val lifecycleOwner: LifecycleOwner): ListAdapter<PrepDTO, PrepAdapter.PrepViewHolder>(diffUtil) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PrepViewHolder {
         val binding = ItemSmallCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TodoViewHolder(binding)
+        return PrepViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PrepViewHolder, position: Int) {
         holder.bindBigCategory(currentList[position])
     }
 
@@ -41,7 +41,7 @@ class PrepAdapter(private val lifecycleOwner: LifecycleOwner): ListAdapter<PrepD
         }
     }
 
-    inner class TodoViewHolder(val binding: ItemSmallCategoryBinding) :
+    inner class PrepViewHolder(val binding: ItemSmallCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindBigCategory(todo: PrepDTO) {
             with(binding) {

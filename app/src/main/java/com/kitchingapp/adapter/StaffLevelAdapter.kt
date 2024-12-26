@@ -31,7 +31,7 @@ class StaffLevelAdapter(private val lifecycleOwner: LifecycleOwner) : ListAdapte
                 oldItem: StaffLevelDTO,
                 newItem: StaffLevelDTO
             ): Boolean {
-                return oldItem.staffLevelName == newItem.staffLevelName
+                return oldItem.staffLevelId == newItem.staffLevelId
             }
 
             override fun areContentsTheSame(

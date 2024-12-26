@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.annotation.MenuRes
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.DiffUtil
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kitchingapp.R
 import com.kitchingapp.data.database.dto.PrepCategoryDTO
 import com.kitchingapp.databinding.ItemBigCategoryBinding
+import com.kitchingapp.view.fragment.prep.PrepCategoryFragmentDirections
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
@@ -23,18 +25,19 @@ import ru.ldralighieri.corbind.view.clicks
 class PrepCategoryAdapter(
     private val lifecycleOwner: LifecycleOwner,
     private val navController: NavController
-) : ListAdapter<PrepCategoryDTO, PrepCategoryAdapter.TodoCategoryViewHolder>(diffUtil) {
+) : ListAdapter<PrepCategoryDTO, PrepCategoryAdapter.PrepCategoryViewHolder>(diffUtil),
+    ViewModelProvider.Factory {
 
     private lateinit var context: Context
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoCategoryViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PrepCategoryViewHolder {
         context = parent.context
         val binding =
             ItemBigCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TodoCategoryViewHolder(binding)
+        return PrepCategoryViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: TodoCategoryViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PrepCategoryViewHolder, position: Int) {
         holder.bindBigCategory(currentList[position])
     }
 
@@ -56,14 +59,15 @@ class PrepCategoryAdapter(
         }
     }
 
-    inner class TodoCategoryViewHolder(val binding: ItemBigCategoryBinding) :
+    inner class PrepCategoryViewHolder(val binding: ItemBigCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bindBigCategory(todoCategory: PrepCategoryDTO) {
+        fun bindBigCategory(prepCategory: PrepCategoryDTO) {
             with(binding) {
-                categoryNameTV.text = todoCategory.categoryName
-                categoryCV.setCardBackgroundColor(Color.parseColor(todoCategory.color))
+                categoryNameTV.text = prepCategory.categoryName
+                categoryCV.setCardBackgroundColor(Color.parseColor(prepCategory.color))
                 categoryCV.clicks().onEach {
-                    navController.navigate(R.id.action_prepFragment_to_prepListFragment)
+                    val argActions = PrepCategoryFragmentDirections.actionPrepFragmentToPrepListFragment(prepCategory.categoryId)
+                    navController.navigate(argActions)
                 }.launchIn(lifecycleOwner.lifecycleScope)
                 optionBtn.clicks().onEach {
                     showMenu(optionBtn, R.menu.option_menu, adapterPosition)

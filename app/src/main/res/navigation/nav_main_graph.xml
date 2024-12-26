@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/prepFragment"
-        android:name="com.kitchingapp.view.fragment.prep.PrepFragment"
+        android:name="com.kitchingapp.view.fragment.prep.PrepCategoryFragment"
         tools:layout="@layout/fragment_prep"
         >
 
@@ -29,6 +29,10 @@
         android:name="com.kitchingapp.view.fragment.prep.PrepListFragment"
         tools:layout="@layout/fragment_prep_list"
         >
+
+        <argument
+            android:name="prepCategoryId"
+            app:argType="string" />
 
     </fragment>
 
@@ -147,6 +151,20 @@
         tools:layout="@layout/fragment_department"
         >
 
+        <action
+            android:id="@+id/action_departmentFragment_to_staffLevelFragment"
+            app:destination="@id/staffLevelFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/staffLevelFragment"
+        android:name="com.kitchingapp.view.fragment.other.StaffLevelFragment"
+        tools:layout="@layout/fragment_stafflevel"
+        >
+
+        <argument
+            android:name="departmentId"
+            app:argType="string" />
     </fragment>
 
     <fragment

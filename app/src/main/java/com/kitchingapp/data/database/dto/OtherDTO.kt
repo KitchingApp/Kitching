@@ -1,6 +1,7 @@
 package com.kitchingapp.data.database.dto
 
 import java.time.LocalDate
+import java.time.LocalTime
 
 data class NoticeDTO(
     val date: LocalDate,
@@ -14,4 +15,8 @@ data class DepartmentDTO(val departmentId: String, val departmentName: String, v
 
 data class StaffLevelDTO(val staffLevelId: String, val staffLevelName: String)
 
-data class MemberDTO(val userId: String, val userName: String, val department: String, val staffLevel: String)
+data class MemberDTO(val userId: String, val userName: String, val departmentName: String?, val staffLevelName: String?)
+
+data class MemberListDTO(val teamName: String, val members: List<MemberDTO>)
+
+data class ScheduleTimeListDTO(val scheduleTimeId: String, val scheduleTimeName: String, val color: String, val startTime: LocalTime, val endTime: LocalTime)
