@@ -1,5 +1,6 @@
 package com.kitchingapp.data.database.repository
 
+import com.kitchingapp.data.database.dto.MemberListDTO
 import com.kitchingapp.data.database.dto.OrderCategoryDTO
 import com.kitchingapp.data.database.dto.OrderDTO
 import com.kitchingapp.data.database.dto.PrepCategoryDTO
@@ -29,4 +30,8 @@ interface RemoteRepository {
     suspend fun getPrepCategory(teamId: String): MutableList<PrepCategoryDTO>
 
     suspend fun getPrepList(categoryId: String): MutableList<PrepDTO>
+
+    /** Other */
+
+    suspend fun getMemberList(teamId: String): MemberListDTO
 }

@@ -1,6 +1,8 @@
 package com.kitchingapp.data.database.repository
 
 import com.kitchingapp.data.database.datasource.FireStoreDataSourceImpl
+import com.kitchingapp.data.database.dto.MemberDTO
+import com.kitchingapp.data.database.dto.MemberListDTO
 import com.kitchingapp.data.database.dto.OrderCategoryDTO
 import com.kitchingapp.data.database.dto.OrderDTO
 import com.kitchingapp.data.database.dto.PrepCategoryDTO
@@ -108,5 +110,21 @@ class FireStoreRepositoryImpl(private val dataSource: FireStoreDataSourceImpl): 
             prepDTOList.add(prepDTO)
         }
         return prepDTOList
+    }
+
+    override suspend fun getMemberList(teamId: String): MemberListDTO {
+        val memberList = mutableListOf<MemberDTO>()
+
+        dataSource.getAllMembers(teamId).forEach {
+            val memberDTO = MemberDTO(
+                userId = it.userId,
+                userName = dataSource.getUserName(it.userId),
+                departmentName = dataSource.getDepartmentName(teamId, it.departmentId),
+                staffLevelName = dataSource.getStaffLevelName(it.staffLevelId)
+            )
+            memberList.add(memberDTO)
+        }
+
+        return MemberListDTO(dataSource.getTeamName(teamId), memberList.toList())
     }
 }

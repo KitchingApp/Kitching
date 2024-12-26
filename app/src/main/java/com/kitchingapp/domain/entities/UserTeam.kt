@@ -6,5 +6,6 @@ data class UserTeam(
     val staffLevelId: String = "",
     val teamId: String = "",
     val userId: String = "",
+    @field:JvmField
     val isManager: Boolean = false,
 )

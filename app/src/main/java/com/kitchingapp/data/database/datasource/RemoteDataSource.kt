@@ -7,9 +7,12 @@ import com.kitchingapp.domain.entities.Prep
 import com.kitchingapp.domain.entities.PrepCategory
 import com.kitchingapp.domain.entities.Schedule
 import com.kitchingapp.domain.entities.Team
+import com.kitchingapp.domain.entities.UserTeam
 
 interface RemoteDataSource {
     suspend fun getTeams(userId: String): List<Team>
+
+    suspend fun getTeamName(teamId: String): String
 
     suspend fun getDepartments(teamId: String): List<Department>
 
@@ -20,6 +23,10 @@ interface RemoteDataSource {
     suspend fun getDepartmentId(teamId: String, userId: String): String
 
     suspend fun getDepartmentName(teamId: String, departmentId: String): String
+
+    suspend fun getStaffLevelId(teamId: String, userId: String): String
+
+    suspend fun getStaffLevelName(staffLevelId: String): String
 
     suspend fun getUserName(userId: String): String
 
@@ -38,4 +45,8 @@ interface RemoteDataSource {
     suspend fun getPrepCategory(teamId: String): MutableList<PrepCategory>
 
     suspend fun getPrepList(categoryId: String): MutableList<Prep>
+
+    /** other */
+
+    suspend fun getAllMembers(teamId: String): MutableList<UserTeam>
 }
