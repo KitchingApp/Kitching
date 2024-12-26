@@ -14,4 +14,6 @@ data class DepartmentDTO(val departmentId: String, val departmentName: String, v
 
 data class StaffLevelDTO(val staffLevelId: String, val staffLevelName: String)
 
-data class MemberDTO(val userId: String, val userName: String, val department: String, val staffLevel: String)
+data class MemberDTO(val userId: String, val userName: String, val departmentName: String, val staffLevelName: String)
+
+data class MemberListDTO(val teamName: String, val members: List<MemberDTO>)

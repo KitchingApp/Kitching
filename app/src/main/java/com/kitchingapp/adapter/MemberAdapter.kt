@@ -47,6 +47,8 @@ class MemberAdapter : ListAdapter<MemberDTO, MemberAdapter.MemberViewHolder>(dif
         fun bindMember(member: MemberDTO) {
             with(binding) {
                 nameTV.text = member.userName
+                departmentTV.text = member.departmentName
+                staffLevelTV.text = member.staffLevelName
             }
 
         }
