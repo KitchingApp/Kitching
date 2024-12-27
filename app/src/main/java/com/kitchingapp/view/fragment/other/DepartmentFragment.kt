@@ -16,7 +16,7 @@ import com.kitchingapp.data.database.usecase.LocalType
 import com.kitchingapp.data.database.usecase.LocalTypeUseCase
 import com.kitchingapp.databinding.FragmentDepartmentBinding
 import com.kitchingapp.view.model.DepartmentViewModel
-import com.kitchingapp.view.model.factory.departmentViewModelFactory
+import com.kitchingapp.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -25,7 +25,7 @@ class DepartmentFragment :
     private lateinit var navController: NavController
 
     private val viewModel by viewModels<DepartmentViewModel> {
-        departmentViewModelFactory
+        viewModelFactory
     }
 
     private val localRepository: LocalRepository by lazy {

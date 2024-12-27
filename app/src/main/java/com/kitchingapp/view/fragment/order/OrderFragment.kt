@@ -13,14 +13,14 @@ import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.data.database.dto.OrderCategoryDTO
 import com.kitchingapp.databinding.FragmentOrderBinding
 import com.kitchingapp.view.model.OrderViewModel
-import com.kitchingapp.view.model.factory.orderViewModelFactory
+import com.kitchingapp.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class OrderFragment : BaseFragment<FragmentOrderBinding>(FragmentOrderBinding::inflate){
     private lateinit var navController: NavController
     private val viewModel by viewModels<OrderViewModel> {
-        orderViewModelFactory
+        viewModelFactory
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

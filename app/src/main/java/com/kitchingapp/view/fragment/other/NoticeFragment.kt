@@ -16,7 +16,7 @@ import com.kitchingapp.data.database.usecase.LocalType
 import com.kitchingapp.data.database.usecase.LocalTypeUseCase
 import com.kitchingapp.databinding.FragmentNoticeBinding
 import com.kitchingapp.view.model.NoticeViewModel
-import com.kitchingapp.view.model.factory.noticeViewModelFactory
+import com.kitchingapp.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -24,7 +24,7 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(FragmentNoticeBinding
     private lateinit var navController: NavController
 
     private val viewModel by viewModels<NoticeViewModel> {
-        noticeViewModelFactory
+        viewModelFactory
     }
 
     private val localRepository: LocalRepository by lazy {

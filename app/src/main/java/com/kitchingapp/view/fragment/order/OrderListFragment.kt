@@ -14,7 +14,7 @@ import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.data.database.dto.OrderDTO
 import com.kitchingapp.databinding.FragmentOrderlistBinding
 import com.kitchingapp.view.model.OrderViewModel
-import com.kitchingapp.view.model.factory.orderViewModelFactory
+import com.kitchingapp.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.getValue
@@ -22,7 +22,7 @@ import kotlin.getValue
 class OrderListFragment: BaseFragment<FragmentOrderlistBinding>(FragmentOrderlistBinding::inflate) {
     private lateinit var navController: NavController
     private val viewModel by viewModels<OrderViewModel> {
-        orderViewModelFactory
+        viewModelFactory
     }
     private val args: OrderListFragmentArgs by navArgs()
 

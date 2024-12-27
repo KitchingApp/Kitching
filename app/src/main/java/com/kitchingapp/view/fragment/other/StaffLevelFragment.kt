@@ -1,8 +1,6 @@
 package com.kitchingapp.view.fragment.other
 
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -15,10 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kitchingapp.adapter.StaffLevelAdapter
 import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.databinding.FragmentStafflevelBinding
-import com.kitchingapp.domain.entities.Department
-import com.kitchingapp.domain.entities.StaffLevel
 import com.kitchingapp.view.model.StaffLevelViewModel
-import com.kitchingapp.view.model.factory.staffLevelViewModelFactory
+import com.kitchingapp.view.model.factory.viewModelFactory
 import kotlinx.coroutines.launch
 
 class StaffLevelFragment : BaseFragment<FragmentStafflevelBinding>(FragmentStafflevelBinding::inflate) {
@@ -27,7 +23,7 @@ class StaffLevelFragment : BaseFragment<FragmentStafflevelBinding>(FragmentStaff
     private val args: StaffLevelFragmentArgs by navArgs()
 
     private val viewModel by viewModels<StaffLevelViewModel> {
-        staffLevelViewModelFactory
+        viewModelFactory
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
