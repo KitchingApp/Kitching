@@ -20,5 +20,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "KitchingApp"
-include(":app")
- 
+include(":kitching")
+include(":data")
