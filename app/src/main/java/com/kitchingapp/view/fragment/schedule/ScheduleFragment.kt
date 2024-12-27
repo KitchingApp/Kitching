@@ -18,7 +18,7 @@ import com.kitchingapp.data.database.repository.LocalRepository
 import com.kitchingapp.data.database.usecase.LocalType
 import com.kitchingapp.data.database.usecase.LocalTypeUseCase
 import com.kitchingapp.view.model.ScheduleViewModel
-import com.kitchingapp.view.model.factory.scheduleViewModelFactory
+import com.kitchingapp.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -31,7 +31,7 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
     private lateinit var navController: NavController
 
     private val viewModel by viewModels<ScheduleViewModel> {
-        scheduleViewModelFactory
+        viewModelFactory
     }
 
     private val localRepository: LocalRepository by lazy {
