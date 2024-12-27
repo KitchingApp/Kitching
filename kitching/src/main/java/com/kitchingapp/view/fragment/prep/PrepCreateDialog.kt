@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import com.kitchingapp.common.BaseDialog
+import com.kitchingapp.common.throttleFirst
 import com.kitchingapp.databinding.DialogCreatePrepBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -45,7 +46,7 @@ class PrepCreateDialog: BaseDialog<DialogCreatePrepBinding>(DialogCreatePrepBind
             }
 
             with(cancelButton) {
-                clicks().onEach {
+                clicks().throttleFirst().onEach {
                     dismiss()
                 }.launchIn(lifecycleScope)
             }

@@ -14,6 +14,7 @@ import com.kitchingapp.adapter.ScheduleApplyAdapter
 import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.databinding.FragmentScheduleBinding
 import com.kitchingapp.adapter.ScheduleFixAdapter
+import com.kitchingapp.common.throttleFirst
 import com.kitchingapp.data.database.repository.LocalRepository
 import com.kitchingapp.data.database.usecase.LocalType
 import com.kitchingapp.data.database.usecase.LocalTypeUseCase
@@ -87,7 +88,7 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
             var currentDate = LocalDate.now()
 
             with(prevDateBtn) {
-                clicks().onEach {
+                clicks().throttleFirst().onEach {
                     val prevDate = currentDate.minusDays(1)
                     scheduleDateBtn.text = prevDate.toString()
                     currentDate = prevDate
@@ -98,7 +99,7 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
             with(scheduleDateBtn) {
                 text = LocalDate.now().toString()
 
-                clicks().onEach {
+                clicks().throttleFirst().onEach {
                     val year = currentDate.year
                     val month = currentDate.monthValue - 1
                     val day = currentDate.dayOfMonth
@@ -115,7 +116,7 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
             }
 
             with(nextDateBtn) {
-                clicks().onEach {
+                clicks().throttleFirst().onEach {
                     val nextDate = currentDate.plusDays(1)
                     scheduleDateBtn.text = nextDate.toString()
                     currentDate = nextDate
@@ -124,7 +125,7 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
             }
 
             with(departmentSelectDropdown) {
-                itemClickEvents().onEach {
+                itemClickEvents().throttleFirst().onEach {
                     val filteredSchedules = viewModel.schedules.value.filter { it.departmentName == text.toString() }
                     fixAdapter.submitList(filteredSchedules.filter { it.isFix })
                     applyAdapter.submitList(filteredSchedules.filter { !it.isFix })

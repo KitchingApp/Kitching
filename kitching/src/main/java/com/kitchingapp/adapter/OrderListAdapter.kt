@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kitchingapp.common.throttleFirst
 import com.kitchingapp.data.database.dto.OrderDTO
 import com.kitchingapp.databinding.ItemSmallCategoryBinding
 import kotlinx.coroutines.flow.launchIn
@@ -52,7 +53,7 @@ class OrderListAdapter(private val lifecycleOwner: LifecycleOwner): ListAdapter<
         fun bindSmallCategory(order: OrderDTO) {
             with(binding) {
                 categoryNameTV.text = order.orderName
-                categoryCV.clicks().onEach {
+                categoryCV.clicks().throttleFirst().onEach {
 
                 }.launchIn(lifecycleOwner.lifecycleScope)
             }

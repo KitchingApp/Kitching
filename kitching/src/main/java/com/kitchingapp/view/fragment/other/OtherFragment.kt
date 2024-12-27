@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.kitchingapp.R
 import com.kitchingapp.common.BaseFragment
+import com.kitchingapp.common.throttleFirst
 import com.kitchingapp.databinding.FragmentOtherBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -25,23 +26,23 @@ class OtherFragment : BaseFragment<FragmentOtherBinding>(FragmentOtherBinding::i
 
         with(binding) {
 
-            inviteCodeBtn.clicks().onEach {
+            inviteCodeBtn.clicks().throttleFirst().onEach {
                 navController.navigate(R.id.action_otherFragment_to_inviteFragment)
             }.launchIn(lifecycleScope)
 
-            noticeBtn.clicks().onEach {
+            noticeBtn.clicks().throttleFirst().onEach {
                 navController.navigate(R.id.action_otherFragment_to_noticeFragment)
             }.launchIn(lifecycleScope)
 
-            departmentManagementBtn.clicks().onEach {
+            departmentManagementBtn.clicks().throttleFirst().onEach {
                 navController.navigate(R.id.action_otherFragment_to_departmentFragment)
             }.launchIn(lifecycleScope)
 
-            scheduleTimeBtn.clicks().onEach {
+            scheduleTimeBtn.clicks().throttleFirst().onEach {
                 navController.navigate(R.id.action_otherFragment_to_scheduleTimeFragment)
             }.launchIn(lifecycleScope)
 
-            memberBtn.clicks().onEach {
+            memberBtn.clicks().throttleFirst().onEach {
                 navController.navigate(R.id.action_otherFragment_to_memberListFragment)
             }.launchIn(lifecycleScope)
         }

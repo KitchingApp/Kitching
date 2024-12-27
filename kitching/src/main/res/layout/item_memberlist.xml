@@ -2,7 +2,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scheduleCV"
+    android:id="@+id/memberListCV"
     android:layout_margin="@dimen/margin_S"
     style="@style/memberItemCV">
 

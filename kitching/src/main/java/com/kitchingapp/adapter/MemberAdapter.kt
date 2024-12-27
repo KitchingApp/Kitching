@@ -5,8 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kitchingapp.common.throttleFirst
 import com.kitchingapp.data.database.dto.MemberDTO
 import com.kitchingapp.databinding.ItemMemberlistBinding
+import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.view.clicks
 
 class MemberAdapter : ListAdapter<MemberDTO, MemberAdapter.MemberViewHolder>(diffUtil){
     override fun onCreateViewHolder(
@@ -49,6 +52,9 @@ class MemberAdapter : ListAdapter<MemberDTO, MemberAdapter.MemberViewHolder>(dif
                 nameTV.text = member.userName
                 departmentTV.text = member.departmentName
                 staffLevelTV.text = member.staffLevelName
+                memberListCV.clicks().throttleFirst().onEach {
+
+                }
             }
 
         }

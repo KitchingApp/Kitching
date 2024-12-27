@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kitchingapp.R
+import com.kitchingapp.common.throttleFirst
 import com.kitchingapp.data.database.dto.PrepCategoryDTO
 import com.kitchingapp.databinding.ItemBigCategoryBinding
 import com.kitchingapp.view.fragment.prep.PrepCategoryFragmentDirections
@@ -65,11 +66,11 @@ class PrepCategoryAdapter(
             with(binding) {
                 categoryNameTV.text = prepCategory.categoryName
                 categoryCV.setCardBackgroundColor(Color.parseColor(prepCategory.color))
-                categoryCV.clicks().onEach {
+                categoryCV.clicks().throttleFirst().onEach {
                     val argActions = PrepCategoryFragmentDirections.actionPrepFragmentToPrepListFragment(prepCategory.categoryId)
                     navController.navigate(argActions)
                 }.launchIn(lifecycleOwner.lifecycleScope)
-                optionBtn.clicks().onEach {
+                optionBtn.clicks().throttleFirst().onEach {
                     showMenu(optionBtn, R.menu.option_menu, adapterPosition)
                 }.launchIn(lifecycleOwner.lifecycleScope)
             }

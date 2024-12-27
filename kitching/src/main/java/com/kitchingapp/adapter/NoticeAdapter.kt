@@ -5,8 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kitchingapp.common.throttleFirst
 import com.kitchingapp.data.database.dto.NoticeDTO
 import com.kitchingapp.databinding.ItemNoticeBinding
+import kotlinx.coroutines.flow.onEach
+import ru.ldralighieri.corbind.view.clicks
 
 class NoticeAdapter : ListAdapter<NoticeDTO, NoticeAdapter.NoticeViewHolder>(diffUtil){
     override fun onCreateViewHolder(
@@ -50,6 +53,9 @@ class NoticeAdapter : ListAdapter<NoticeDTO, NoticeAdapter.NoticeViewHolder>(dif
                 writerTV.text = notice.writerName
                 noticeTitleTV.text = notice.title
                 noticeContentPreviewTV.text = notice.content
+                noticeCV.clicks().throttleFirst().onEach {
+
+                }
             }
         }
     }

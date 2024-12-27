@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.kitchingapp.adapter.PrepCategoryAdapter
 import com.kitchingapp.common.BaseFragment
+import com.kitchingapp.common.throttleFirst
 import com.kitchingapp.data.database.repository.LocalRepository
 import com.kitchingapp.data.database.usecase.LocalType
 import com.kitchingapp.data.database.usecase.LocalTypeUseCase
@@ -75,7 +76,7 @@ class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBindi
             }
 
             with(createTodoCategoryBtn) {
-                clicks().onEach {
+                clicks().throttleFirst().onEach {
 //                    navController.navigate(R.id.createPrepCategoryDialog)
                 }.launchIn(lifecycleScope)
             }

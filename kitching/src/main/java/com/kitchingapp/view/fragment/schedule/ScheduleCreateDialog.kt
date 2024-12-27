@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import com.kitchingapp.R
 import com.kitchingapp.common.BaseDialog
+import com.kitchingapp.common.throttleFirst
 import com.kitchingapp.databinding.DialogCreateScheduleBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -43,7 +44,7 @@ class ScheduleCreateDialog: BaseDialog<DialogCreateScheduleBinding>(DialogCreate
             }
 
             with(confirmBtn) {
-                clicks().onEach {
+                clicks().throttleFirst().onEach {
                     // 확인 버튼
                     dismiss()
                 }.launchIn(lifecycleScope)
@@ -52,7 +53,7 @@ class ScheduleCreateDialog: BaseDialog<DialogCreateScheduleBinding>(DialogCreate
             }
 
             with(cancelBtn) {
-                clicks().onEach {
+                clicks().throttleFirst().onEach {
                     dismiss()
                 }.launchIn(lifecycleScope)
 

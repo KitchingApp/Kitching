@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kitchingapp.R
+import com.kitchingapp.common.throttleFirst
 import com.kitchingapp.data.database.dto.DepartmentDTO
 import com.kitchingapp.data.database.dto.TeamDTO
 import com.kitchingapp.data.database.repository.LocalRepository
@@ -72,7 +73,7 @@ class TeamAdapter(private val drawer: DrawerLayout, private val context: Context
         fun bindTeam(team: TeamDTO) {
             with(binding) {
                 teamNameTV.text = team.teamName
-                teamListCV.clicks().onEach {
+                teamListCV.clicks().throttleFirst().onEach {
                     lifecycleScope.launch {
                         localRepository.saveTeamId(team.teamId)
                         drawer.closeDrawers()

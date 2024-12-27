@@ -9,6 +9,7 @@ import com.kitchingapp.common.ColorInputBaseDialog
 import com.kitchingapp.common.TODO_CATEGORY_ARGS_REQUEST_KEY
 import com.kitchingapp.common.TODO_CATEGORY_COLOR_KEY
 import com.kitchingapp.common.TODO_CATEGORY_NAME_KEY
+import com.kitchingapp.common.throttleFirst
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
@@ -30,7 +31,7 @@ class PrepCategoryCreateDialog(private val initialName: String, private val init
             }
 
             with(cancelBtn) {
-                clicks().onEach {
+                clicks().throttleFirst().onEach {
                     dismiss()
                 }.launchIn(lifecycleScope)
             }

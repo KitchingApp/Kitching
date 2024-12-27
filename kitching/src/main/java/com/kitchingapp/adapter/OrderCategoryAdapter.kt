@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kitchingapp.common.throttleFirst
 import com.kitchingapp.data.database.dto.OrderCategoryDTO
 import com.kitchingapp.databinding.ItemBigCategoryBinding
 import com.kitchingapp.view.fragment.order.OrderFragmentDirections
@@ -56,7 +57,7 @@ class OrderCategoryAdapter(private val lifecycleOwner: LifecycleOwner, private v
             with(binding) {
                 categoryNameTV.text = orderCategory.categoryName
                 categoryCV.setCardBackgroundColor(Color.parseColor(orderCategory.color))
-                categoryCV.clicks().onEach {
+                categoryCV.clicks().throttleFirst().onEach {
                     val argsAction = OrderFragmentDirections.actionOrderFragmentToOrderListFragment(orderCategory.categoryId)
                     navController.navigate(argsAction)
                 }.launchIn(lifecycleOwner.lifecycleScope)

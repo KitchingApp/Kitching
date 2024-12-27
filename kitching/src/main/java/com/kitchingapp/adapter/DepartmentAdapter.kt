@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kitchingapp.R
+import com.kitchingapp.common.throttleFirst
 import com.kitchingapp.data.database.dto.DepartmentDTO
 import com.kitchingapp.databinding.ItemBigCategoryBinding
 import com.kitchingapp.view.fragment.other.DepartmentFragmentDirections
@@ -57,7 +58,7 @@ class DepartmentAdapter(private val lifecycleOwner: LifecycleOwner, private val 
             with(binding) {
                 categoryNameTV.text = department.departmentName
                 categoryCV.setCardBackgroundColor(Color.parseColor(department.color))
-                categoryCV.clicks().onEach {
+                categoryCV.clicks().throttleFirst().onEach {
                     val argActions = DepartmentFragmentDirections.actionDepartmentFragmentToStaffLevelFragment(department.departmentId)
                     navController.navigate(argActions)
                 }.launchIn(lifecycleOwner.lifecycleScope)
