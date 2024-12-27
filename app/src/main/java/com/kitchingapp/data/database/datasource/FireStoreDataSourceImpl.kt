@@ -169,7 +169,7 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
     override suspend fun getRecipeName(recipeId: String): String {
         val recipeName = db.collection("recipe").whereEqualTo("id", recipeId).get().await().documents.firstOrNull()
 
-        return recipeName?.getString("name")!!
+        return recipeName?.getString("name") ?: ""
     }
 
     /** schedule time */
