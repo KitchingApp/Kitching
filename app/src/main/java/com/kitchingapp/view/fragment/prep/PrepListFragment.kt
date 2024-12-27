@@ -13,7 +13,7 @@ import com.kitchingapp.adapter.PrepAdapter
 import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.databinding.FragmentPrepListBinding
 import com.kitchingapp.view.model.PrepViewModel
-import com.kitchingapp.view.model.factory.prepViewModelFactory
+import com.kitchingapp.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -21,7 +21,7 @@ class PrepListFragment : BaseFragment<FragmentPrepListBinding>(FragmentPrepListB
     private lateinit var navController: NavController
 
     private val viewModel by viewModels<PrepViewModel> {
-        prepViewModelFactory
+        viewModelFactory
     }
 
     private val args: PrepListFragmentArgs by navArgs()

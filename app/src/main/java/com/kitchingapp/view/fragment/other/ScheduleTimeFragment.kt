@@ -1,6 +1,5 @@
 package com.kitchingapp.view.fragment.other
 
-import RestaurantGenerator
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -17,7 +16,7 @@ import com.kitchingapp.data.database.usecase.LocalType
 import com.kitchingapp.data.database.usecase.LocalTypeUseCase
 import com.kitchingapp.databinding.FragmentScheduleTimeBinding
 import com.kitchingapp.view.model.ScheduleTimeViewModel
-import com.kitchingapp.view.model.factory.scheduleTimeViewModelFactory
+import com.kitchingapp.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -25,7 +24,7 @@ class ScheduleTimeFragment : BaseFragment<FragmentScheduleTimeBinding>(FragmentS
     private lateinit var navController: NavController
 
     private val viewModel by viewModels<ScheduleTimeViewModel> {
-        scheduleTimeViewModelFactory
+        viewModelFactory
     }
 
     private val localRepository: LocalRepository by lazy {

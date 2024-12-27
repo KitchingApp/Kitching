@@ -1,6 +1,5 @@
 package com.kitchingapp.view.fragment.prep
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -11,15 +10,12 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.kitchingapp.adapter.PrepCategoryAdapter
 import com.kitchingapp.common.BaseFragment
-import com.kitchingapp.common.TODO_CATEGORY_ARGS_REQUEST_KEY
-import com.kitchingapp.common.TODO_CATEGORY_COLOR_KEY
-import com.kitchingapp.common.TODO_CATEGORY_NAME_KEY
 import com.kitchingapp.data.database.repository.LocalRepository
 import com.kitchingapp.data.database.usecase.LocalType
 import com.kitchingapp.data.database.usecase.LocalTypeUseCase
 import com.kitchingapp.databinding.FragmentPrepBinding
 import com.kitchingapp.view.model.PrepViewModel
-import com.kitchingapp.view.model.factory.prepViewModelFactory
+import com.kitchingapp.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -30,7 +26,7 @@ class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBindi
     private lateinit var navController: NavController
 
     private val viewModel by viewModels<PrepViewModel> {
-        prepViewModelFactory
+        viewModelFactory
     }
 
     private val localRepository: LocalRepository by lazy {

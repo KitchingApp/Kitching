@@ -11,19 +11,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kitchingapp.common.BaseFragment
 import com.kitchingapp.databinding.FragmentRecipeBinding
-import com.kitchingapp.R
 import com.kitchingapp.adapter.RecipeRecycleAdapter
 import com.kitchingapp.common.KitchingApplication
 import com.kitchingapp.data.database.dto.RecipeDetailDTO
 import com.kitchingapp.view.model.RecipeViewModel
+import com.kitchingapp.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import recipeViewModelFactory
 
 class RecipeFragment : BaseFragment<FragmentRecipeBinding>(FragmentRecipeBinding::inflate){
     private lateinit var navController: NavController
     private val viewModel by viewModels<RecipeViewModel> {
-        recipeViewModelFactory
+        viewModelFactory
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
