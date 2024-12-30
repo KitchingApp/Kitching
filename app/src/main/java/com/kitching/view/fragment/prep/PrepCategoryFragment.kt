@@ -11,9 +11,8 @@ import androidx.navigation.fragment.findNavController
 import com.kitching.adapter.PrepCategoryAdapter
 import com.kitching.common.BaseFragment
 import com.kitching.common.throttleFirst
-import com.kitching.data.repository.LocalRepository
-import com.kitching.data.usecase.LocalType
-import com.kitching.data.usecase.LocalTypeUseCase
+import com.kitching.data.datasource.PreferencesDataSource
+import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentPrepBinding
 import com.kitching.view.model.PrepViewModel
 import com.kitching.view.model.factory.viewModelFactory
@@ -30,16 +29,10 @@ class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBindi
         viewModelFactory
     }
 
-    private val localRepository: LocalRepository by lazy {
-        LocalTypeUseCase(requireContext()).selectLocalType(LocalType.DATASTORE)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         navController = findNavController()
     }
-
-    private lateinit var teamId: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,20 +42,18 @@ class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBindi
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    localRepository.teamId.collectLatest {
-                        if(it != null) {
-                            teamId = it
+                    PreferencesDataSource(requireContext()).teamId.collectLatest { teamId ->
+                        if(teamId != null) {
                             viewModel.getPrepCategory(teamId)
                         }
                     }
                     viewModel.prepCategory.collectLatest {
-                        prepCategoryAdapter.submitList(it)
-                    }
-                }
-
-                launch {
-                    viewModel.prepCategory.collectLatest {
-                        prepCategoryAdapter.submitList(it)
+                        when(it) {
+                            is FirebaseResult.Success -> prepCategoryAdapter.submitList(it.data)
+                            is FirebaseResult.Loading -> TODO("로딩 처리")
+                            is FirebaseResult.Failure -> TODO("예외 처리")
+                            is FirebaseResult.DummyConstructor -> TODO("더미 생성")
+                        }
                     }
                 }
             }

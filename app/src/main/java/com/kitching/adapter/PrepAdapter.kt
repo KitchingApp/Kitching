@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kitching.common.throttleFirst
-import com.kitching.data.database.dto.PrepDTO
+import com.kitching.data.dto.PrepDTO
 import com.kitching.databinding.ItemSmallCategoryBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

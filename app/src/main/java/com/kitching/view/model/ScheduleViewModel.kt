@@ -1,55 +1,44 @@
 package com.kitching.view.model
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kitching.data.dto.ScheduleDTO
 import com.kitching.data.dto.dropDownDepartmentsDTO
-import com.kitching.data.repository.RemoteRepository
-import com.kitching.data.usecase.RemoteType
-import com.kitching.data.usecase.RemoteTypeUseCase
+import com.kitching.data.firebase.FirebaseResult
+import com.kitching.data.repository.ScheduleRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ScheduleViewModel(private val remoteType: RemoteType) : ViewModel(),
-    ViewModelProvider.Factory {
-    private val remoteRepository: RemoteRepository by lazy {
-        RemoteTypeUseCase.selectRemoteType(remoteType)
-    }
+class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRepository()) : ViewModel() {
 
-    private val _schedules = MutableStateFlow<List<ScheduleDTO>>(listOf<ScheduleDTO>())
+    private val _schedules = MutableStateFlow<FirebaseResult<List<ScheduleDTO>>>(FirebaseResult.Loading)
     val schedules get() = _schedules.asStateFlow()
 
-    private val _schedulesByDepartment = MutableStateFlow<List<ScheduleDTO>>(listOf<ScheduleDTO>())
-    val schedulesByDepartment get() = _schedulesByDepartment.asStateFlow()
-
     private val _departments =
-        MutableStateFlow<List<dropDownDepartmentsDTO>>(listOf<dropDownDepartmentsDTO>())
+        MutableStateFlow<FirebaseResult<List<dropDownDepartmentsDTO>>>(FirebaseResult.Loading)
     val departments get() = _departments.asStateFlow()
 
     fun getDepartments(teamId: String) {
         viewModelScope.launch {
-            _departments.value = remoteRepository.getDepartmentsForDropDown(teamId)
+            repository.getDepartmentsForDropDown(teamId).collectLatest {
+                _departments.value = it
+            }
         }
     }
 
     fun getSchedules(teamId: String, dateString: String) {
         viewModelScope.launch {
-            _schedules.value = remoteRepository.getSchedules(teamId, dateString)
-        }
-    }
-
-    fun selectDepartment(departmentName: String) {
-        viewModelScope.launch {
-            _schedulesByDepartment.value =
-                schedules.value.filter { it.departmentName == departmentName }
+            repository.getSchedules(teamId, dateString).collectLatest {
+                _schedules.value = it
+            }
         }
     }
 
     fun rejectSchedule(scheduleId: String) {
         viewModelScope.launch {
-            if (remoteRepository.deleteSchedule(scheduleId)) getSchedules(
+            if (repository.deleteSchedule(scheduleId)) getSchedules(
                 teamId = "",
                 dateString = ""
             )

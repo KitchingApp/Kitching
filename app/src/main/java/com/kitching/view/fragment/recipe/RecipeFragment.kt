@@ -14,6 +14,7 @@ import com.kitching.databinding.FragmentRecipeBinding
 import com.kitching.adapter.RecipeRecycleAdapter
 import com.kitching.common.KitchingApplication
 import com.kitching.data.dto.RecipeDetailDTO
+import com.kitching.data.firebase.FirebaseResult
 import com.kitching.view.model.RecipeViewModel
 import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
@@ -36,7 +37,12 @@ class RecipeFragment : BaseFragment<FragmentRecipeBinding>(FragmentRecipeBinding
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.recipeList.collectLatest {
-                    notifyRecipe(it)
+                    when(it) {
+                        is FirebaseResult.Success -> notifyRecipe(it.data)
+                        is FirebaseResult.Loading -> TODO("로딩 처리")
+                        is FirebaseResult.Failure -> TODO("예외 처리")
+                        is FirebaseResult.DummyConstructor -> TODO("더미 생성")
+                    }
                 }
             }
         }

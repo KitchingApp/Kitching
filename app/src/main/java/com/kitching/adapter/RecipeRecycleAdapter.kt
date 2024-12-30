@@ -8,7 +8,6 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kitching.data.database.dto.RecipeDetailDTO
 import com.kitching.databinding.ItemRecipeBinding
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
@@ -16,6 +15,7 @@ import com.kitching.view.fragment.recipe.RecipeFragmentDirections
 import kotlinx.coroutines.flow.launchIn
 import com.kitching.R
 import com.kitching.common.throttleFirst
+import com.kitching.data.dto.RecipeDetailDTO
 
 class RecipeRecycleAdapter(private val lifecycleOwner: LifecycleOwner, private val navController: NavController) : ListAdapter<RecipeDetailDTO, RecipeRecycleAdapter.RecipeViewHolder>(diffUtil) {
     override fun onCreateViewHolder(

@@ -3,24 +3,23 @@ package com.kitching.view.model
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kitching.data.dto.NoticeDTO
-import com.kitching.data.repository.RemoteRepository
-import com.kitching.data.usecase.RemoteType
-import com.kitching.data.usecase.RemoteTypeUseCase
+import com.kitching.data.firebase.FirebaseResult
+import com.kitching.data.repository.OtherRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class NoticeViewModel(private val remoteType: RemoteType) : ViewModel() {
-    private val remoteRepository: RemoteRepository by lazy {
-        RemoteTypeUseCase.selectRemoteType(remoteType)
-    }
+class NoticeViewModel(private val repository: OtherRepository = OtherRepository()) : ViewModel() {
 
-    private val _notices = MutableStateFlow<MutableList<NoticeDTO>>(mutableListOf<NoticeDTO>())
+    private val _notices = MutableStateFlow<FirebaseResult<MutableList<NoticeDTO>>>(FirebaseResult.Loading)
     val notices get() = _notices.asStateFlow()
 
     fun getNotices(teamId: String) {
         viewModelScope.launch {
-            _notices.value = remoteRepository.getNotices(teamId)
+            repository.getNotices(teamId).collectLatest {
+                _notices.value = it
+            }
         }
     }
 }

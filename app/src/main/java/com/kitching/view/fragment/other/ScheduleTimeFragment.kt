@@ -11,9 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kitching.adapter.ScheduleTimeAdapter
 import com.kitching.common.BaseFragment
-import com.kitching.data.repository.LocalRepository
-import com.kitching.data.usecase.LocalType
-import com.kitching.data.usecase.LocalTypeUseCase
+import com.kitching.data.datasource.PreferencesDataSource
+import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentScheduleTimeBinding
 import com.kitching.view.model.ScheduleTimeViewModel
 import com.kitching.view.model.factory.viewModelFactory
@@ -27,10 +26,6 @@ class ScheduleTimeFragment : BaseFragment<FragmentScheduleTimeBinding>(FragmentS
         viewModelFactory
     }
 
-    private val localRepository: LocalRepository by lazy {
-        LocalTypeUseCase(requireContext()).selectLocalType(LocalType.DATASTORE)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         navController = findNavController()
@@ -39,29 +34,31 @@ class ScheduleTimeFragment : BaseFragment<FragmentScheduleTimeBinding>(FragmentS
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lateinit var teamId: String
         val scheduleTimeAdapter = ScheduleTimeAdapter()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    localRepository.teamId.collectLatest {
-                        if (it != null) {
-                            teamId = it
-                            viewModel.getScheduleTimes(teamId)
+                PreferencesDataSource(requireContext()).teamId.collectLatest { teamId ->
+                    if (teamId != null) {
+                        viewModel.getScheduleTimes(teamId)
+                    }
+                }
+                viewModel.scheduleTime.collectLatest {
+                    when (it) {
+                        is FirebaseResult.Success -> {
+                            scheduleTimeAdapter.submitList(it.data)
                         }
+
+                        is FirebaseResult.Loading -> TODO("로딩 처리")
+                        is FirebaseResult.Failure -> TODO("예외 처리")
+                        is FirebaseResult.DummyConstructor -> TODO("더미 생성")
                     }
                 }
 
-                launch {
-                    viewModel.scheduleTime.collectLatest {
-                        scheduleTimeAdapter.submitList(it)
-                    }
-                }
             }
         }
-
-        with(binding.scheduleTimeRV) {
+        with(binding.scheduleTimeRV)
+        {
             setRvLayout(this)
             layoutManager = LinearLayoutManager(requireContext())
             this.adapter = scheduleTimeAdapter

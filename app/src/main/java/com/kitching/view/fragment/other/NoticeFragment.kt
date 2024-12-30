@@ -11,9 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kitching.adapter.NoticeAdapter
 import com.kitching.common.BaseFragment
-import com.kitching.data.repository.LocalRepository
-import com.kitching.data.usecase.LocalType
-import com.kitching.data.usecase.LocalTypeUseCase
+import com.kitching.data.datasource.PreferencesDataSource
+import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentNoticeBinding
 import com.kitching.view.model.NoticeViewModel
 import com.kitching.view.model.factory.viewModelFactory
@@ -27,10 +26,6 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(FragmentNoticeBinding
         viewModelFactory
     }
 
-    private val localRepository: LocalRepository by lazy {
-        LocalTypeUseCase(requireContext()).selectLocalType(LocalType.DATASTORE)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         navController = findNavController()
@@ -39,29 +34,31 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(FragmentNoticeBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lateinit var teamId: String
         val noticeAdapter = NoticeAdapter()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    localRepository.teamId.collect {
-                        if (it != null) {
-                            teamId = it
-                            viewModel.getNotices(teamId)
+                PreferencesDataSource(requireContext()).teamId.collect { teamId ->
+                    if (teamId != null) {
+                        viewModel.getNotices(teamId)
+                        viewModel.notices.collectLatest {
+                            when (it) {
+                                is FirebaseResult.Success -> {
+                                    noticeAdapter.submitList(it.data)
+                                }
+
+                                is FirebaseResult.Loading -> TODO("로딩 처리")
+                                is FirebaseResult.Failure -> TODO("예외 처리")
+                                is FirebaseResult.DummyConstructor -> TODO("더미 생성")
+                            }
                         }
                     }
                 }
-
-                launch {
-                    viewModel.notices.collectLatest {
-                        noticeAdapter.submitList(it)
-                    }
-                }
             }
-        }
 
-        with(binding.noticeRV) {
+        }
+        with(binding.noticeRV)
+        {
             setRvLayout(this)
             layoutManager = LinearLayoutManager(requireContext())
             adapter = noticeAdapter

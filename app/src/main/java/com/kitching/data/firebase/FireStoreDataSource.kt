@@ -1,7 +1,6 @@
 package com.kitching.data.firebase
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.kitching.data.datasource.RemoteDataSource
 import com.kitching.domain.entities.Order
 import com.kitching.domain.entities.OrderCategory
 import com.kitching.domain.entities.Department
@@ -17,72 +16,72 @@ import com.kitching.domain.entities.Team
 import com.kitching.domain.entities.UserTeam
 import kotlinx.coroutines.tasks.await
 
-class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSource {
+class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) {
 
-    override suspend fun getTeams(userId: String): List<Team> {
+    suspend fun getTeams(userId: String): List<Team> {
         val teams = db.collection("team").whereEqualTo("ownerId", userId).get().await()
 
         return if(teams.isEmpty) emptyList()
         else teams.toObjects(Team::class.java)
     }
 
-    override suspend fun getTeamName(teamId: String): String {
+    suspend fun getTeamName(teamId: String): String {
         val teamName = db.collection("team").whereEqualTo("id", teamId).get().await().documents.firstOrNull()
 
         return teamName?.getString("teamName")!!
     }
 
-    override suspend fun getDepartments(teamId: String): List<Department> {
+    suspend fun getDepartments(teamId: String): List<Department> {
         val departments = db.collection("department").whereEqualTo("teamId", teamId).get().await()
 
         return if(departments.isEmpty) emptyList()
         else departments.toObjects(Department::class.java)
     }
 
-    override suspend fun getTeamSchedules(teamId: String, date: String): List<Schedule> {
+    suspend fun getTeamSchedules(teamId: String, date: String): List<Schedule> {
         val schedules = db.collection("schedule").whereEqualTo("teamId", teamId).whereEqualTo("date", date).get().await()
 
         return if(schedules.isEmpty) emptyList()
         else schedules.toObjects(Schedule::class.java)
     }
 
-    override suspend fun getScheduleTimeName(teamId: String, scheduleTimeId: String): String {
+    suspend fun getScheduleTimeName(teamId: String, scheduleTimeId: String): String {
         val scheduleTime = db.collection("scheduleTime").whereEqualTo("id", scheduleTimeId).get().await().documents.firstOrNull()
 
         return scheduleTime?.getString("name")!!
     }
 
-    override suspend fun getDepartmentId(teamId: String, userId: String): String {
+    suspend fun getDepartmentId(teamId: String, userId: String): String {
         val userTeam = db.collection("user-team").whereEqualTo("teamId", teamId).whereEqualTo("userId", userId).get().await().documents.firstOrNull()
 
         return userTeam?.getString("departmentId")!!
     }
 
-    override suspend fun getDepartmentName(teamId: String, departmentId: String): String {
+    suspend fun getDepartmentName(teamId: String, departmentId: String): String {
         val department = db.collection("department").whereEqualTo("id", departmentId).get().await().documents.firstOrNull()
 
         return department?.getString("name")!!
     }
 
-    override suspend fun getStaffLevelId(teamId: String, userId: String): String {
+    suspend fun getStaffLevelId(teamId: String, userId: String): String {
         val userTeam = db.collection("user-team").whereEqualTo("teamId", teamId).whereEqualTo("userId", userId).get().await().documents.firstOrNull()
 
         return userTeam?.getString("staffLevelId")!!
     }
 
-    override suspend fun getStaffLevelName(staffLevelId: String): String {
+    suspend fun getStaffLevelName(staffLevelId: String): String {
         val department = db.collection("staffLevel").whereEqualTo("id", staffLevelId).get().await().documents.firstOrNull()
 
         return department?.getString("name")!!
     }
 
-    override suspend fun getUserName(userId: String): String {
+    suspend fun getUserName(userId: String): String {
         val user = db.collection("user").whereEqualTo("id", userId).get().await().documents.firstOrNull()
 
         return user?.getString("userName")!!
     }
 
-    override suspend fun createSchedule(schedule: Schedule): Boolean {
+    suspend fun createSchedule(schedule: Schedule): Boolean {
         val scheduleMap = mapOf(
             "id" to schedule.id,
             "date" to schedule.date,
@@ -95,7 +94,7 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
         return createTask.exception == null
     }
 
-    override suspend fun deleteSchedule(scheduleId: String): Boolean {
+    suspend fun deleteSchedule(scheduleId: String): Boolean {
         var deleteTaskResult = false
 
         db.collection("schedule").document(scheduleId).delete()
@@ -106,13 +105,13 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
 
     /** Order Page */
 
-    override suspend fun getOrderCategory(teamId: String): MutableList<OrderCategory> {
+    suspend fun getOrderCategory(teamId: String): MutableList<OrderCategory> {
         val orderCategory = db.collection("orderCategory").whereEqualTo("teamId", teamId).get().await()
         return if (orderCategory.isEmpty) mutableListOf()
         else orderCategory.toObjects(OrderCategory::class.java) as MutableList<OrderCategory>
     }
 
-    override suspend fun getOrderList(categoryId: String): MutableList<Order> {
+    suspend fun getOrderList(categoryId: String): MutableList<Order> {
         val orderList = db.collection("order").whereEqualTo("categoryId", categoryId).get().await()
         return if (orderList.isEmpty) mutableListOf()
         else orderList.toObjects(Order::class.java) as MutableList<Order>
@@ -120,7 +119,7 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
     }
 
     /** Recipe Page */
-    override suspend fun getRecipeList(teamId: String): MutableList<Recipe> {
+    suspend fun getRecipeList(teamId: String): MutableList<Recipe> {
         val recipeListSnapshot = db.collection("recipe")
             .whereEqualTo("teamId", teamId)
             .get()
@@ -146,28 +145,28 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
 
     /** Prep */
 
-    override suspend fun getPrepCategory(teamId: String): MutableList<PrepCategory> {
+    suspend fun getPrepCategory(teamId: String): MutableList<PrepCategory> {
         val prepCategory = db.collection("prepCategory").whereEqualTo("teamId", teamId).get().await()
 
         return if (prepCategory.isEmpty) mutableListOf()
         else prepCategory.toObjects(PrepCategory::class.java) as MutableList<PrepCategory>
     }
 
-    override suspend fun getPrepList(categoryId: String): MutableList<Prep> {
+    suspend fun getPrepList(categoryId: String): MutableList<Prep> {
         val prepList = db.collection("prep").whereEqualTo("categoryId", categoryId).get().await()
 
         return if (prepList.isEmpty) mutableListOf()
         else prepList.toObjects(Prep::class.java) as MutableList<Prep>
     }
 
-    override suspend fun getAllMembers(teamId: String): MutableList<UserTeam> {
+    suspend fun getAllMembers(teamId: String): MutableList<UserTeam> {
         val memberList = db.collection("user-team").whereEqualTo("teamId", teamId).get().await()
 
         return if(memberList.isEmpty) mutableListOf()
         else memberList.toObjects(UserTeam::class.java) as MutableList<UserTeam>
     }
 
-    override suspend fun getRecipeName(recipeId: String): String {
+    suspend fun getRecipeName(recipeId: String): String {
         val recipeName = db.collection("recipe").whereEqualTo("id", recipeId).get().await().documents.firstOrNull()
 
         return recipeName?.getString("name") ?: ""
@@ -175,7 +174,7 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
 
     /** schedule time */
 
-    override suspend fun getScheduleTimes(teamId: String): MutableList<ScheduleTime> {
+    suspend fun getScheduleTimes(teamId: String): MutableList<ScheduleTime> {
         val scheduleTime = db.collection("scheduleTime").whereEqualTo("teamId", teamId).orderBy("startTime").get().await()
 
         return if (scheduleTime.isEmpty) mutableListOf()
@@ -183,14 +182,14 @@ class FireStoreDataSourceImpl(private val db: FirebaseFirestore): RemoteDataSour
     }
 
     /** department / staff level management */
-    override suspend fun getStaffLevels(departmentId: String): MutableList<StaffLevel> {
+    suspend fun getStaffLevels(departmentId: String): MutableList<StaffLevel> {
         val staffLevels = db.collection("staffLevel").whereEqualTo("departmentId", departmentId).get().await()
 
         return if (staffLevels.isEmpty) mutableListOf()
         else staffLevels.toObjects(StaffLevel::class.java)
     }
 
-    override suspend fun getNotices(teamId: String): MutableList<Notice> {
+    suspend fun getNotices(teamId: String): MutableList<Notice> {
         val notices = db.collection("notice").whereEqualTo("teamId", teamId).get().await()
 
         return if (notices.isEmpty) mutableListOf()
