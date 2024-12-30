@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragment.other.OtherFragment">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/userIV"
+        android:layout_width="@dimen/memberCircleImage"
+        android:layout_height="@dimen/memberCircleImage"
+        android:layout_marginStart="@dimen/margin_XL"
+        android:layout_marginTop="@dimen/margin_S"
+        android:src="@drawable/baseline_account_circle_24"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/userNameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_M"
+        android:text="@string/name"
+        android:textSize="@dimen/text_L"
+
+        app:layout_constraintStart_toEndOf="@id/userIV"
+        app:layout_constraintTop_toTopOf="@id/userIV" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/userLevelTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/manager"
+        android:textSize="@dimen/text_L"
+
+        app:layout_constraintStart_toStartOf="@id/userNameTV"
+        app:layout_constraintTop_toBottomOf="@id/userNameTV" />
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/black"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userIV" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/inviteCodeBtn"
+        style="@style/otherListBtn"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/margin_M"
+        android:text="@string/inviteCode"
+
+        app:layout_constraintTop_toBottomOf="@id/line1" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/noticeBtn"
+        style="@style/otherListBtn"
+        android:layout_width="match_parent"
+        android:text="공지사항"
+
+        app:layout_constraintTop_toBottomOf="@id/inviteCodeBtn" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/departmentManagementBtn"
+        style="@style/otherListBtn"
+        android:layout_width="match_parent"
+        android:text="부서 / 직급 관리"
+
+
+        app:layout_constraintTop_toBottomOf="@id/noticeBtn" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/scheduleTimeBtn"
+        style="@style/otherListBtn"
+        android:layout_width="match_parent"
+        android:text="스케쥴타임"
+
+        app:layout_constraintTop_toBottomOf="@id/departmentManagementBtn" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/memberBtn"
+        style="@style/otherListBtn"
+        android:layout_width="match_parent"
+        android:text="멤버조회"
+
+        app:layout_constraintTop_toBottomOf="@id/scheduleTimeBtn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

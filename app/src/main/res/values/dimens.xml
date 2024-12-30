@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--    text size-->
+    <dimen name="text_XXL">40sp</dimen>
+    <dimen name="text_XL">30sp</dimen>
+    <dimen name="text_L">20sp</dimen>
+    <dimen name="text_M">15sp</dimen>
+
+<!--    padding-->
+    <dimen name="defaultPadding">20dp</dimen>
+    <dimen name="padding_S">10dp</dimen>
+    <dimen name="padding_M">20dp</dimen>
+    <dimen name="padding_L">30dp</dimen>
+    <dimen name="chipGroupPaddingHR">10dp</dimen>
+    <dimen name="dialogTVPadding">10dp</dimen>
+    <dimen name="dialogDefaultPadding">20dp</dimen>
+
+<!--    margin-->
+    <dimen name="floatingActionBtnMargin">30dp</dimen>
+    <dimen name="dialogBtnMarginEnd">10dp</dimen>
+    <dimen name="dialogDefaultMargin">10dp</dimen>
+    <dimen name="margin_XS">5dp</dimen>
+    <dimen name="margin_S">10dp</dimen>
+    <dimen name="margin_M">20dp</dimen>
+    <dimen name="margin_L">30dp</dimen>
+    <dimen name="margin_XL">40dp</dimen>
+
+<!--    height-->
+    <dimen name="dialogBtnHeight">50dp</dimen>
+    <dimen name="dialogNoticeContentHeight">300dp</dimen>
+    <dimen name="autoCompleteTVMinHeight">48dp</dimen>
+    <dimen name="otherListBtnHeight">50dp</dimen>
+    <dimen name="bottomNavHeight">75dp</dimen>
+    <dimen name="recipeDetailImageHeight">300dp</dimen>
+    <dimen name="recipeDetailIngredientsTableHeight">40dp</dimen>
+    <dimen name="recipeImageHeight">200dp</dimen>
+    <dimen name="scheduleListItemHeight">50dp</dimen>
+    <dimen name="teamListItemHeight">70dp</dimen>
+
+<!--    width-->
+    <dimen name="dialogMinWidth">300dp</dimen>
+    <dimen name="recipeImageWidth">150dp</dimen>
+
+<!--    circleImage-->
+    <dimen name="memberDetailCircleImage">120dp</dimen>
+    <dimen name="memberCircleImage">70dp</dimen>
+
+<!--    recipeDetail-->
+
+</resources>

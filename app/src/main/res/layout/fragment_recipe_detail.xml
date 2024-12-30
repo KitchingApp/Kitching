@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.fragment.recipe.RecipeDetailFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/recipeIV"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/recipeDetailImageHeight"
+            android:src="@drawable/pancake"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/recipeDetailTitle"
+            android:id="@+id/recipeNameTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="레시피 이름"
+            app:layout_constraintTop_toBottomOf="@id/recipeIV" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/recipeIngredientsTitleTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/recipeDetailTitle"
+            android:text="@string/ingredients"
+            app:layout_constraintTop_toBottomOf="@id/recipeNameTV" />
+
+        <GridLayout
+            android:id="@+id/gridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:columnCount="4"
+            android:orientation="horizontal"
+            style="@style/recipeDetailTitle"
+
+            app:layout_constraintTop_toBottomOf="@id/recipeIngredientsTitleTV"
+            >
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recipeIngredientsTV1"
+                android:text="X 1"
+                android:background="@drawable/border_box"
+                android:layout_columnWeight="1"
+                style="@style/recipeIngredientsTable"
+                />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recipeIngredientsTV2"
+                android:text="X 2"
+                android:layout_columnWeight="1"
+                android:background="@drawable/border_box"
+                style="@style/recipeIngredientsTable"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recipeIngredientsTV3"
+                android:text="Unit"
+                android:layout_columnWeight="1"
+                android:background="@drawable/border_box"
+                style="@style/recipeIngredientsTable"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recipeIngredientsTV4"
+                android:text="Ingredients"
+                android:layout_columnWeight="2.5"
+                android:background="@drawable/border_box"
+                style="@style/recipeIngredientsNameTable"
+                />
+
+        </GridLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/recipeStepTV1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/recipeDetailTitle"
+            android:text="순서"
+            app:layout_constraintTop_toBottomOf="@id/gridLayout" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/recipeStepTV2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1. Aaaaaaaaaaaa"
+            style="@style/recipeOrder"
+            app:layout_constraintTop_toBottomOf="@id/recipeStepTV1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

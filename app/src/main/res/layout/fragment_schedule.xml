@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scheduleLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragment.schedule.ScheduleFragment">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/prevDateBtn"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/prevDateBtnDescription"
+        app:icon="@drawable/baseline_arrow_left_24"
+        app:layout_constraintEnd_toStartOf="@+id/scheduleDateBtn"
+        app:layout_constraintTop_toTopOf="@+id/scheduleDateBtn" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/scheduleDateBtn"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2024.12.11" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nextDateBtn"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/nextDateBtnDescription"
+        app:icon="@drawable/baseline_arrow_right_24"
+        app:layout_constraintStart_toEndOf="@+id/scheduleDateBtn"
+        app:layout_constraintTop_toTopOf="@+id/scheduleDateBtn" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/departmentSelectLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+        android:layout_width="300dp"
+        android:layout_height="0dp"
+        android:hint="부서를 선택해주세요."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scheduleDateBtn">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/departmentSelectDropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!--        <com.google.android.material.tabs.TabLayout-->
+    <!--            style="@style/tabLayout"-->
+    <!--            android:id="@+id/scheduleTab"-->
+
+    <!--            app:tabGravity="center"-->
+    <!--            app:tabMode="scrollable"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toBottomOf="@id/scheduleDateBtn">-->
+
+    <!--        </com.google.android.material.tabs.TabLayout>-->
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/scheduleDepartmentPeople"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="확정 근무인원 총 2명"
+        app:layout_constraintBottom_toTopOf="@+id/confirmedScheduleRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/departmentSelectLayout" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/confirmedScheduleRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/appliedScheduleRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scheduleDepartmentPeople"
+        tools:listitem="@layout/item_schedule_list" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/appliedScheduleRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirmedScheduleRecyclerView"
+        tools:listitem="@layout/item_schedule_applylist" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/createScheduleBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/floatingActionBtnMargin"
+
+        android:contentDescription="새 스케줄 배정하기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

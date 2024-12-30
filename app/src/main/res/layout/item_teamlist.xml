@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/teamListCV"
+    android:layout_margin="@dimen/margin_S"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/teamListItemHeight"
+    android:layout_marginVertical="@dimen/margin_S">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:padding="@dimen/padding_M"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/teamNameTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Team A"
+            android:textSize="@dimen/text_L"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
