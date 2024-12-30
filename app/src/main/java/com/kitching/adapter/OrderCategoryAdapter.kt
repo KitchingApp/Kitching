@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kitching.common.throttleFirst
-import com.kitching.data.database.dto.OrderCategoryDTO
+import com.kitching.data.dto.OrderCategoryDTO
 import com.kitching.databinding.ItemBigCategoryBinding
 import com.kitching.view.fragment.order.OrderFragmentDirections
 import kotlinx.coroutines.flow.launchIn

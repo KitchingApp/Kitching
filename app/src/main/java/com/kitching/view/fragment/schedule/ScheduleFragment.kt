@@ -15,9 +15,8 @@ import com.kitching.common.BaseFragment
 import com.kitching.databinding.FragmentScheduleBinding
 import com.kitching.adapter.ScheduleFixAdapter
 import com.kitching.common.throttleFirst
-import com.kitching.data.repository.LocalRepository
-import com.kitching.data.usecase.LocalType
-import com.kitching.data.usecase.LocalTypeUseCase
+import com.kitching.data.datasource.PreferencesDataSource
+import com.kitching.data.firebase.FirebaseResult
 import com.kitching.view.model.ScheduleViewModel
 import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
@@ -33,10 +32,6 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
 
     private val viewModel by viewModels<ScheduleViewModel> {
         viewModelFactory
-    }
-
-    private val localRepository: LocalRepository by lazy {
-        LocalTypeUseCase(requireContext()).selectLocalType(LocalType.DATASTORE)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,29 +50,38 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    localRepository.teamId.collectLatest {
-                        if(it != null) {
-                            teamId = it
+                    PreferencesDataSource(requireContext()).teamId.collectLatest { teamId ->
+                        if (teamId != null) {
                             viewModel.getDepartments(teamId)
                             viewModel.getSchedules(teamId, LocalDate.now().toString())
                         }
                     }
-                }
-
-                launch {
                     viewModel.schedules.collectLatest { schedules ->
-                        fixAdapter.submitList(schedules.filter { it.isFix })
-                        applyAdapter.submitList(schedules.filter { !it.isFix })
-                    }
-                }
+                        when(schedules) {
+                            is FirebaseResult.Success -> {
+                                fixAdapter.submitList(schedules.data.filter { it.isFix })
+                                applyAdapter.submitList(schedules.data.filter { !it.isFix })
+                            }
+                            is FirebaseResult.Loading -> TODO("로딩 처리")
+                            is FirebaseResult.Failure -> TODO("예외 처리")
+                            is FirebaseResult.DummyConstructor -> TODO("더미 생성")
+                        }
 
-                launch {
+                    }
                     viewModel.departments.collectLatest { departments ->
                         with(binding.departmentSelectDropdown) {
-                            if(departments.isNotEmpty()) {
-                                setText("부서", false)
-                                setSimpleItems(departments.map { it.departmentName }.toTypedArray())
+                            when(departments) {
+                                is FirebaseResult.Success -> {
+                                    if (departments.data.isNotEmpty()) {
+                                        setText("부서", false)
+                                        setSimpleItems(departments.data.map { it.departmentName }.toTypedArray())
+                                    }
+                                }
+                                is FirebaseResult.Loading -> TODO("로딩 처리")
+                                is FirebaseResult.Failure -> TODO("예외 처리")
+                                is FirebaseResult.DummyConstructor -> TODO("더미 생성")
                             }
+
                         }
                     }
                 }
@@ -106,7 +110,8 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
 
                     context.let {
                         DatePickerDialog(it, { _, selectedYear, selectedMonth, selectedDay ->
-                            val selectDate = LocalDate.of(selectedYear, selectedMonth + 1, selectedDay)
+                            val selectDate =
+                                LocalDate.of(selectedYear, selectedMonth + 1, selectedDay)
                             text = selectDate.toString()
                             currentDate = selectDate
                             viewModel.getSchedules(teamId, currentDate.toString())
@@ -126,9 +131,18 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
 
             with(departmentSelectDropdown) {
                 itemClickEvents().throttleFirst().onEach {
-                    val filteredSchedules = viewModel.schedules.value.filter { it.departmentName == text.toString() }
-                    fixAdapter.submitList(filteredSchedules.filter { it.isFix })
-                    applyAdapter.submitList(filteredSchedules.filter { !it.isFix })
+                    viewModel.schedules.collectLatest { filteredSchedule ->
+                        val filteredSchedules = when (filteredSchedule) {
+                            is FirebaseResult.Success -> {
+                                    filteredSchedule.data.filter { it.departmentName == text.toString() }
+                            }
+                            is FirebaseResult.Loading -> TODO("로딩 처리")
+                            is FirebaseResult.Failure -> TODO("예외 처리")
+                            is FirebaseResult.DummyConstructor -> TODO("더미 생성")
+                        }
+                        fixAdapter.submitList(filteredSchedules.filter { it.isFix })
+                        applyAdapter.submitList(filteredSchedules.filter { !it.isFix })
+                    }
                 }.launchIn(lifecycleScope)
             }
 

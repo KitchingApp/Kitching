@@ -2,7 +2,6 @@ package com.kitching.view.model.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.kitching.data.usecase.RemoteType
 import com.kitching.view.model.DepartmentViewModel
 import com.kitching.view.model.NoticeViewModel
 import com.kitching.view.model.OrderViewModel
@@ -11,6 +10,7 @@ import com.kitching.view.model.RecipeViewModel
 import com.kitching.view.model.ScheduleTimeViewModel
 import com.kitching.view.model.ScheduleViewModel
 import com.kitching.view.model.StaffLevelViewModel
+import com.kitching.view.model.TeamViewModel
 
 @Suppress("UNCHECKED_CAST")
 val viewModelFactory = object : ViewModelProvider.Factory {
@@ -18,20 +18,22 @@ val viewModelFactory = object : ViewModelProvider.Factory {
         with(modelClass) {
             when {
                 isAssignableFrom(DepartmentViewModel::class.java) ->
-                    DepartmentViewModel(RemoteType.FIREBASE)
+                    DepartmentViewModel()
                 isAssignableFrom(NoticeViewModel::class.java) ->
-                    NoticeViewModel(RemoteType.FIREBASE)
+                    NoticeViewModel()
                 isAssignableFrom(OrderViewModel::class.java) ->
-                    OrderViewModel(RemoteType.FIREBASE)
+                    OrderViewModel()
                 isAssignableFrom(PrepViewModel::class.java) ->
-                    PrepViewModel(RemoteType.FIREBASE)
+                    PrepViewModel()
                 isAssignableFrom(RecipeViewModel::class.java) ->
-                    RecipeViewModel(RemoteType.FIREBASE)
+                    RecipeViewModel()
                 isAssignableFrom(ScheduleTimeViewModel::class.java) ->
-                    ScheduleTimeViewModel(RemoteType.FIREBASE)
-                isAssignableFrom(ScheduleViewModel::class.java) -> ScheduleViewModel(RemoteType.FIREBASE)
+                    ScheduleTimeViewModel()
+                isAssignableFrom(ScheduleViewModel::class.java) -> ScheduleViewModel()
                 isAssignableFrom(StaffLevelViewModel::class.java) ->
-                    StaffLevelViewModel(RemoteType.FIREBASE)
+                    StaffLevelViewModel()
+                isAssignableFrom(TeamViewModel::class.java) ->
+                    TeamViewModel()
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

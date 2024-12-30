@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kitching.R
 import com.kitching.common.throttleFirst
-import com.kitching.data.database.dto.PrepCategoryDTO
+import com.kitching.data.dto.PrepCategoryDTO
 import com.kitching.databinding.ItemBigCategoryBinding
 import com.kitching.view.fragment.prep.PrepCategoryFragmentDirections
 import kotlinx.coroutines.flow.launchIn

@@ -1,28 +1,24 @@
 package com.kitching.view.model
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kitching.data.dto.TeamDTO
-import com.kitching.data.repository.RemoteRepository
-import com.kitching.data.usecase.RemoteType
-import com.kitching.data.usecase.RemoteTypeUseCase
+import com.kitching.data.firebase.FirebaseResult
+import com.kitching.data.repository.TeamRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class TeamViewModel(private val remoteType: RemoteType) : ViewModel(),
-    ViewModelProvider.Factory {
-    private val remoteRepository: RemoteRepository by lazy {
-        RemoteTypeUseCase.selectRemoteType(remoteType)
-    }
-
-    private val _teams = MutableStateFlow<List<TeamDTO>>(listOf<TeamDTO>())
+class TeamViewModel(private val repository: TeamRepository = TeamRepository()) : ViewModel() {
+    private val _teams = MutableStateFlow<FirebaseResult<List<TeamDTO>>>(FirebaseResult.Loading)
     val teams get() = _teams.asStateFlow()
 
     fun getTeams(userId: String) {
         viewModelScope.launch {
-            _teams.value = remoteRepository.getTeamsByUserId(userId)
+             repository.getTeamsByUserId(userId).collectLatest {
+                 _teams.value = it
+             }
         }
     }
 }

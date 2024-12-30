@@ -10,15 +10,15 @@ import kotlinx.coroutines.flow.map
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "team")
 
-class PreferencesDataSourceImpl(private val context: Context): LocalDataSource {
+class PreferencesDataSource(private val context: Context) {
 
     companion object {
         private val TEAM_ID = stringPreferencesKey("team_id")
     }
 
-    override suspend fun saveTeamId(teamId: String) {
+    suspend fun saveTeamId(teamId: String) {
         context.dataStore.edit { team -> team[TEAM_ID] = teamId }
     }
 
-   override val teamId = context.dataStore.data.map { it[TEAM_ID] }
+   val teamId = context.dataStore.data.map { it[TEAM_ID] }
 }

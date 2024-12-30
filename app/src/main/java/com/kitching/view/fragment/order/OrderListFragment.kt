@@ -11,7 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.kitching.adapter.OrderListAdapter
 import com.kitching.common.BaseFragment
-import com.kitching.data.database.dto.OrderDTO
+import com.kitching.data.dto.OrderDTO
+import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentOrderlistBinding
 import com.kitching.view.model.OrderViewModel
 import com.kitching.view.model.factory.viewModelFactory
@@ -37,7 +38,12 @@ class OrderListFragment: BaseFragment<FragmentOrderlistBinding>(FragmentOrderlis
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.orderList.collectLatest {
-                    notifyOrderList(it)
+                    when(it) {
+                        is FirebaseResult.Success -> notifyOrderList(it.data)
+                        is FirebaseResult.Loading -> TODO("로딩 처리")
+                        is FirebaseResult.Failure -> TODO("예외 처리")
+                        is FirebaseResult.DummyConstructor -> TODO("더미 생성")
+                    }
                 }
             }
         }

@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.kitching.adapter.PrepAdapter
 import com.kitching.common.BaseFragment
+import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentPrepListBinding
 import com.kitching.view.model.PrepViewModel
 import com.kitching.view.model.factory.viewModelFactory
@@ -38,10 +39,13 @@ class PrepListFragment : BaseFragment<FragmentPrepListBinding>(FragmentPrepListB
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.getPrepList(args.prepCategoryId)
-                    viewModel.prepList.collectLatest {
-                        prepAdapter.submitList(it)
+                viewModel.getPrepList(args.prepCategoryId)
+                viewModel.prepList.collectLatest {
+                    when (it) {
+                        is FirebaseResult.Success -> prepAdapter.submitList(it.data)
+                        is FirebaseResult.Loading -> TODO("로딩 처리")
+                        is FirebaseResult.Failure -> TODO("예외 처리")
+                        is FirebaseResult.DummyConstructor -> TODO("더미 생성")
                     }
                 }
             }

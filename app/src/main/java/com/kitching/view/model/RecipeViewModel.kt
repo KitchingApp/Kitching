@@ -3,24 +3,23 @@ package com.kitching.view.model
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kitching.data.dto.RecipeDetailDTO
-import com.kitching.data.repository.RemoteRepository
-import com.kitching.data.usecase.RemoteType
-import com.kitching.data.usecase.RemoteTypeUseCase
+import com.kitching.data.firebase.FirebaseResult
+import com.kitching.data.repository.RecipeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class RecipeViewModel(private val remoteType: RemoteType) : ViewModel() {
-    private val remoteRepository: RemoteRepository by lazy {
-        RemoteTypeUseCase.selectRemoteType(remoteType)
-    }
+class RecipeViewModel(private val repository: RecipeRepository = RecipeRepository()) : ViewModel() {
 
-    private val _recipeList = MutableStateFlow<MutableList<RecipeDetailDTO>>(mutableListOf<RecipeDetailDTO>())
+    private val _recipeList = MutableStateFlow<FirebaseResult<MutableList<RecipeDetailDTO>>>(FirebaseResult.Loading)
     val recipeList get() = _recipeList.asStateFlow()
 
     fun getRecipeList(teamId: String) {
         viewModelScope.launch {
-            _recipeList.value = remoteRepository.getRecipeList(teamId)
+            repository.getRecipeList(teamId).collectLatest {
+                _recipeList.value = it
+            }
         }
     }
 }

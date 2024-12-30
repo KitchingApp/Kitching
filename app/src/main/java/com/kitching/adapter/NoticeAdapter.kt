@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kitching.common.throttleFirst
-import com.kitching.data.database.dto.NoticeDTO
+import com.kitching.data.dto.NoticeDTO
 import com.kitching.databinding.ItemNoticeBinding
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks

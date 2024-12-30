@@ -12,12 +12,14 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kitching.adapter.StaffLevelAdapter
 import com.kitching.common.BaseFragment
+import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentStafflevelBinding
 import com.kitching.view.model.StaffLevelViewModel
 import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.launch
 
-class StaffLevelFragment : BaseFragment<FragmentStafflevelBinding>(FragmentStafflevelBinding::inflate) {
+class StaffLevelFragment :
+    BaseFragment<FragmentStafflevelBinding>(FragmentStafflevelBinding::inflate) {
     private lateinit var navController: NavController
 
     private val args: StaffLevelFragmentArgs by navArgs()
@@ -38,10 +40,13 @@ class StaffLevelFragment : BaseFragment<FragmentStafflevelBinding>(FragmentStaff
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.getStaffLevels(args.departmentId)
-                    viewModel.staffLevels.collect {
-                        staffLevelAdapter.submitList(it)
+                viewModel.getStaffLevels(args.departmentId)
+                viewModel.staffLevels.collect {
+                    when (it) {
+                        is FirebaseResult.Success -> staffLevelAdapter.submitList(it.data)
+                        is FirebaseResult.Loading -> TODO("로딩 처리")
+                        is FirebaseResult.Failure -> TODO("예외 처리")
+                        is FirebaseResult.DummyConstructor -> TODO("더미 생성")
                     }
                 }
             }
