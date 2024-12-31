@@ -10,6 +10,9 @@
 /.idea/misc.xml
 /.idea/deploymentTargetSelector.xml
 /.idea/vcs.xml
+/.idea/.name
+/.idea/compiler.xml
+/.idea/material_theme_project_new.xml
 google-services.json
 .DS_Store
 /build
