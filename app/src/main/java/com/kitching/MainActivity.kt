@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.teams.collectLatest {
                     when (it) {
                         is FirebaseResult.Success -> teamAdapter.submitList(it.data)
+                        // TODO(mainActivity 코드 분리 방법 모색)
                         is FirebaseResult.Loading -> {} // TODO("로딩 처리)
                         is FirebaseResult.Failure -> {} // TODO("예외 처리")
                         is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
