@@ -1,6 +1,7 @@
 package com.kitching.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.drawerlayout.widget.DrawerLayout
@@ -13,6 +14,7 @@ import com.kitching.common.throttleFirst
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.dto.TeamDTO
 import com.kitching.databinding.ItemTeamlistBinding
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -61,6 +63,8 @@ class TeamAdapter(private val drawer: DrawerLayout, private val context: Context
                 teamListCV.clicks().throttleFirst().onEach {
                     lifecycleScope.launch {
                         PreferencesDataSource(context).saveTeamId(team.teamId)
+                        var teamId: String = ""
+                        teamId = PreferencesDataSource(context).getTeamId().toString()
                         drawer.closeDrawers()
                     }
                 }.launchIn(lifecycleScope)

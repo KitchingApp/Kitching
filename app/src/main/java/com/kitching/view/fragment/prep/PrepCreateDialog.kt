@@ -1,6 +1,5 @@
 package com.kitching.view.fragment.prep
 
-import android.R
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -25,7 +24,7 @@ class PrepCreateDialog: BaseDialog<DialogCreatePrepBinding>(DialogCreatePrepBind
         
         val recipeListMockData = listOf("김치찌개", "된장찌개", "비빔밥", "김치볶음밥")
 
-        val autoCompleteAdapter = ArrayAdapter<String>(requireContext(), R.layout.simple_dropdown_item_1line, recipeListMockData)
+        val autoCompleteAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, recipeListMockData)
 
         with(binding) {
             autoCompleteTV.setAdapter(autoCompleteAdapter)

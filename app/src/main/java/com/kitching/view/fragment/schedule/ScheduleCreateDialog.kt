@@ -1,6 +1,5 @@
 package com.kitching.view.fragment.schedule
 
-import android.R
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -28,7 +27,7 @@ class ScheduleCreateDialog: BaseDialog<DialogCreateScheduleBinding>(DialogCreate
         val staffLevelListMockData = listOf("사원", "주임", "대리", "과장", "차장")
         val scheduleTimeListMockData = listOf("A타임", "B타임", "C타임")
 
-        val autoCompleteAdapter = ArrayAdapter<String>(requireContext(), R.layout.simple_dropdown_item_1line, staffLevelListMockData)
+        val autoCompleteAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, staffLevelListMockData)
 
         with(binding) {
             dateTV.text = LocalDate.now().toString()

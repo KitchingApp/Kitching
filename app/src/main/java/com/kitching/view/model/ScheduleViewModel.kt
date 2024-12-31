@@ -1,5 +1,6 @@
 package com.kitching.view.model
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kitching.data.dto.ScheduleDTO

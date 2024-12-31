@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
 import androidx.annotation.RequiresApi
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.radiobutton.MaterialRadioButton
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
-open class ColorInputBaseDialog(val argsRequestKeyName: String, val categoryKeyName: String, val categoryColorKeyName: String): BaseDialog<DialogInputTextColorBinding>(DialogInputTextColorBinding::inflate) {
+open class ColorInputBaseDialog(private val argsRequestKeyName: String, private val categoryKeyName: String, private val categoryColorKeyName: String): BaseDialog<DialogInputTextColorBinding>(DialogInputTextColorBinding::inflate) {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

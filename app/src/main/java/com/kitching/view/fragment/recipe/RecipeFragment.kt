@@ -39,9 +39,9 @@ class RecipeFragment : BaseFragment<FragmentRecipeBinding>(FragmentRecipeBinding
                 viewModel.recipeList.collectLatest {
                     when(it) {
                         is FirebaseResult.Success -> notifyRecipe(it.data)
-                        is FirebaseResult.Loading -> TODO("로딩 처리")
-                        is FirebaseResult.Failure -> TODO("예외 처리")
-                        is FirebaseResult.DummyConstructor -> TODO("더미 생성")
+                        is FirebaseResult.Loading -> {} // TODO("로딩 처리)
+                        is FirebaseResult.Failure -> {} // TODO("예외 처리")
+                        is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
                     }
                 }
             }

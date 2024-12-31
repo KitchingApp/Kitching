@@ -18,7 +18,8 @@ import com.kitching.databinding.FragmentMemberlistBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class MemberListFragment: BaseFragment<FragmentMemberlistBinding>(FragmentMemberlistBinding::inflate) {
+class MemberListFragment :
+    BaseFragment<FragmentMemberlistBinding>(FragmentMemberlistBinding::inflate) {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +27,7 @@ class MemberListFragment: BaseFragment<FragmentMemberlistBinding>(FragmentMember
         navController = findNavController()
     }
 
+    lateinit var teamId: String
     private val memberAdapter = MemberAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,26 +36,24 @@ class MemberListFragment: BaseFragment<FragmentMemberlistBinding>(FragmentMember
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    PreferencesDataSource(requireContext()).teamId.collectLatest { teamId ->
-                        if (teamId != null) {
-                            OtherRepository().getMemberList(teamId).collectLatest {
-                                when(it) {
-                                    is FirebaseResult.Success -> {
-                                        memberAdapter.submitList(it.data.members)
-                                        binding.teamNameTV.text = it.data.teamName
-                                    }
-                                    is FirebaseResult.Loading -> TODO("로딩 처리")
-                                    is FirebaseResult.Failure -> TODO("예외 처리")
-                                    is FirebaseResult.DummyConstructor -> TODO("더미 생성")
-                                }
+                    teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
+                    OtherRepository().getMemberList(teamId).collectLatest {
+                        when (it) {
+                            is FirebaseResult.Success -> {
+                                memberAdapter.submitList(it.data.members)
+                                binding.teamNameTV.text = it.data.teamName
                             }
+
+                            is FirebaseResult.Loading -> {} // TODO("로딩 처리)
+                            is FirebaseResult.Failure -> {} // TODO("예외 처리")
+                            is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
                         }
                     }
                 }
             }
         }
-
-        with(binding) {
+        with(binding)
+        {
 
             with(memberListRV) {
                 setRvLayout(this)

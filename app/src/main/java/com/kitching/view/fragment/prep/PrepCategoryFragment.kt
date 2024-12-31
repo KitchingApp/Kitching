@@ -37,22 +37,20 @@ class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBindi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        lateinit var teamId: String
         val prepCategoryAdapter = PrepCategoryAdapter(viewLifecycleOwner, navController)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    PreferencesDataSource(requireContext()).teamId.collectLatest { teamId ->
-                        if(teamId != null) {
-                            viewModel.getPrepCategory(teamId)
-                        }
-                    }
+                    teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
+                    viewModel.getPrepCategory(teamId)
                     viewModel.prepCategory.collectLatest {
                         when(it) {
                             is FirebaseResult.Success -> prepCategoryAdapter.submitList(it.data)
-                            is FirebaseResult.Loading -> TODO("로딩 처리")
-                            is FirebaseResult.Failure -> TODO("예외 처리")
-                            is FirebaseResult.DummyConstructor -> TODO("더미 생성")
+                            is FirebaseResult.Loading -> {} // TODO("로딩 처리)
+                            is FirebaseResult.Failure -> {} // TODO("예외 처리")
+                            is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
                         }
                     }
                 }

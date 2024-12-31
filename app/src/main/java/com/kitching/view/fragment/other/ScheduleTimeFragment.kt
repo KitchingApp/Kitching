@@ -34,24 +34,21 @@ class ScheduleTimeFragment : BaseFragment<FragmentScheduleTimeBinding>(FragmentS
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        lateinit var teamId: String
         val scheduleTimeAdapter = ScheduleTimeAdapter()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                PreferencesDataSource(requireContext()).teamId.collectLatest { teamId ->
-                    if (teamId != null) {
-                        viewModel.getScheduleTimes(teamId)
-                    }
-                }
+                teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
+                viewModel.getScheduleTimes(teamId)
                 viewModel.scheduleTime.collectLatest {
                     when (it) {
                         is FirebaseResult.Success -> {
                             scheduleTimeAdapter.submitList(it.data)
                         }
-
-                        is FirebaseResult.Loading -> TODO("로딩 처리")
-                        is FirebaseResult.Failure -> TODO("예외 처리")
-                        is FirebaseResult.DummyConstructor -> TODO("더미 생성")
+                        is FirebaseResult.Loading -> {} // TODO("로딩 처리)
+                        is FirebaseResult.Failure -> {} // TODO("예외 처리")
+                        is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
                     }
                 }
 

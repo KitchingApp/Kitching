@@ -1,11 +1,14 @@
 package com.kitching.data.datasource
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "team")
@@ -20,5 +23,5 @@ class PreferencesDataSource(private val context: Context) {
         context.dataStore.edit { team -> team[TEAM_ID] = teamId }
     }
 
-   val teamId = context.dataStore.data.map { it[TEAM_ID] }
+   suspend fun getTeamId() = context.dataStore.data.first()[TEAM_ID]
 }

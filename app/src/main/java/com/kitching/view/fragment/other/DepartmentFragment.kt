@@ -40,19 +40,13 @@ class DepartmentFragment :
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    PreferencesDataSource(requireContext()).teamId.collectLatest {
-                        if (it != null) {
-                            teamId = it
-                            viewModel.getDepartments(teamId)
-                        }
-                    }
-
+                    teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
                     viewModel.departments.collectLatest {
                         when(it) {
                             is FirebaseResult.Success -> departmentAdapter.submitList(it.data)
-                            is FirebaseResult.Loading -> TODO("로딩 처리")
-                            is FirebaseResult.Failure -> TODO("예외 처리")
-                            is FirebaseResult.DummyConstructor -> TODO("더미 생성")
+                            is FirebaseResult.Loading -> {} // TODO("로딩 처리)
+                            is FirebaseResult.Failure -> {} // TODO("예외 처리")
+                            is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
                         }
                     }
             }

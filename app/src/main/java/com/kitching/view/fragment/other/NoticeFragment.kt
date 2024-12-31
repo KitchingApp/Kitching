@@ -34,24 +34,21 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(FragmentNoticeBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        lateinit var teamId: String
         val noticeAdapter = NoticeAdapter()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                PreferencesDataSource(requireContext()).teamId.collect { teamId ->
-                    if (teamId != null) {
-                        viewModel.getNotices(teamId)
-                        viewModel.notices.collectLatest {
-                            when (it) {
-                                is FirebaseResult.Success -> {
-                                    noticeAdapter.submitList(it.data)
-                                }
-
-                                is FirebaseResult.Loading -> TODO("로딩 처리")
-                                is FirebaseResult.Failure -> TODO("예외 처리")
-                                is FirebaseResult.DummyConstructor -> TODO("더미 생성")
-                            }
+                teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
+                viewModel.getNotices(teamId)
+                viewModel.notices.collectLatest {
+                    when (it) {
+                        is FirebaseResult.Success -> {
+                            noticeAdapter.submitList(it.data)
                         }
+                        is FirebaseResult.Loading -> {} // TODO("로딩 처리)
+                        is FirebaseResult.Failure -> {} // TODO("예외 처리")
+                        is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
                     }
                 }
             }
