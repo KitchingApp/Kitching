@@ -1,6 +1,5 @@
 package com.kitching.view.model
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kitching.data.dto.ScheduleDTO
@@ -14,15 +13,16 @@ import kotlinx.coroutines.launch
 
 class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRepository()) : ViewModel() {
 
-    private val _schedules = MutableStateFlow<FirebaseResult<List<ScheduleDTO>>>(FirebaseResult.Loading)
+    private val _schedules = MutableStateFlow<FirebaseResult<List<ScheduleDTO>>>(FirebaseResult.DummyConstructor)
     val schedules get() = _schedules.asStateFlow()
 
     private val _departments =
-        MutableStateFlow<FirebaseResult<List<dropDownDepartmentsDTO>>>(FirebaseResult.Loading)
+        MutableStateFlow<FirebaseResult<List<dropDownDepartmentsDTO>>>(FirebaseResult.DummyConstructor)
     val departments get() = _departments.asStateFlow()
 
     fun getDepartments(teamId: String) {
         viewModelScope.launch {
+            _departments.value = FirebaseResult.Loading
             repository.getDepartmentsForDropDown(teamId).collectLatest {
                 _departments.value = it
             }
@@ -31,6 +31,7 @@ class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRep
 
     fun getSchedules(teamId: String, dateString: String) {
         viewModelScope.launch {
+            _schedules.value = FirebaseResult.Loading
             repository.getSchedules(teamId, dateString).collectLatest {
                 _schedules.value = it
             }
@@ -39,10 +40,10 @@ class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRep
 
     fun rejectSchedule(scheduleId: String) {
         viewModelScope.launch {
-            if (repository.deleteSchedule(scheduleId)) getSchedules(
-                teamId = "",
-                dateString = ""
-            )
+//            if (repository.deleteSchedule(scheduleId)) getSchedules(
+//                teamId = "",
+//                dateString = ""
+//            )
         }
     }
 }
