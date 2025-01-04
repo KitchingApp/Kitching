@@ -1,5 +1,6 @@
 package com.kitching
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -31,7 +32,6 @@ class MainActivity : AppCompatActivity() {
     private val delayTime = 1500L
 
     // userId Mock Data
-    private val userId = "16jmfxgNDhzDr4SpnFwM"
     private val teamId = "3uM01g5GSz8lC49JA6vq"
 
     private lateinit var teamAdapter: TeamAdapter
@@ -54,9 +54,15 @@ class MainActivity : AppCompatActivity() {
         teamAdapter = TeamAdapter(binding.drawerLayout, this, lifecycleScope, navController)
 
         lifecycleScope.launch {
+            val userId = PreferencesDataSource(this@MainActivity).getUserId()
+            if (userId.isNullOrEmpty()) {
+                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                finish()
+            }
+
             PreferencesDataSource(this@MainActivity).saveTeamId(teamId)
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                val teams = viewModel.getTeams(userId)
+                val teams = viewModel.getTeams(userId.toString())
                 viewModel.teams.collectLatest {
                     when (it) {
                         is FirebaseResult.Success -> teamAdapter.submitList(it.data)
