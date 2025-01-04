@@ -19,9 +19,17 @@ class PreferencesDataSource(private val context: Context) {
 
     suspend fun getTeamId(): String? = context.dataStore.data.first()[TEAM_ID]
 
+    suspend fun clearTeamId() {
+        context.dataStore.edit { preferences -> preferences.remove(TEAM_ID) }
+    }
+
     suspend fun saveUserId(userId: String) {
         context.dataStore.edit { preferences -> preferences[USER_ID] = userId }
     }
 
     suspend fun getUserId(): String? = context.dataStore.data.first()[USER_ID]
+
+    suspend fun clearUserId() {
+        context.dataStore.edit { preferences -> preferences.remove(USER_ID) }
+    }
 }
