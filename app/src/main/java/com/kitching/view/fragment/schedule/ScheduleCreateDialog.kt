@@ -8,7 +8,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import com.kitching.common.BaseDialog
-import com.kitching.common.throttleFirst
+import com.kitching.common.util.throttleFirst
 import com.kitching.databinding.DialogCreateScheduleBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

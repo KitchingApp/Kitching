@@ -16,7 +16,6 @@
         <item name="android:minWidth">@dimen/dialogMinWidth</item>
         <item name="android:padding">@dimen/padding_S</item>
     </style>
-    s
 
     <style name="dialogConfirmBtn" parent="Widget.Material3.Button">
         <item name="android:layout_width">0dp</item>
@@ -84,6 +83,7 @@
         <item name="android:layout_marginBottom">@dimen/margin_XS</item>
         <item name="android:paddingStart">@dimen/padding_S</item>
         <item name="android:paddingEnd">@dimen/padding_S</item>
+        <item name="backgroundTint">@color/white</item>
     </style>
 
     <!--    other Buttons-->

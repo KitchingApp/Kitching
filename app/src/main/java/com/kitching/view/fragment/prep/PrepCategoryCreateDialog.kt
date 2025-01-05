@@ -9,7 +9,7 @@ import com.kitching.common.ColorInputBaseDialog
 import com.kitching.common.TODO_CATEGORY_ARGS_REQUEST_KEY
 import com.kitching.common.TODO_CATEGORY_COLOR_KEY
 import com.kitching.common.TODO_CATEGORY_NAME_KEY
-import com.kitching.common.throttleFirst
+import com.kitching.common.util.throttleFirst
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks

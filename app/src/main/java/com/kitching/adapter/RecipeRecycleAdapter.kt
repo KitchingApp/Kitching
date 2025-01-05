@@ -14,7 +14,7 @@ import ru.ldralighieri.corbind.view.clicks
 import com.kitching.view.fragment.recipe.RecipeFragmentDirections
 import kotlinx.coroutines.flow.launchIn
 import com.kitching.R
-import com.kitching.common.throttleFirst
+import com.kitching.common.util.throttleFirst
 import com.kitching.data.dto.RecipeDetailDTO
 
 class RecipeRecycleAdapter(private val lifecycleOwner: LifecycleOwner, private val navController: NavController) : ListAdapter<RecipeDetailDTO, RecipeRecycleAdapter.RecipeViewHolder>(diffUtil) {
