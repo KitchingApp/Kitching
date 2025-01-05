@@ -11,7 +11,23 @@
         tools:layout="@layout/fragment_schedule"
         >
 
+        <action android:id="@+id/action_scheduleFragment_to_scheduleCreateDialog"
+            app:destination="@id/scheduleCreateDialog" />
+
     </fragment>
+
+    <dialog
+        android:id="@+id/scheduleCreateDialog"
+        android:name="com.kitching.view.fragment.schedule.ScheduleCreateDialog"
+        tools:layout="@layout/fragment_schedule"
+        >
+
+        <argument
+            android:name="dateString"
+            app:argType="string" />
+
+    </dialog>
+
 
     <fragment
         android:id="@+id/prepFragment"

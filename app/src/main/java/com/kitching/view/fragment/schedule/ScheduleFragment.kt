@@ -3,10 +3,14 @@ package com.kitching.view.fragment.schedule
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
@@ -24,6 +28,7 @@ import com.kitching.data.dto.ScheduleDTO
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.view.model.ScheduleViewModel
 import com.kitching.view.model.factory.viewModelFactory
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -34,17 +39,14 @@ import java.time.LocalDate
 class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleBinding::inflate) {
     private lateinit var navController: NavController
 
-    private val viewModel by viewModels<ScheduleViewModel> {
-        viewModelFactory
-    }
+//    private val viewModel by viewModels<ScheduleViewModel> {
+//        viewModelFactory
+//    }
+
+    private val viewModel = ScheduleViewModel.instance
 
     private lateinit var teamId: String
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        lifecycleScope.launch {
-        }
-    }
+    private var currentDate = LocalDate.now()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,10 +80,23 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
                     }.launchIn(viewLifecycleOwner.lifecycleScope)
                 }
             }
+            launch {
+                collectDepartments()
+            }
+            launch {
+                collectSchedules(null)
+            }
         }
+
         setAdapters()
         setDateBtn(viewLifecycleOwner)
         setBottomSheet()
+        setActionBtn (
+            onClickAddBtn = {
+                val action = ScheduleFragmentDirections.actionScheduleFragmentToScheduleCreateDialog(currentDate.toString())
+                navController.navigate(action)
+            }
+        )
     }
 
 
@@ -110,6 +125,7 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         viewModel.schedules.collectLatest { schedules ->
             when (schedules) {
                 is FirebaseResult.Success -> {
+                    Log.d("schedule", schedules.data.toString())
                     val filteredSchedules = if (selectedDepartment.isNullOrBlank()) {
                         schedules.data
                     } else {
@@ -148,7 +164,6 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
 
     /** 날짜 버튼 세팅 */
     private fun setDateBtn(lifecycleOwner: LifecycleOwner) {
-        var currentDate = LocalDate.now()
         with(binding) {
             scheduleDateBtn.text = currentDate.toString()
 
@@ -182,6 +197,7 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         viewModel.getSchedules(teamId, targetDate.toString())
     }
 
+    /** 바텀 시트 세팅 */
     private fun setBottomSheet() {
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetContainer)
 
