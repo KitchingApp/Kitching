@@ -29,6 +29,7 @@ val viewModelFactory = object : ViewModelProvider.Factory {
                     RecipeViewModel()
                 isAssignableFrom(ScheduleTimeViewModel::class.java) ->
                     ScheduleTimeViewModel()
+//                isAssignableFrom(ScheduleViewModel::class.java) -> ScheduleViewModel.instance
                 isAssignableFrom(ScheduleViewModel::class.java) -> ScheduleViewModel()
                 isAssignableFrom(StaffLevelViewModel::class.java) ->
                     StaffLevelViewModel()
