@@ -1,6 +1,7 @@
 package com.kitching.view.fragment.schedule
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -11,12 +12,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.kitching.adapter.ScheduleApplyAdapter
 import com.kitching.common.BaseFragment
 import com.kitching.databinding.FragmentScheduleBinding
 import com.kitching.adapter.ScheduleFixAdapter
-import com.kitching.common.throttleClicks
-import com.kitching.common.throttleFirst
+import com.kitching.common.util.throttleClicks
+import com.kitching.common.util.throttleFirst
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.dto.ScheduleDTO
 import com.kitching.data.firebase.FirebaseResult
@@ -29,11 +31,19 @@ import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.widget.itemClickEvents
 import java.time.LocalDate
 
-class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentScheduleBinding::inflate) {
+class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleBinding::inflate) {
     private lateinit var navController: NavController
 
     private val viewModel by viewModels<ScheduleViewModel> {
         viewModelFactory
+    }
+
+    private lateinit var teamId: String
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        lifecycleScope.launch {
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,14 +54,16 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
     private val fixAdapter = ScheduleFixAdapter()
     private val applyAdapter = ScheduleApplyAdapter()
 
-    private lateinit var teamId: String
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                setAdapters()
-                setTeamId()
+                with(viewModel) {
+                    teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
+                    getDepartments(teamId)
+                    getSchedules(teamId, LocalDate.now().toString())
+                }
 
                 launch {
                     collectDepartments()
@@ -67,16 +79,11 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
                 }
             }
         }
+        setAdapters()
         setDateBtn(viewLifecycleOwner)
+        setBottomSheet()
     }
 
-
-    /** teamId 세팅 */
-    private suspend fun setTeamId() {
-        teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
-        viewModel.getDepartments(teamId)
-        viewModel.getSchedules(teamId, LocalDate.now().toString())
-    }
 
     private suspend fun collectDepartments() {
         viewModel.departments.collectLatest { departments ->
@@ -122,6 +129,7 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
     private fun submitSchedules(schedules: List<ScheduleDTO>) {
         fixAdapter.submitList(schedules.filter { it.isFix })
         applyAdapter.submitList(schedules.filter { !it.isFix })
+
     }
 
     /** 리사이클러뷰 어댑터 세팅 */
@@ -172,5 +180,16 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
     private fun setDate(targetDate: LocalDate) {
         binding.scheduleDateBtn.text = targetDate.toString()
         viewModel.getSchedules(teamId, targetDate.toString())
+    }
+
+    private fun setBottomSheet() {
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetContainer)
+
+        with(bottomSheetBehavior) {
+            state = BottomSheetBehavior.STATE_COLLAPSED
+            peekHeight = 120
+            isDraggable = true
+            isHideable = false
+        }
     }
 }
