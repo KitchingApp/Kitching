@@ -3,6 +3,7 @@ package com.kitching.view.model.factory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.kitching.view.model.DepartmentViewModel
+import com.kitching.view.model.LoginViewModel
 import com.kitching.view.model.NoticeViewModel
 import com.kitching.view.model.OrderViewModel
 import com.kitching.view.model.PrepViewModel
@@ -29,11 +30,14 @@ val viewModelFactory = object : ViewModelProvider.Factory {
                     RecipeViewModel()
                 isAssignableFrom(ScheduleTimeViewModel::class.java) ->
                     ScheduleTimeViewModel()
-                isAssignableFrom(ScheduleViewModel::class.java) -> ScheduleViewModel()
+                isAssignableFrom(ScheduleViewModel::class.java) ->
+                    ScheduleViewModel()
                 isAssignableFrom(StaffLevelViewModel::class.java) ->
                     StaffLevelViewModel()
                 isAssignableFrom(TeamViewModel::class.java) ->
                     TeamViewModel()
+                isAssignableFrom(LoginViewModel::class.java) ->
+                    LoginViewModel()
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

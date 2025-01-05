@@ -19,10 +19,27 @@ import kotlinx.coroutines.tasks.await
 class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) {
 
     suspend fun getTeams(userId: String): List<Team> {
-        val teams = db.collection("team").whereEqualTo("ownerId", userId).get().await()
+        // 1. user-team 컬렉션에서 조건에 맞는 teamId들 가져오기
+        val userTeams = db.collection("user-team")
+            .whereEqualTo("userId", userId)
+            .whereEqualTo("isManager", true)
+            .get()
+            .await()
 
-        return if(teams.isEmpty) emptyList()
-        else teams.toObjects(Team::class.java)
+        // teamId 리스트 생성
+        val teamIds = userTeams.documents.mapNotNull { it.getString("teamId") }
+
+        if (teamIds.isEmpty()) return emptyList()
+
+        // 2. team 컬렉션에서 teamId가 일치하는 팀들 가져오기
+        val teamsQuery = db.collection("team")
+            .whereIn("id", teamIds)
+            .get()
+            .await()
+
+        // 3. 가져온 데이터를 Team 객체 리스트로 변환
+        return if (teamsQuery.isEmpty) emptyList()
+        else teamsQuery.toObjects(Team::class.java)
     }
 
     suspend fun getTeamName(teamId: String): String {
