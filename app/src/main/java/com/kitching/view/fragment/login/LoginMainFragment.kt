@@ -63,26 +63,36 @@ class LoginMainFragment: BaseFragment<FragmentLoginMainBinding>(FragmentLoginMai
                 val kakaoNickname = user.kakaoAccount?.profile?.nickname.orEmpty()
                 val kakaoProfileImage = user.kakaoAccount?.profile?.profileImageUrl.orEmpty()
 
-                saveUserToFirestore(kakaoUid, kakaoNickname, kakaoProfileImage)
+                saveUserToFireStore(kakaoUid, kakaoNickname, kakaoProfileImage)
             }
         }
     }
 
-    private fun saveUserToFirestore(uid: String, name: String, imageUrl: String) {
-        val userMap = mapOf(
-            "id" to uid,
-            "userName" to name,
-            "userImage" to imageUrl
-        )
+    private fun saveUserToFireStore(uid: String, name: String, imageUrl: String) {
+        val userRef = Firebase.firestore.collection("user").document(uid)
 
-        Firebase.firestore.collection("user")
-            .document(uid)
-            .set(userMap)
-            .addOnSuccessListener {
-                saveUserIdToDataStore(uid)
+        userRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    saveUserIdToDataStore(uid)
+                } else {
+                    val userMap = mapOf(
+                        "id" to uid,
+                        "userName" to name,
+                        "userImage" to imageUrl
+                    )
+
+                    userRef.set(userMap)
+                        .addOnSuccessListener {
+                            saveUserIdToDataStore(uid)
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(requireContext(), "Firestore 저장 실패: ${it.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
             }
             .addOnFailureListener {
-                Toast.makeText(requireContext(), "Firestore 저장 실패: ${it.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Firestore 접근 실패: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
