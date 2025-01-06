@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -20,7 +19,6 @@ import com.kitching.data.firebase.FirebaseResult
 import com.kitching.data.repository.ScheduleRepository
 import com.kitching.databinding.DialogCreateScheduleBinding
 import com.kitching.view.model.ScheduleViewModel
-import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

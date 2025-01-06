@@ -1,6 +1,5 @@
 package com.kitching.data.firebase
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kitching.domain.entities.Order
 import com.kitching.domain.entities.OrderCategory
