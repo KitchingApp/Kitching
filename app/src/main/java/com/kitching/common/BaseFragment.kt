@@ -1,14 +1,19 @@
 package com.kitching.common
 
+import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,6 +66,13 @@ abstract class BaseFragment<VB : ViewBinding>(
                     ).apply {
                         setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
                         setIcon(ActionMenuType.ADD.icon)
+                        val typedValue = TypedValue()
+
+                        val theme = requireContext().theme
+                        theme.resolveAttribute(android.R.attr.colorControlNormal, typedValue, true)
+                        val color = ContextCompat.getColor(requireContext(), typedValue.resourceId)
+
+                        icon?.setTint(color)
                     }
             }
 

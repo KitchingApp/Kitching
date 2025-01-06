@@ -13,13 +13,15 @@
 
         <action android:id="@+id/action_scheduleFragment_to_scheduleCreateDialog"
             app:destination="@id/scheduleCreateDialog" />
+        <action android:id="@+id/action_scheduleFragment_to_scheduleDeleteDialog"
+            app:destination="@id/scheduleDeleteDialog" />
 
     </fragment>
 
     <dialog
         android:id="@+id/scheduleCreateDialog"
         android:name="com.kitching.view.fragment.schedule.ScheduleCreateDialog"
-        tools:layout="@layout/fragment_schedule"
+        tools:layout="@layout/dialog_create_schedule"
         >
 
         <argument
@@ -28,6 +30,20 @@
 
     </dialog>
 
+    <dialog
+        android:id="@+id/scheduleDeleteDialog"
+        android:name="com.kitching.view.fragment.schedule.ScheduleDeleteDialog"
+        tools:layout="@layout/dialog_confirm"
+        >
+
+        <argument
+            android:name="dateString"
+            app:argType="string" />
+        <argument
+            android:name="scheduleId"
+            app:argType="string" />
+
+    </dialog>
 
     <fragment
         android:id="@+id/prepFragment"

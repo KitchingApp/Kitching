@@ -1,22 +1,19 @@
 package com.kitching.view.fragment.schedule
 
 import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.fragment.app.viewModels
+import android.widget.Button
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.kitching.R
 import com.kitching.adapter.ScheduleApplyAdapter
 import com.kitching.common.BaseFragment
 import com.kitching.databinding.FragmentScheduleBinding
@@ -27,8 +24,6 @@ import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.dto.ScheduleDTO
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.view.model.ScheduleViewModel
-import com.kitching.view.model.factory.viewModelFactory
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -42,22 +37,19 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
 //    private val viewModel by viewModels<ScheduleViewModel> {
 //        viewModelFactory
 //    }
-
     private val viewModel = ScheduleViewModel.instance
 
     private lateinit var teamId: String
     private var currentDate = LocalDate.now()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        navController = findNavController()
-    }
-
-    private val fixAdapter = ScheduleFixAdapter()
-    private val applyAdapter = ScheduleApplyAdapter()
+    private lateinit var fixAdapter: ScheduleFixAdapter
+    private lateinit var applyAdapter: ScheduleApplyAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navController = findNavController()
+        fixAdapter = ScheduleFixAdapter(viewLifecycleOwner.lifecycleScope, currentDate.toString())
+        applyAdapter = ScheduleApplyAdapter()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -125,7 +117,6 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         viewModel.schedules.collectLatest { schedules ->
             when (schedules) {
                 is FirebaseResult.Success -> {
-                    Log.d("schedule", schedules.data.toString())
                     val filteredSchedules = if (selectedDepartment.isNullOrBlank()) {
                         schedules.data
                     } else {

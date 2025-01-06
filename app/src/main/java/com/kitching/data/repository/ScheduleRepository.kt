@@ -34,10 +34,6 @@ class ScheduleRepository(private val dataSource: FireStoreDataSource = FireStore
         )
     }
 
-    suspend fun deleteSchedule(scheduleId: String): Boolean {
-        return dataSource.deleteSchedule(scheduleId)
-    }
-
     suspend fun getMembers(teamId: String): Flow<FirebaseResult<List<DropDownMembersDTO>>> {
         return fetchFirebaseDataFlow(
             fetcher = { dataSource.getAllMembers(teamId) },
@@ -64,5 +60,9 @@ class ScheduleRepository(private val dataSource: FireStoreDataSource = FireStore
 
     suspend fun createSchedule(teamId: String, dateString: String, userId: String, scheduleTimeId: String, isFix: Boolean = true): Boolean {
         return dataSource.createSchedule(teamId, dateString, userId, scheduleTimeId, isFix)
+    }
+
+    suspend fun deleteSchedule(scheduleId: String): Boolean {
+        return dataSource.deleteSchedule(scheduleId)
     }
 }
