@@ -18,6 +18,27 @@ import kotlinx.coroutines.tasks.await
 
 class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) {
 
+    suspend fun checkAndSaveUser(uid: String, userName: String, userImage: String): Boolean {
+        return try {
+            val userRef = db.collection("user").document(uid)
+            val userSnapshot = userRef.get().await()
+
+            if (userSnapshot.exists()) {
+                true
+            } else {
+                val userMap = mapOf(
+                    "id" to uid,
+                    "userName" to userName,
+                    "userImage" to userImage
+                )
+                userRef.set(userMap).await()
+                true
+            }
+        } catch (e: Exception) {
+            false
+        }
+    }
+
     suspend fun getTeams(userId: String): List<Team> {
         // 1. user-team 컬렉션에서 조건에 맞는 teamId들 가져오기
         val userTeams = db.collection("user-team")

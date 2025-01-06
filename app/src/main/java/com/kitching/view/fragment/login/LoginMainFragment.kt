@@ -3,7 +3,10 @@ package com.kitching.view.fragment.login
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.kakao.sdk.auth.model.OAuthToken
@@ -16,8 +19,17 @@ import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.databinding.FragmentLoginMainBinding
 import kotlinx.coroutines.launch
 import com.kitching.R
+import com.kitching.data.firebase.FirebaseResult
+import com.kitching.view.model.LoginViewModel
+import com.kitching.view.model.factory.viewModelFactory
+import kotlinx.coroutines.flow.collectLatest
+import kotlin.getValue
 
 class LoginMainFragment: BaseFragment<FragmentLoginMainBinding>(FragmentLoginMainBinding::inflate) {
+    private val viewModel by viewModels<LoginViewModel> {
+        viewModelFactory
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 카카오 init 해줘야함
@@ -29,6 +41,23 @@ class LoginMainFragment: BaseFragment<FragmentLoginMainBinding>(FragmentLoginMai
 
         binding.kakaoLoginBtn.throttleClicks(viewLifecycleOwner) {
             performKakaoLogin()
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.checkAndSaveUser.collectLatest { result ->
+                    when (result) {
+                        is FirebaseResult.Loading -> {}
+                        is FirebaseResult.Success -> {
+                            viewModel.userId.value?.let { uid ->
+                                saveUserIdToDataStore(uid)
+                            }
+                        }
+                        is FirebaseResult.Failure -> { showError(result.throwable) }
+                        is FirebaseResult.DummyConstructor -> {}
+                    }
+                }
+            }
         }
     }
 
@@ -48,7 +77,7 @@ class LoginMainFragment: BaseFragment<FragmentLoginMainBinding>(FragmentLoginMai
 
     private fun handleKakaoLoginResult(token: OAuthToken?, error: Throwable?) {
         if (error != null) {
-            Toast.makeText(requireContext(), "로그인 실패: ${error.message}", Toast.LENGTH_SHORT).show()
+            showError(error)
         } else if (token != null) {
             fetchKakaoUserInfo()
         }
@@ -57,43 +86,15 @@ class LoginMainFragment: BaseFragment<FragmentLoginMainBinding>(FragmentLoginMai
     private fun fetchKakaoUserInfo() {
         UserApiClient.instance.me { user, error ->
             if (error != null) {
-                Toast.makeText(requireContext(), "유저 정보 가져오기 실패: ${error.message}", Toast.LENGTH_SHORT).show()
+                showError(error)
             } else if (user != null) {
                 val kakaoUid = user.id.toString()
                 val kakaoNickname = user.kakaoAccount?.profile?.nickname.orEmpty()
                 val kakaoProfileImage = user.kakaoAccount?.profile?.profileImageUrl.orEmpty()
 
-                saveUserToFireStore(kakaoUid, kakaoNickname, kakaoProfileImage)
+                viewModel.checkAndSaveUser(kakaoUid, kakaoNickname, kakaoProfileImage)
             }
         }
-    }
-
-    private fun saveUserToFireStore(uid: String, name: String, imageUrl: String) {
-        val userRef = Firebase.firestore.collection("user").document(uid)
-
-        userRef.get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    saveUserIdToDataStore(uid)
-                } else {
-                    val userMap = mapOf(
-                        "id" to uid,
-                        "userName" to name,
-                        "userImage" to imageUrl
-                    )
-
-                    userRef.set(userMap)
-                        .addOnSuccessListener {
-                            saveUserIdToDataStore(uid)
-                        }
-                        .addOnFailureListener {
-                            Toast.makeText(requireContext(), "Firestore 저장 실패: ${it.message}", Toast.LENGTH_SHORT).show()
-                        }
-                }
-            }
-            .addOnFailureListener {
-                Toast.makeText(requireContext(), "Firestore 접근 실패: ${it.message}", Toast.LENGTH_SHORT).show()
-            }
     }
 
     private fun saveUserIdToDataStore(userId: String) {
@@ -108,5 +109,9 @@ class LoginMainFragment: BaseFragment<FragmentLoginMainBinding>(FragmentLoginMai
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, LoginTeamsFragment())
             .commit()
+    }
+
+    private fun showError(error: Throwable) {
+        Toast.makeText(requireContext(), "저장 실패: ${error.message}", Toast.LENGTH_SHORT).show()
     }
 }

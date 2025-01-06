@@ -15,3 +15,13 @@ suspend fun <T, R> fetchFirebaseDataFlow(
         onFailure = { emit(FirebaseResult.Failure(it)) }
     )
 }
+
+suspend fun fetchFirebaseBooleanFlow(fetcher: suspend () -> Boolean): Flow<FirebaseResult<Unit>> = flow {
+    emit(FirebaseResult.Loading) // Loading 상태 emit
+    runCatching { fetcher() }.fold(
+        onSuccess = {emit(FirebaseResult.Success(Unit))},
+        onFailure = {e ->
+            emit(FirebaseResult.Failure(e))
+        }
+    )
+}

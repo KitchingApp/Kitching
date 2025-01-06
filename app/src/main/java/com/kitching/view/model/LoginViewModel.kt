@@ -21,4 +21,19 @@ class LoginViewModel(private val loginRepository: LoginRepository = LoginReposit
             }
         }
     }
+
+    private val _checkAndSaveUser = MutableStateFlow<FirebaseResult<Unit>>(FirebaseResult.DummyConstructor)
+    val checkAndSaveUser get() = _checkAndSaveUser.asStateFlow()
+
+    private val _userId = MutableStateFlow<String?>(null) // UID 상태 추가
+    val userId get() = _userId.asStateFlow()
+
+    fun checkAndSaveUser(uid: String, userName: String, userImage: String) {
+        _userId.value = uid
+        viewModelScope.launch {
+            loginRepository.checkAndSaveUser(uid, userName, userImage).collectLatest {
+                _checkAndSaveUser.value = it
+            }
+        }
+    }
 }
