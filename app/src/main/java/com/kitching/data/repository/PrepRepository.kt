@@ -5,6 +5,7 @@ import com.kitching.data.dto.PrepDTO
 import com.kitching.data.firebase.FireStoreDataSource
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.data.firebase.fetchFirebaseDataFlow
+import com.kitching.domain.entities.Prep
 import kotlinx.coroutines.flow.Flow
 
 class PrepRepository(private val dataSource: FireStoreDataSource = FireStoreDataSource()) {
@@ -43,5 +44,17 @@ class PrepRepository(private val dataSource: FireStoreDataSource = FireStoreData
                     it.recipeId,
                     it.recipeId?.let { id -> dataSource.getRecipeName(id) })
             })
+    }
+
+    suspend fun createPrep(categoryId: String, name: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.createPrep(categoryId, name))
+    }
+
+    suspend fun updatePrep(prepId: String, name: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.updatePrep(prepId, name))
+    }
+
+    suspend fun deletePrep(prepId: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.deletePrep(prepId))
     }
 }

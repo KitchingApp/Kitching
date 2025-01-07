@@ -35,73 +35,91 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
     suspend fun getTeams(userId: String): List<Team> {
         val teams = db.collection(COLLECTION_TEAM).whereEqualTo("ownerId", userId).get().await()
 
-        return if(teams.isEmpty) emptyList()
+        return if (teams.isEmpty) emptyList()
         else teams.toObjects(Team::class.java)
     }
 
     suspend fun getTeamName(teamId: String): String {
-        val teamName = db.collection(COLLECTION_TEAM).whereEqualTo("id", teamId).get().await().documents.firstOrNull()
+        val teamName = db.collection(COLLECTION_TEAM).whereEqualTo("id", teamId).get()
+            .await().documents.firstOrNull()
 
         return teamName?.getString("teamName")!!
     }
 
     suspend fun getDepartments(teamId: String): List<Department> {
-        val departments = db.collection(COLLECTION_DEPARTMENT).whereEqualTo("teamId", teamId).get().await()
+        val departments =
+            db.collection(COLLECTION_DEPARTMENT).whereEqualTo("teamId", teamId).get().await()
 
-        return if(departments.isEmpty) emptyList()
+        return if (departments.isEmpty) emptyList()
         else departments.toObjects(Department::class.java)
     }
 
     suspend fun getTeamSchedules(teamId: String, date: String): List<Schedule> {
-        val schedules = db.collection(COLLECTION_SCHEDULE).whereEqualTo("teamId", teamId).whereEqualTo("date", date).get().await()
+        val schedules = db.collection(COLLECTION_SCHEDULE).whereEqualTo("teamId", teamId)
+            .whereEqualTo("date", date).get().await()
 
-        return if(schedules.isEmpty) emptyList()
+        return if (schedules.isEmpty) emptyList()
         else schedules.toObjects(Schedule::class.java)
     }
 
     suspend fun getScheduleTimeName(teamId: String, scheduleTimeId: String): String {
-        val scheduleTime = db.collection(COLLECTION_SCHEDULE_TIME).whereEqualTo("id", scheduleTimeId).get().await().documents.firstOrNull()
+        val scheduleTime =
+            db.collection(COLLECTION_SCHEDULE_TIME).whereEqualTo("id", scheduleTimeId).get()
+                .await().documents.firstOrNull()
 
         return scheduleTime?.getString("name")!!
     }
 
     suspend fun getDepartmentId(teamId: String, userId: String): String {
-        val userTeam = db.collection(COLLECTION_USER_TEAM).whereEqualTo("teamId", teamId).whereEqualTo("userId", userId).get().await().documents.firstOrNull()
+        val userTeam = db.collection(COLLECTION_USER_TEAM).whereEqualTo("teamId", teamId)
+            .whereEqualTo("userId", userId).get().await().documents.firstOrNull()
 
         return userTeam?.getString("departmentId")!!
     }
 
     suspend fun getDepartmentName(teamId: String, departmentId: String): String {
-        val department = db.collection(COLLECTION_DEPARTMENT).whereEqualTo("id", departmentId).get().await().documents.firstOrNull()
+        val department = db.collection(COLLECTION_DEPARTMENT).whereEqualTo("id", departmentId).get()
+            .await().documents.firstOrNull()
 
         return department?.getString("name")!!
     }
 
     suspend fun getStaffLevelId(teamId: String, userId: String): String {
-        val userTeam = db.collection(COLLECTION_USER_TEAM).whereEqualTo("teamId", teamId).whereEqualTo("userId", userId).get().await().documents.firstOrNull()
+        val userTeam = db.collection(COLLECTION_USER_TEAM).whereEqualTo("teamId", teamId)
+            .whereEqualTo("userId", userId).get().await().documents.firstOrNull()
 
         return userTeam?.getString("staffLevelId")!!
     }
 
     suspend fun getStaffLevelName(staffLevelId: String): String {
-        val department = db.collection(COLLECTION_STAFF_LEVEL).whereEqualTo("id", staffLevelId).get().await().documents.firstOrNull()
+        val department =
+            db.collection(COLLECTION_STAFF_LEVEL).whereEqualTo("id", staffLevelId).get()
+                .await().documents.firstOrNull()
 
         return department?.getString("name")!!
     }
 
     suspend fun getUserName(userId: String): String {
-        val user = db.collection(COLLECTION_UESR).whereEqualTo("id", userId).get().await().documents.firstOrNull()
+        val user = db.collection(COLLECTION_UESR).whereEqualTo("id", userId).get()
+            .await().documents.firstOrNull()
 
         return user?.getString("userName")!!
     }
 
     suspend fun getSchedule(scheduleId: String): Schedule? {
-        val schedule = db.collection(COLLECTION_SCHEDULE).whereEqualTo("id", scheduleId).get().await().documents.firstOrNull()
+        val schedule = db.collection(COLLECTION_SCHEDULE).whereEqualTo("id", scheduleId).get()
+            .await().documents.firstOrNull()
 
         return schedule?.toObject(Schedule::class.java)
     }
 
-    suspend fun createSchedule(teamId: String, dateString: String, userId: String, scheduleTimeId: String, isFix: Boolean): Boolean {
+    suspend fun createSchedule(
+        teamId: String,
+        dateString: String,
+        userId: String,
+        scheduleTimeId: String,
+        isFix: Boolean
+    ): Boolean {
         var createTaskResult = false
 
         val scheduleWithOutId = Schedule(
@@ -115,9 +133,10 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
 
         val document = db.collection(COLLECTION_SCHEDULE).add(scheduleWithOutId).await()
 
-        db.collection(COLLECTION_SCHEDULE).document(document.id).update("id", document.id).addOnSuccessListener {
-            createTaskResult = true
-        }.await()
+        db.collection(COLLECTION_SCHEDULE).document(document.id).update("id", document.id)
+            .addOnSuccessListener {
+                createTaskResult = true
+            }.await()
 
         return createTaskResult
     }
@@ -125,10 +144,11 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
     suspend fun applySchedule(scheduleId: String): Boolean {
         var applyTaskResult = false
 
-        if(getSchedule(scheduleId) !== null) {
-            db.collection(COLLECTION_SCHEDULE).document(scheduleId).update("isFix", true).addOnSuccessListener {
-                applyTaskResult = true
-            }.await()
+        if (getSchedule(scheduleId) !== null) {
+            db.collection(COLLECTION_SCHEDULE).document(scheduleId).update("isFix", true)
+                .addOnSuccessListener {
+                    applyTaskResult = true
+                }.await()
         }
 
         return applyTaskResult
@@ -147,13 +167,15 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
     /** Order Page */
 
     suspend fun getOrderCategory(teamId: String): MutableList<OrderCategory> {
-        val orderCategory = db.collection(COLLECTION_ORDER_CATEGORY).whereEqualTo("teamId", teamId).get().await()
+        val orderCategory =
+            db.collection(COLLECTION_ORDER_CATEGORY).whereEqualTo("teamId", teamId).get().await()
         return if (orderCategory.isEmpty) mutableListOf()
         else orderCategory.toObjects(OrderCategory::class.java) as MutableList<OrderCategory>
     }
 
     suspend fun getOrderList(categoryId: String): MutableList<Order> {
-        val orderList = db.collection(COLLECTION_ORDER).whereEqualTo("categoryId", categoryId).get().await()
+        val orderList =
+            db.collection(COLLECTION_ORDER).whereEqualTo("categoryId", categoryId).get().await()
         return if (orderList.isEmpty) mutableListOf()
         else orderList.toObjects(Order::class.java) as MutableList<Order>
 
@@ -187,7 +209,8 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
     /** Prep */
 
     suspend fun getPrepCategory(teamId: String): MutableList<PrepCategory> {
-        val prepCategory = db.collection(COLLECTION_PREP_CATEGORY).whereEqualTo("teamId", teamId).get().await()
+        val prepCategory =
+            db.collection(COLLECTION_PREP_CATEGORY).whereEqualTo("teamId", teamId).get().await()
 
         return if (prepCategory.isEmpty) mutableListOf()
         else prepCategory.toObjects(PrepCategory::class.java) as MutableList<PrepCategory>
@@ -205,19 +228,25 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
 
         val document = db.collection(COLLECTION_PREP_CATEGORY).add(prepCategoryWithOutId).await()
 
-        db.collection(COLLECTION_PREP_CATEGORY).document(document.id).update("id", document.id).addOnSuccessListener {
-            createTaskResult = true
-        }.await()
+        db.collection(COLLECTION_PREP_CATEGORY).document(document.id).update("id", document.id)
+            .addOnSuccessListener {
+                createTaskResult = true
+            }.await()
 
         return createTaskResult
     }
 
-    suspend fun updatePrepCategory(categoryId: String, categoryName: String, color: String): Boolean {
+    suspend fun updatePrepCategory(
+        categoryId: String,
+        categoryName: String,
+        color: String
+    ): Boolean {
         var updateTaskResult = false
 
-        val document = db.collection(COLLECTION_PREP_CATEGORY).document(categoryId).update("name", categoryName, "color", color).addOnSuccessListener {
-            updateTaskResult = true
-        }.await()
+        val document = db.collection(COLLECTION_PREP_CATEGORY).document(categoryId)
+            .update("name", categoryName, "color", color).addOnSuccessListener {
+                updateTaskResult = true
+            }.await()
 
         return updateTaskResult
     }
@@ -225,29 +254,74 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
     suspend fun deletePrepCategory(scheduleId: String): Boolean {
         var deleteTaskResult = false
 
-        val document = db.collection(COLLECTION_PREP_CATEGORY).document(scheduleId).delete().addOnSuccessListener {
+        val document = db.collection(COLLECTION_PREP_CATEGORY).document(scheduleId).delete()
+            .addOnSuccessListener {
+                deleteTaskResult = true
+            }.await()
+
+        return deleteTaskResult
+    }
+
+    suspend fun getPrepList(categoryId: String): MutableList<Prep> {
+        val prepList =
+            db.collection(COLLECTION_PREP).whereEqualTo("categoryId", categoryId).get().await()
+
+        return if (prepList.isEmpty) mutableListOf()
+        else prepList.toObjects(Prep::class.java) as MutableList<Prep>
+    }
+
+    suspend fun createPrep(categoryId: String, name: String): Boolean {
+        var createTaskResult = false
+
+        val prepWithOutId = Prep(
+            categoryId = categoryId,
+            id = "",
+            name = name,
+            recipeId = ""
+        )
+
+        runCatching {
+            val document = db.collection(COLLECTION_PREP).add(prepWithOutId).await()
+
+            db.collection(COLLECTION_PREP).document(document.id).update("id", document.id).await()
+
+            createTaskResult = true
+        }
+
+        return createTaskResult
+    }
+
+    suspend fun updatePrep(prepId: String, name: String): Boolean {
+        var updateTaskResult = false
+
+        db.collection(COLLECTION_PREP).document(prepId).update("name", name).addOnSuccessListener {
+            updateTaskResult = true
+        }.await()
+
+        return updateTaskResult
+    }
+
+    suspend fun deletePrep(prepId: String): Boolean {
+        var deleteTaskResult = false
+
+        db.collection(COLLECTION_PREP).document(prepId).delete().addOnSuccessListener {
             deleteTaskResult = true
         }.await()
 
         return deleteTaskResult
     }
 
-    suspend fun getPrepList(categoryId: String): MutableList<Prep> {
-        val prepList = db.collection(COLLECTION_PREP).whereEqualTo("categoryId", categoryId).get().await()
-
-        return if (prepList.isEmpty) mutableListOf()
-        else prepList.toObjects(Prep::class.java) as MutableList<Prep>
-    }
-
     suspend fun getAllMembers(teamId: String): MutableList<UserTeam> {
-        val memberList = db.collection(COLLECTION_USER_TEAM).whereEqualTo("teamId", teamId).get().await()
+        val memberList =
+            db.collection(COLLECTION_USER_TEAM).whereEqualTo("teamId", teamId).get().await()
 
-        return if(memberList.isEmpty) mutableListOf()
+        return if (memberList.isEmpty) mutableListOf()
         else memberList.toObjects(UserTeam::class.java) as MutableList<UserTeam>
     }
 
     suspend fun getRecipeName(recipeId: String): String {
-        val recipeName = db.collection(COLLECTION_RECIPE).whereEqualTo("id", recipeId).get().await().documents.firstOrNull()
+        val recipeName = db.collection(COLLECTION_RECIPE).whereEqualTo("id", recipeId).get()
+            .await().documents.firstOrNull()
 
         return recipeName?.getString("name") ?: ""
     }
@@ -255,7 +329,8 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
     /** schedule time */
 
     suspend fun getScheduleTimes(teamId: String): MutableList<ScheduleTime> {
-        val scheduleTime = db.collection(COLLECTION_SCHEDULE_TIME).whereEqualTo("teamId", teamId).orderBy("startTime").get().await()
+        val scheduleTime = db.collection(COLLECTION_SCHEDULE_TIME).whereEqualTo("teamId", teamId)
+            .orderBy("startTime").get().await()
 
         return if (scheduleTime.isEmpty) mutableListOf()
         else scheduleTime.toObjects(ScheduleTime::class.java) as MutableList<ScheduleTime>
@@ -263,7 +338,9 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
 
     /** department / staff level management */
     suspend fun getStaffLevels(departmentId: String): MutableList<StaffLevel> {
-        val staffLevels = db.collection(COLLECTION_STAFF_LEVEL).whereEqualTo("departmentId", departmentId).get().await()
+        val staffLevels =
+            db.collection(COLLECTION_STAFF_LEVEL).whereEqualTo("departmentId", departmentId).get()
+                .await()
 
         return if (staffLevels.isEmpty) mutableListOf()
         else staffLevels.toObjects(StaffLevel::class.java)

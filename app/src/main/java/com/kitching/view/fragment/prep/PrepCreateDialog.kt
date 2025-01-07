@@ -1,54 +1,57 @@
 package com.kitching.view.fragment.prep
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.kitching.common.BaseDialog
+import com.kitching.common.util.throttleClicks
 import com.kitching.common.util.throttleFirst
+import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.DialogCreatePrepBinding
+import com.kitching.view.model.PrepViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.view.clicks
 
 class PrepCreateDialog: BaseDialog<DialogCreatePrepBinding>(DialogCreatePrepBinding::inflate) {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val args: PrepCreateDialogArgs by navArgs()
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    private val viewModel = PrepViewModel.instance
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
-        val recipeListMockData = listOf("김치찌개", "된장찌개", "비빔밥", "김치볶음밥")
-
-        val autoCompleteAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, recipeListMockData)
 
         with(binding) {
-            autoCompleteTV.setAdapter(autoCompleteAdapter)
+            prepNameTIL.hint = "할 일 이름"
 
             with(confirmButton) {
                 text = "생성"
-                clicks().onEach {
-                    val todoTitle = todoCategoryNameTI.text.toString()
-                    val todoRecipe = autoCompleteTV.text.toString()
-
-                    val createData = Bundle().apply {
-                        putString("todoTitle", todoTitle)
-                        putString("todoRecipe", todoRecipe)
+                throttleClicks(viewLifecycleOwner) {
+                    viewModel.createPrep(args.categoryId, todoCategoryNameTI.text.toString())
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        viewModel.createPrepResult.collectLatest {
+                            when(it) {
+                                is FirebaseResult.Success -> {
+                                    viewModel.getPrepList(args.categoryId)
+                                    dismiss()
+                                }
+                                is FirebaseResult.Loading -> {} // TODO("로딩 처리)
+                                is FirebaseResult.Failure -> {} // TODO("예외 처리")
+                                is FirebaseResult.DummyConstructor -> {} // TODO()
+                            }
+                        }
                     }
-
-
-                    dismiss()
-                }.launchIn(lifecycleScope)
+                }
             }
 
             with(cancelButton) {
-                clicks().throttleFirst().onEach {
+                throttleClicks(viewLifecycleOwner) {
                     dismiss()
-                }.launchIn(lifecycleScope)
+                }
             }
         }
     }

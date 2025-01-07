@@ -71,4 +71,37 @@ class PrepViewModel(private val repository: PrepRepository = PrepRepository()) :
             }
         }
     }
+
+    private val _createPrepResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val createPrepResult get() = _createPrepResult.asStateFlow()
+
+    fun createPrep(categoryId: String, name: String) {
+        viewModelScope.launch {
+            repository.createPrep(categoryId, name).collectLatest {
+                _createPrepResult.value = it
+            }
+        }
+    }
+
+    private val _updatePrepResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val updatePrepResult get() = _updatePrepResult.asStateFlow()
+
+    fun updatePrep(prepId: String, name: String) {
+        viewModelScope.launch {
+            repository.updatePrep(prepId, name).collectLatest {
+                _updatePrepCategoryResult.value = it
+            }
+        }
+    }
+
+    private val _deletePrepResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val deletePrepResult get() = _deletePrepResult.asStateFlow()
+
+    fun deletePrep(scheduleId: String) {
+        viewModelScope.launch {
+            repository.deletePrep(scheduleId).collectLatest {
+                _deletePrepResult.value = it
+            }
+        }
+    }
 }

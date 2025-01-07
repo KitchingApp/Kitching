@@ -128,7 +128,22 @@
             android:name="prepCategoryId"
             app:argType="string" />
 
+        <action
+            android:id="@+id/action_prepListFragment_to_prepCreateDialog"
+            app:destination="@id/prepCreateDialog" />
+
     </fragment>
+
+    <dialog
+        android:id="@+id/prepCreateDialog"
+        android:name="com.kitching.view.fragment.prep.PrepCreateDialog"
+        tools:layout="@layout/dialog_input_text">
+
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
+
+    </dialog>
 
     <fragment
         android:id="@+id/recipeFragment"
