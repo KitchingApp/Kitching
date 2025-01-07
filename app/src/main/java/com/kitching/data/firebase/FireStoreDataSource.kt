@@ -1,6 +1,19 @@
 package com.kitching.data.firebase
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.kitching.common.COLLECTION_DEPARTMENT
+import com.kitching.common.COLLECTION_NOTICE
+import com.kitching.common.COLLECTION_ORDER
+import com.kitching.common.COLLECTION_ORDER_CATEGORY
+import com.kitching.common.COLLECTION_PREP
+import com.kitching.common.COLLECTION_PREP_CATEGORY
+import com.kitching.common.COLLECTION_RECIPE
+import com.kitching.common.COLLECTION_SCHEDULE
+import com.kitching.common.COLLECTION_SCHEDULE_TIME
+import com.kitching.common.COLLECTION_STAFF_LEVEL
+import com.kitching.common.COLLECTION_TEAM
+import com.kitching.common.COLLECTION_USER
+import com.kitching.common.COLLECTION_USER_TEAM
 import com.kitching.domain.entities.Order
 import com.kitching.domain.entities.OrderCategory
 import com.kitching.domain.entities.Department
@@ -15,13 +28,12 @@ import com.kitching.domain.entities.StaffLevel
 import com.kitching.domain.entities.Team
 import com.kitching.domain.entities.UserTeam
 import kotlinx.coroutines.tasks.await
-import java.util.UUID
 
 class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) {
 
     suspend fun checkAndSaveUser(uid: String, userName: String, userImage: String): Boolean {
         return try {
-            val userRef = db.collection("user").document(uid)
+            val userRef = db.collection(COLLECTION_USER).document(uid)
             val userSnapshot = userRef.get().await()
 
             if (userSnapshot.exists()) {
@@ -42,7 +54,7 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
 
     suspend fun getTeams(userId: String): List<Team> {
         // 1. user-team 컬렉션에서 조건에 맞는 teamId들 가져오기
-        val userTeams = db.collection("user-team")
+        val userTeams = db.collection(COLLECTION_USER_TEAM)
             .whereEqualTo("userId", userId)
             .whereEqualTo("isManager", true)
             .get()
@@ -54,28 +66,10 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
         if (teamIds.isEmpty()) return emptyList()
 
         // 2. team 컬렉션에서 teamId가 일치하는 팀들 가져오기
-        val teamsQuery = db.collection("team")
+        val teamsQuery = db.collection(COLLECTION_TEAM)
             .whereIn("id", teamIds)
             .get()
             .await()
-
-    final val COLLECTION_DEPARTMENT = "department"
-    final val COLLECTION_NOTICE = "notice"
-    final val COLLECTION_ORDER = "order"
-    final val COLLECTION_ORDER_CATEGORY = "orderCategory"
-    final val COLLECTION_PREP = "prep"
-    final val COLLECTION_PREP_CATEGORY = "prepCategory"
-    final val COLLECTION_RECIPE = "recipe"
-    final val COLLECTION_SCHEDULE = "schedule"
-    final val COLLECTION_SCHEDULE_TIME = "scheduleTime"
-    final val COLLECTION_STAFF_LEVEL = "staffLevel"
-    final val COLLECTION_TEAM = "team"
-    final val COLLECTION_UESR = "user"
-    final val COLLECTION_USER_TEAM = "user-team"
-
-    suspend fun getTeams(userId: String): List<Team> {
-        val teams = db.collection(COLLECTION_TEAM).whereEqualTo("ownerId", userId).get().await()
-
 
         // 3. 가져온 데이터를 Team 객체 리스트로 변환
         return if (teamsQuery.isEmpty) emptyList()
@@ -90,9 +84,9 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
                 "ownerId" to ownerId,
                 "teamName" to teamName
             )
-            val teamDocument = db.collection("team").add(teamData).await()
+            val teamDocument = db.collection(COLLECTION_TEAM).add(teamData).await()
 
-            db.collection("team").document(teamDocument.id).update("id", teamDocument.id).await()
+            db.collection(COLLECTION_TEAM).document(teamDocument.id).update("id", teamDocument.id).await()
 
             val userTeamData = mapOf(
                 "id" to "",
@@ -102,9 +96,9 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
                 "departmentId" to "",
                 "staffLevelId" to ""
             )
-            val userTeamDocument = db.collection("user-team").add(userTeamData).await()
+            val userTeamDocument = db.collection(COLLECTION_USER_TEAM).add(userTeamData).await()
 
-            db.collection("user-team").document(userTeamDocument.id).update("id", userTeamDocument.id).await()
+            db.collection(COLLECTION_USER_TEAM).document(userTeamDocument.id).update("id", userTeamDocument.id).await()
 
             true
         } catch (e: Exception) {
@@ -163,7 +157,7 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
     }
 
     suspend fun getUserName(userId: String): String {
-        val user = db.collection(COLLECTION_UESR).whereEqualTo("id", userId).get().await().documents.firstOrNull()
+        val user = db.collection(COLLECTION_USER).whereEqualTo("id", userId).get().await().documents.firstOrNull()
 
         return user?.getString("userName")!!
     }

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kitching.MainActivity
-import com.kitching.common.throttleFirst
+import com.kitching.common.util.throttleFirst
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.dto.TeamDTO
 import com.kitching.databinding.ItemTeamlistBinding

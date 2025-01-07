@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             PreferencesDataSource(this@MainActivity).saveTeamId(teamId)
             repeatOnLifecycle(Lifecycle.State.STARTED) {
               
-                viewModel.getTeams(userId)
+                viewModel.getTeams(userId.toString())
 
                 viewModel.teams.collectLatest {
                     when (it) {

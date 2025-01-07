@@ -12,7 +12,7 @@ import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.user.UserApiClient
 import com.kitching.BuildConfig
 import com.kitching.common.BaseFragment
-import com.kitching.common.throttleClicks
+import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.databinding.FragmentLoginMainBinding
 import kotlinx.coroutines.launch

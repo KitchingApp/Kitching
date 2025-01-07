@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import com.kitching.LoginActivity
 import com.kitching.R
 import com.kitching.common.BaseFragment
-import com.kitching.common.throttleFirst
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.common.util.throttleFirst
 import com.kitching.databinding.FragmentOtherBinding

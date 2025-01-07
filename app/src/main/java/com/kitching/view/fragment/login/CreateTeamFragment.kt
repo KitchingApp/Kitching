@@ -8,7 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.kitching.common.BaseFragment
-import com.kitching.common.throttleClicks
+import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentCreateTeamBinding
