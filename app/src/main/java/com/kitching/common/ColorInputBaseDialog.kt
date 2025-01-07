@@ -35,7 +35,7 @@ open class ColorInputBaseDialog(private val argsRequestKeyName: String, private 
                     tag = it
                     width = convertDpToPx(50)
                     height = convertDpToPx(50)
-                    background = resources.getDrawable(R.drawable.circle_button, null)
+                    background = ResourcesCompat.getDrawable(resources, R.drawable.circle_button, null)
                     backgroundTintList = ColorStateList.valueOf(Color.parseColor(it))
                     buttonDrawable = null
                     textAlignment = View.TEXT_ALIGNMENT_CENTER
