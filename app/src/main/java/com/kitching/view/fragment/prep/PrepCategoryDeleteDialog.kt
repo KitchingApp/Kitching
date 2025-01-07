@@ -30,7 +30,7 @@ class PrepCategoryDeleteDialog:
                 throttleClicks(viewLifecycleOwner) {
                     viewLifecycleOwner.lifecycleScope.launch {
                         val teamId = PreferencesDataSource(KitchingApplication.getAppContext()).getTeamId() ?: ""
-                        viewModel.deletePrepCategory(args.cetegoryId)
+                        viewModel.deletePrepCategory(args.categoryId)
                         viewModel.getPrepCategory(teamId)
                         dismiss()
                     }

@@ -16,9 +16,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kitching.R
-import com.kitching.common.KitchingApplication
 import com.kitching.common.util.throttleFirst
-import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.dto.PrepCategoryDTO
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.ItemBigCategoryBinding
@@ -83,21 +81,21 @@ class PrepCategoryAdapter(
                     navController?.navigate(argActions)
                 }.launchIn(lifecycleOwner.lifecycleScope)
                 optionBtn.clicks().throttleFirst().onEach {
-                    showMenu(optionBtn, R.menu.option_menu, prepCategory.categoryId)
+                    showMenu(optionBtn, R.menu.option_menu, prepCategory.categoryId, prepCategory.categoryName, prepCategory.color)
                 }.launchIn(lifecycleOwner.lifecycleScope)
             }
         }
     }
 
-    private fun showMenu(v: View, @MenuRes menuRes: Int, categoryId: String) {
+    private fun showMenu(v: View, @MenuRes menuRes: Int, categoryId: String, name: String, color: String) {
         val popup = PopupMenu(context, v)
         popup.menuInflater.inflate(menuRes, popup.menu)
 
         popup.itemClicks().onEach {
-            val teamId = PreferencesDataSource(KitchingApplication.getAppContext()).getTeamId() ?: ""
             when(it.itemId) {
                 R.id.updateInOptionMenu -> {
-//                    updateItem(teamId, categoryId)
+                    val action = PrepCategoryFragmentDirections.actionPrepFragmentToPrepCategoryUpdateDialog(categoryId, name, color)
+                    navController?.navigate(action)
                 }
                 R.id.deleteInOptionMenu -> {
                     val action = PrepCategoryFragmentDirections.actionPrepFragmentToPrepCategoryDeleteDialog(categoryId)
