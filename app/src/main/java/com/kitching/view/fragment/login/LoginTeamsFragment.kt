@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.kitching.R
 import com.kitching.adapter.TeamListAdapter
 import com.kitching.common.BaseFragment
 import com.kitching.data.datasource.PreferencesDataSource
@@ -29,6 +30,10 @@ class LoginTeamsFragment: BaseFragment<FragmentLoginTeamsBinding>(FragmentLoginT
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.createTeamBtn.setOnClickListener {
+            navigateToLoginTeamsFragment()
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             val userId = PreferencesDataSource(requireContext()).getUserId().toString()
@@ -56,5 +61,11 @@ class LoginTeamsFragment: BaseFragment<FragmentLoginTeamsBinding>(FragmentLoginT
             teamAdapter.submitList(teamList)
             this.adapter = teamAdapter
         }
+    }
+
+    private fun navigateToLoginTeamsFragment() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, CreateTeamFragment())
+            .commit()
     }
 }

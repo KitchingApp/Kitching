@@ -15,6 +15,7 @@ import com.kitching.domain.entities.StaffLevel
 import com.kitching.domain.entities.Team
 import com.kitching.domain.entities.UserTeam
 import kotlinx.coroutines.tasks.await
+import java.util.UUID
 
 class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) {
 
@@ -61,6 +62,36 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
         // 3. 가져온 데이터를 Team 객체 리스트로 변환
         return if (teamsQuery.isEmpty) emptyList()
         else teamsQuery.toObjects(Team::class.java)
+    }
+
+    suspend fun createTeam(inviteCode: String, ownerId: String, teamName: String): Boolean {
+        return try {
+            val teamData = mapOf(
+                "id" to "",
+                "inviteCode" to inviteCode,
+                "ownerId" to ownerId,
+                "teamName" to teamName
+            )
+            val teamDocument = db.collection("team").add(teamData).await()
+
+            db.collection("team").document(teamDocument.id).update("id", teamDocument.id).await()
+
+            val userTeamData = mapOf(
+                "id" to "",
+                "isManager" to true,
+                "teamId" to teamDocument.id,
+                "userId" to ownerId,
+                "departmentId" to "",
+                "staffLevelId" to ""
+            )
+            val userTeamDocument = db.collection("user-team").add(userTeamData).await()
+
+            db.collection("user-team").document(userTeamDocument.id).update("id", userTeamDocument.id).await()
+
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 
     suspend fun getTeamName(teamId: String): String {
