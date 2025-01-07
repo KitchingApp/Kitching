@@ -95,6 +95,12 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
         return user?.getString("userName")!!
     }
 
+    suspend fun getSchedule(scheduleId: String): Schedule? {
+        val schedule = db.collection(COLLECTION_SCHEDULE).whereEqualTo("id", scheduleId).get().await().documents.firstOrNull()
+
+        return schedule?.toObject(Schedule::class.java)
+    }
+
     suspend fun createSchedule(teamId: String, dateString: String, userId: String, scheduleTimeId: String, isFix: Boolean): Boolean {
         var createTaskResult = false
 
@@ -117,11 +123,24 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
         return createTaskResult
     }
 
+    suspend fun applySchedule(scheduleId: String): Boolean {
+        var applyTaskResult = false
+
+        if(getSchedule(scheduleId) !== null) {
+            db.collection(COLLECTION_SCHEDULE).document(scheduleId).update("isFix", true).addOnSuccessListener {
+                applyTaskResult = true
+            }.await()
+        }
+
+        return applyTaskResult
+    }
+
     suspend fun deleteSchedule(scheduleId: String): Boolean {
         var deleteTaskResult = false
 
-        db.collection(COLLECTION_SCHEDULE).document(scheduleId).delete()
-            .addOnSuccessListener { deleteTaskResult = true }
+        db.collection(COLLECTION_SCHEDULE).document(scheduleId).delete().addOnSuccessListener {
+            deleteTaskResult = true
+        }.await()
 
         return deleteTaskResult
     }

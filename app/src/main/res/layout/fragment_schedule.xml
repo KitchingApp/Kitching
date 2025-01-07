@@ -49,7 +49,6 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
             android:layout_width="300dp"
             android:layout_height="0dp"
-            android:hint="부서를 선택해주세요."
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/scheduleDateBtn">
@@ -67,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="확정 근무인원 총 2명"
+            tools:text="확정 근무인원 총 2명"
             app:layout_constraintBottom_toTopOf="@+id/confirmedScheduleRecyclerView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

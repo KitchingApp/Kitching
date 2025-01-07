@@ -65,4 +65,8 @@ class ScheduleRepository(private val dataSource: FireStoreDataSource = FireStore
     suspend fun deleteSchedule(scheduleId: String): Boolean {
         return dataSource.deleteSchedule(scheduleId)
     }
+
+    suspend fun applySchedule(scheduleId: String): Boolean {
+        return dataSource.applySchedule(scheduleId)
+    }
 }
