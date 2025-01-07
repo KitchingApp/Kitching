@@ -1,14 +1,14 @@
 package com.kitching.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kitching.MainActivity
 import com.kitching.common.util.throttleFirst
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.dto.TeamDTO
@@ -18,35 +18,34 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.view.clicks
 
-class TeamAdapter(private val drawer: DrawerLayout, private val context: Context, private val lifecycleScope: LifecycleCoroutineScope, private val navController: NavController): ListAdapter<TeamDTO, TeamAdapter.TeamViewHolder>(diffUtil) {
-
+class TeamListAdapter(private val lifecycleScope: LifecycleCoroutineScope, private val context: Context): ListAdapter<TeamDTO, TeamListAdapter.ViewHolder>(diffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int
-    ): TeamViewHolder {
+        viewType: Int,
+    ): ViewHolder {
         val binding = ItemTeamlistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TeamViewHolder(binding)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(
-        holder: TeamViewHolder,
-        position: Int
+        holder: ViewHolder,
+        position: Int,
     ) {
-        holder.bindTeam(currentList[position])
+        holder.bind(currentList[position])
     }
 
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<TeamDTO>() {
             override fun areItemsTheSame(
                 oldItem: TeamDTO,
-                newItem: TeamDTO
+                newItem: TeamDTO,
             ): Boolean {
                 return oldItem.teamId == newItem.teamId
             }
 
             override fun areContentsTheSame(
                 oldItem: TeamDTO,
-                newItem: TeamDTO
+                newItem: TeamDTO,
             ): Boolean {
                 return oldItem == newItem
             }
@@ -54,15 +53,18 @@ class TeamAdapter(private val drawer: DrawerLayout, private val context: Context
         }
     }
 
-    inner class TeamViewHolder(val binding: ItemTeamlistBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindTeam(team: TeamDTO) {
+    inner class ViewHolder(private val binding: ItemTeamlistBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(team: TeamDTO) {
             with(binding) {
                 teamNameTV.text = team.teamName
                 teamListCV.clicks().throttleFirst().onEach {
                     lifecycleScope.launch {
-                        PreferencesDataSource(context).clearTeamId()
                         PreferencesDataSource(context).saveTeamId(team.teamId)
-                        drawer.closeDrawers()
+
+                        val intent = Intent(context, MainActivity::class.java).apply {
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        }
+                        context.startActivity(intent)
                     }
                 }.launchIn(lifecycleScope)
             }

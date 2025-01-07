@@ -6,23 +6,21 @@ import com.kitching.data.firebase.FirebaseResult
 import com.kitching.data.firebase.fetchFirebaseBooleanFlow
 import com.kitching.data.firebase.fetchFirebaseDataFlow
 import kotlinx.coroutines.flow.Flow
-import java.util.UUID
 
-class TeamRepository(private val dataSource: FireStoreDataSource = FireStoreDataSource()) {
-    suspend fun getTeamsByUserId(userId: String): Flow<FirebaseResult<List<TeamDTO>>> {
+class LoginRepository(private val dataSource: FireStoreDataSource = FireStoreDataSource()) {
+    suspend fun getTeamList(userId: String): Flow<FirebaseResult<MutableList<TeamDTO>>> {
         return fetchFirebaseDataFlow(
             fetcher = { dataSource.getTeams(userId) },
-            mapper = { TeamDTO(it.id, it.teamName) }
+            mapper = { TeamDTO(
+                teamId = it.id,
+                teamName = it.teamName
+            ) }
         )
     }
 
-    suspend fun createTeam(
-        ownerId: String, teamName: String
-    ): Flow<FirebaseResult<Unit>> {
-        val inviteCode = UUID.randomUUID().toString().replace("-", "")
-
+    suspend fun checkAndSaveUser(uid: String, userName: String, userImage: String): Flow<FirebaseResult<Unit>> {
         return fetchFirebaseBooleanFlow {
-            dataSource.createTeam(inviteCode, ownerId, teamName)
+            dataSource.checkAndSaveUser(uid, userName, userImage)
         }
     }
 }
