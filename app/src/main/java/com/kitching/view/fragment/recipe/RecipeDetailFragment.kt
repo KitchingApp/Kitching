@@ -1,6 +1,7 @@
 package com.kitching.view.fragment.recipe
 
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -33,7 +34,7 @@ class RecipeDetailFragment: BaseFragment<FragmentRecipeDetailBinding>(FragmentRe
             recipeNameTV.text = args.recipeName
         }
         gridLayoutSetting()
-        printSteps()
+        createStepsTextView()
     }
 
     private fun gridLayoutSetting() {
@@ -62,7 +63,7 @@ class RecipeDetailFragment: BaseFragment<FragmentRecipeDetailBinding>(FragmentRe
         }
 
         /** GridLayout에 TextView 추가*/
-        val gridLayout = binding.gridLayout
+        val gridLayout = binding.gridLayout1
         ingredientList.forEach { ingredient ->
             val onceTextView = createTableStyledTextView(ingredient.once.toString())
             val twiceTextView = createTableStyledTextView(ingredient.twice.toString())
@@ -83,7 +84,6 @@ class RecipeDetailFragment: BaseFragment<FragmentRecipeDetailBinding>(FragmentRe
             this.text = text
             this.setBackgroundResource(R.drawable.border_box)
             this.gravity = Gravity.CENTER
-            this.setTextAppearance(R.style.recipeIngredientsTable)
             this.layoutParams = GridLayout.LayoutParams().apply {
                 width = 0
                 height = TypedValue.applyDimension(
@@ -115,12 +115,31 @@ class RecipeDetailFragment: BaseFragment<FragmentRecipeDetailBinding>(FragmentRe
     }
 
     /** steps 출력 함수*/
-    private fun printSteps() {
-        val stepString = args.recipeStep
-        val formattedSteps = stepString?.split("|")?.mapIndexed { index, step ->
-            "${index + 1}. $step"
-        }?.joinToString("\n\n") ?: "순서 없음"
+    private fun createStepsTextView() {
+        val stepsString = args.recipeStep
+        Log.d("RecipeDetailFragment", "stepsString: $stepsString")
 
-        binding.recipeStepTV2.text = formattedSteps
+        val stepsList = stepsString?.split("|")?.mapIndexed { index, step ->
+            "${index + 1}. $step"
+        } ?: listOf("순서 없음")
+
+        val gridLayout = binding.gridLayout2
+
+        stepsList.forEach { step ->
+            val stepTextView = AppCompatTextView(binding.root.context).apply {
+                this.text = step
+                this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                this.gravity = Gravity.START
+                this.layoutParams = GridLayout.LayoutParams().apply {
+                    width = GridLayout.LayoutParams.MATCH_PARENT
+                    height = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        30f,
+                        resources.displayMetrics
+                    ).toInt()
+                }
+            }
+            gridLayout.addView(stepTextView)
+        }
     }
 }
