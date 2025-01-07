@@ -89,7 +89,7 @@ class PrepViewModel(private val repository: PrepRepository = PrepRepository()) :
     fun updatePrep(prepId: String, name: String) {
         viewModelScope.launch {
             repository.updatePrep(prepId, name).collectLatest {
-                _updatePrepCategoryResult.value = it
+                _updatePrepResult.value = it
             }
         }
     }
@@ -97,9 +97,9 @@ class PrepViewModel(private val repository: PrepRepository = PrepRepository()) :
     private val _deletePrepResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
     val deletePrepResult get() = _deletePrepResult.asStateFlow()
 
-    fun deletePrep(scheduleId: String) {
+    fun deletePrep(prepId: String) {
         viewModelScope.launch {
-            repository.deletePrep(scheduleId).collectLatest {
+            repository.deletePrep(prepId).collectLatest {
                 _deletePrepResult.value = it
             }
         }

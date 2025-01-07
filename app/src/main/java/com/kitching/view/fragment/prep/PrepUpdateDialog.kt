@@ -1,6 +1,7 @@
 package com.kitching.view.fragment.prep
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.lifecycle.lifecycleScope
@@ -17,8 +18,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.view.clicks
 
-class PrepCreateDialog: BaseDialog<DialogCreatePrepBinding>(DialogCreatePrepBinding::inflate) {
-    private val args: PrepCreateDialogArgs by navArgs()
+class PrepUpdateDialog: BaseDialog<DialogCreatePrepBinding>(DialogCreatePrepBinding::inflate) {
+    private val args: PrepUpdateDialogArgs by navArgs()
 
     private val viewModel = PrepViewModel.instance
 
@@ -27,13 +28,14 @@ class PrepCreateDialog: BaseDialog<DialogCreatePrepBinding>(DialogCreatePrepBind
 
         with(binding) {
             prepNameTIL.hint = "할 일 이름"
+            prepNameTI.setText(args.prepName)
 
             with(confirmButton) {
-                text = "생성"
+                text = "수정"
                 throttleClicks(viewLifecycleOwner) {
-                    viewModel.createPrep(args.categoryId, prepNameTI.text.toString())
+                    viewModel.updatePrep(args.prepId, prepNameTI.text.toString())
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.createPrepResult.collectLatest {
+                        viewModel.updatePrepResult.collectLatest {
                             when(it) {
                                 is FirebaseResult.Success -> {
                                     viewModel.getPrepList(args.categoryId)

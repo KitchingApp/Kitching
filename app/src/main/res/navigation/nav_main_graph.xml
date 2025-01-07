@@ -131,6 +131,12 @@
         <action
             android:id="@+id/action_prepListFragment_to_prepCreateDialog"
             app:destination="@id/prepCreateDialog" />
+        <action
+            android:id="@+id/action_prepListFragment_to_prepUpdateDialog"
+            app:destination="@id/prepUpdateDialog" />
+        <action
+            android:id="@+id/action_prepListFragment_to_prepDeleteDialog"
+            app:destination="@id/prepDeleteDialog" />
 
     </fragment>
 
@@ -141,6 +147,37 @@
 
         <argument
             android:name="categoryId"
+            app:argType="string" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/prepUpdateDialog"
+        android:name="com.kitching.view.fragment.prep.PrepUpdateDialog"
+        tools:layout="@layout/dialog_create_prep">
+
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
+        <argument
+            android:name="prepId"
+            app:argType="string" />
+        <argument
+            android:name="prepName"
+            app:argType="string" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/prepDeleteDialog"
+        android:name="com.kitching.view.fragment.prep.PrepDeleteDialog"
+        tools:layout="@layout/dialog_confirm">
+
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
+        <argument
+            android:name="prepId"
             app:argType="string" />
 
     </dialog>

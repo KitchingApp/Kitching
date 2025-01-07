@@ -39,6 +39,7 @@ class PrepRepository(private val dataSource: FireStoreDataSource = FireStoreData
             fetcher = { dataSource.getPrepList(categoryId) },
             mapper = {
                 PrepDTO(
+                    it.categoryId,
                     it.id,
                     it.name,
                     it.recipeId,

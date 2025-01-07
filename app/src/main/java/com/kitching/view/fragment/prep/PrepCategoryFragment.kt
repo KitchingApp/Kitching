@@ -36,14 +36,12 @@ class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBindi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lateinit var teamId: String
-
         val prepCategoryAdapter = PrepCategoryAdapter(viewLifecycleOwner)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
+                    val teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
                     viewModel.getPrepCategory(teamId)
                     viewModel.prepCategory.collectLatest {
                         when(it) {

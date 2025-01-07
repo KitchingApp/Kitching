@@ -106,48 +106,4 @@ class PrepCategoryAdapter(
 
         popup.show()
     }
-
-    private fun deleteItem(teamId: String, categoryId: String) {
-        viewModel.deletePrepCategory(categoryId)
-        lifecycleOwner.lifecycleScope.launch {
-            viewModel.deletePrepCategoryResult.collectLatest {
-                when(it) {
-                    is FirebaseResult.Success -> {
-                        viewModel.getPrepCategory(teamId)
-                    }
-                    FirebaseResult.DummyConstructor -> {
-//                        TODO()
-                    }
-                    is FirebaseResult.Failure -> {
-//                        TODO()
-                    }
-                    FirebaseResult.Loading -> {
-//                        TODO()
-                    }
-                }
-            }
-        }
-    }
-
-    private fun updateItem(teamId: String, categoryId: String, categoryName: String, color: String) {
-        viewModel.updatePrepCategory(categoryId, categoryName, color)
-        lifecycleOwner.lifecycleScope.launch {
-            viewModel.deletePrepCategoryResult.collectLatest {
-                when(it) {
-                    is FirebaseResult.Success -> {
-                        viewModel.getPrepCategory(teamId)
-                    }
-                    FirebaseResult.DummyConstructor -> {
-//                        TODO()
-                    }
-                    is FirebaseResult.Failure -> {
-//                        TODO()
-                    }
-                    FirebaseResult.Loading -> {
-//                        TODO()
-                    }
-                }
-            }
-        }
-    }
 }
