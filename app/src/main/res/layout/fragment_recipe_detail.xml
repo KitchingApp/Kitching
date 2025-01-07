@@ -7,6 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginTop="@dimen/margin_S"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -22,6 +23,7 @@
             android:id="@+id/recipeNameTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="@dimen/padding_M"
             android:text="레시피 이름"
             app:layout_constraintTop_toBottomOf="@id/recipeIV" />
 
@@ -34,7 +36,7 @@
             app:layout_constraintTop_toBottomOf="@id/recipeNameTV" />
 
         <GridLayout
-            android:id="@+id/gridLayout"
+            android:id="@+id/gridLayout1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:columnCount="4"
@@ -82,15 +84,28 @@
             android:layout_height="wrap_content"
             style="@style/recipeDetailTitle"
             android:text="순서"
-            app:layout_constraintTop_toBottomOf="@id/gridLayout" />
+            app:layout_constraintTop_toBottomOf="@id/gridLayout1" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/recipeStepTV2"
+        <GridLayout
+            android:id="@+id/gridLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1. Aaaaaaaaaaaa"
-            style="@style/recipeOrder"
-            app:layout_constraintTop_toBottomOf="@id/recipeStepTV1" />
+            android:columnCount="1"
+            android:orientation="vertical"
+            android:background="@drawable/border_box"
+            android:paddingTop="@dimen/padding_S"
+            android:paddingHorizontal="@dimen/padding_S"
+            style="@style/recipeDetailTitle"
+
+            app:layout_constraintTop_toBottomOf="@id/recipeStepTV1"/>
+
+        <View
+            android:id="@+id/spaceBelowGridLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_L"
+
+            app:layout_constraintTop_toBottomOf="@id/gridLayout2"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
