@@ -5,7 +5,6 @@ import com.kitching.data.dto.PrepDTO
 import com.kitching.data.firebase.FireStoreDataSource
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.data.firebase.fetchFirebaseDataFlow
-import com.kitching.domain.entities.Prep
 import kotlinx.coroutines.flow.Flow
 
 class PrepRepository(private val dataSource: FireStoreDataSource = FireStoreDataSource()) {

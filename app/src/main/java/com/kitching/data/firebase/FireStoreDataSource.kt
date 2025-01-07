@@ -167,7 +167,7 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
     }
 
     suspend fun getUserName(userId: String): String {
-        val user = db.collection(COLLECTION_UESR).whereEqualTo("id", userId).get()
+        val user = db.collection(COLLECTION_USER).whereEqualTo("id", userId).get()
             .await().documents.firstOrNull()
 
         return user?.getString("userName")!!

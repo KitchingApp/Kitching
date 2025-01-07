@@ -3,7 +3,6 @@ package com.kitching.data.repository
 import com.kitching.data.dto.TeamDTO
 import com.kitching.data.firebase.FireStoreDataSource
 import com.kitching.data.firebase.FirebaseResult
-import com.kitching.data.firebase.fetchFirebaseBooleanFlow
 import com.kitching.data.firebase.fetchFirebaseDataFlow
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
@@ -18,11 +17,11 @@ class TeamRepository(private val dataSource: FireStoreDataSource = FireStoreData
 
     suspend fun createTeam(
         ownerId: String, teamName: String
-    ): Flow<FirebaseResult<Unit>> {
+    ): Flow<FirebaseResult<Boolean>> {
         val inviteCode = UUID.randomUUID().toString().replace("-", "")
 
-        return fetchFirebaseBooleanFlow {
+        return fetchFirebaseDataFlow (
             dataSource.createTeam(inviteCode, ownerId, teamName)
-        }
+        )
     }
 }

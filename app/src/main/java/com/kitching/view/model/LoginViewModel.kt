@@ -22,7 +22,7 @@ class LoginViewModel(private val loginRepository: LoginRepository = LoginReposit
         }
     }
 
-    private val _checkAndSaveUser = MutableStateFlow<FirebaseResult<Unit>>(FirebaseResult.DummyConstructor)
+    private val _checkAndSaveUser = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.DummyConstructor)
     val checkAndSaveUser get() = _checkAndSaveUser.asStateFlow()
 
     private val _userId = MutableStateFlow<String?>(null) // UID 상태 추가
