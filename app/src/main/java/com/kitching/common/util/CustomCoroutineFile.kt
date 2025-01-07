@@ -1,4 +1,4 @@
-package com.kitching.common
+package com.kitching.common.util
 
 import android.view.View
 import androidx.lifecycle.LifecycleOwner

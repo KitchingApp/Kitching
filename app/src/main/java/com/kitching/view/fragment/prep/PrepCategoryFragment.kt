@@ -10,7 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.kitching.adapter.PrepCategoryAdapter
 import com.kitching.common.BaseFragment
-import com.kitching.common.throttleFirst
+import com.kitching.common.util.throttleFirst
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentPrepBinding

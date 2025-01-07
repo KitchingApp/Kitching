@@ -1,7 +1,7 @@
 package com.kitching.data.repository
 
-import com.kitching.common.dateFormatter
-import com.kitching.common.timeFormatter
+import com.kitching.common.util.dateFormatter
+import com.kitching.common.util.timeFormatter
 import com.kitching.data.dto.DepartmentDTO
 import com.kitching.data.dto.MemberDTO
 import com.kitching.data.dto.MemberListDTO
@@ -17,7 +17,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 class OtherRepository(private val dataSource: FireStoreDataSource = FireStoreDataSource()) {
-    suspend fun getMemberList(teamId: String): Flow<FirebaseResult<MemberListDTO>> = flow {
+    fun getMemberList(teamId: String): Flow<FirebaseResult<MemberListDTO>> = flow {
         emit(FirebaseResult.Loading)
         runCatching {
             dataSource.getAllMembers(teamId).map {

@@ -2,8 +2,8 @@ package com.kitching.view.fragment.schedule
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -11,17 +11,17 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.kitching.R
 import com.kitching.adapter.ScheduleApplyAdapter
 import com.kitching.common.BaseFragment
 import com.kitching.databinding.FragmentScheduleBinding
 import com.kitching.adapter.ScheduleFixAdapter
-import com.kitching.common.throttleClicks
-import com.kitching.common.throttleFirst
+import com.kitching.common.util.throttleClicks
+import com.kitching.common.util.throttleFirst
 import com.kitching.data.datasource.PreferencesDataSource
-import com.kitching.data.dto.ScheduleDTO
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.view.model.ScheduleViewModel
-import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -29,55 +29,69 @@ import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.widget.itemClickEvents
 import java.time.LocalDate
 
-class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentScheduleBinding::inflate) {
+class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleBinding::inflate) {
     private lateinit var navController: NavController
 
-    private val viewModel by viewModels<ScheduleViewModel> {
-        viewModelFactory
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        navController = findNavController()
-    }
-
-    private val fixAdapter = ScheduleFixAdapter()
-    private val applyAdapter = ScheduleApplyAdapter()
+    private val viewModel = ScheduleViewModel.instance
 
     private lateinit var teamId: String
+    private var currentDate = LocalDate.now()
+    private var selectedDepartment: String? = null
+
+    private lateinit var fixAdapter: ScheduleFixAdapter
+    private lateinit var applyAdapter: ScheduleApplyAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navController = findNavController()
+        fixAdapter = ScheduleFixAdapter(viewLifecycleOwner, currentDate.toString())
+        applyAdapter = ScheduleApplyAdapter(viewLifecycleOwner, currentDate.toString())
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                setAdapters()
-                setTeamId()
+                with(viewModel) {
+                    teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
+                    getDepartments(teamId)
+                    getSchedules(teamId, LocalDate.now().toString())
+                }
 
                 launch {
                     collectDepartments()
                 }
                 launch {
-                    collectSchedules(null)
+                    collectFixedSchedules()
+                }
+                launch {
+                    collectAppliedSchedules()
                 }
 
                 with(binding.departmentSelectDropdown) {
                     itemClickEvents().throttleFirst().onEach {
-                        collectSchedules(text.toString())
+                        collectFixedSchedules()
+                        collectAppliedSchedules()
                     }.launchIn(viewLifecycleOwner.lifecycleScope)
                 }
             }
+            launch {
+                collectFixedSchedules()
+            }
+            launch {
+                collectAppliedSchedules()
+            }
         }
+
+        setAdapters()
         setDateBtn(viewLifecycleOwner)
+        setBottomSheet()
+        setActionBtn (
+            onClickAddBtn = {
+                val action = ScheduleFragmentDirections.actionScheduleFragmentToScheduleCreateDialog(currentDate.toString())
+                navController.navigate(action)
+            }
+        )
     }
 
-
-    /** teamId 세팅 */
-    private suspend fun setTeamId() {
-        teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
-        viewModel.getDepartments(teamId)
-        viewModel.getSchedules(teamId, LocalDate.now().toString())
-    }
-
+    /** 부서 업데이트 */
     private suspend fun collectDepartments() {
         viewModel.departments.collectLatest { departments ->
             when (departments) {
@@ -99,8 +113,9 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
         }
     }
 
-    private suspend fun collectSchedules(selectedDepartment: String?) {
-        viewModel.schedules.collectLatest { schedules ->
+    /** 확정 스케줄 업데이트 */
+    private suspend fun collectFixedSchedules() {
+        viewModel.fixedSchedules.collectLatest { schedules ->
             when (schedules) {
                 is FirebaseResult.Success -> {
                     val filteredSchedules = if (selectedDepartment.isNullOrBlank()) {
@@ -108,9 +123,10 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
                     } else {
                         schedules.data.filter { it.departmentName == selectedDepartment }
                     }
-                    submitSchedules(filteredSchedules)
+                    Log.d("schedule - fixed", filteredSchedules.toString())
+                    fixAdapter.submitList(filteredSchedules)
+                    binding.scheduleDepartmentPeople.text = getString(R.string.scheduleDepartmentPeople, filteredSchedules.size)
                 }
-
                 is FirebaseResult.Loading -> {} // TODO("로딩 처리)
                 is FirebaseResult.Failure -> {} // TODO("예외 처리")
                 is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
@@ -118,10 +134,24 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
         }
     }
 
-    /** 리사이클러뷰 어댑터에 스케줄 분리 후 전달 */
-    private fun submitSchedules(schedules: List<ScheduleDTO>) {
-        fixAdapter.submitList(schedules.filter { it.isFix })
-        applyAdapter.submitList(schedules.filter { !it.isFix })
+    /** 신청 스케줄 업데이트 */
+    private suspend fun collectAppliedSchedules() {
+        viewModel.appliedSchedules.collectLatest { schedules ->
+            when (schedules) {
+                is FirebaseResult.Success -> {
+                    val filteredSchedules = if (selectedDepartment.isNullOrBlank()) {
+                        schedules.data
+                    } else {
+                        schedules.data.filter { it.departmentName == selectedDepartment }
+                    }
+                    Log.d("schedule - applied", filteredSchedules.toString())
+                    applyAdapter.submitList(filteredSchedules)
+                }
+                is FirebaseResult.Loading -> {} // TODO("로딩 처리)
+                is FirebaseResult.Failure -> {} // TODO("예외 처리")
+                is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
+            }
+        }
     }
 
     /** 리사이클러뷰 어댑터 세팅 */
@@ -140,7 +170,6 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
 
     /** 날짜 버튼 세팅 */
     private fun setDateBtn(lifecycleOwner: LifecycleOwner) {
-        var currentDate = LocalDate.now()
         with(binding) {
             scheduleDateBtn.text = currentDate.toString()
 
@@ -172,5 +201,17 @@ class ScheduleFragment() : BaseFragment<FragmentScheduleBinding>(FragmentSchedul
     private fun setDate(targetDate: LocalDate) {
         binding.scheduleDateBtn.text = targetDate.toString()
         viewModel.getSchedules(teamId, targetDate.toString())
+    }
+
+    /** 바텀 시트 세팅 */
+    private fun setBottomSheet() {
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetContainer)
+
+        with(bottomSheetBehavior) {
+            state = BottomSheetBehavior.STATE_COLLAPSED
+            peekHeight = 120
+            isDraggable = true
+            isHideable = false
+        }
     }
 }

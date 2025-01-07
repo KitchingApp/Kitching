@@ -2,27 +2,46 @@ package com.kitching.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kitching.adapter.ScheduleFixAdapter.ScheduleViewHolder
+import com.kitching.common.util.throttleClicks
 import com.kitching.data.dto.ScheduleDTO
 import com.kitching.databinding.ItemScheduleListBinding
+import com.kitching.view.fragment.schedule.ScheduleFragmentDirections
 
-class ScheduleFixAdapter : ListAdapter<ScheduleDTO, ScheduleViewHolder>(diffUtil) {
+class ScheduleFixAdapter(
+    private val lifecycleOwner: LifecycleOwner,
+    private val currentDate: String
+) : ListAdapter<ScheduleDTO, ScheduleViewHolder>(diffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ScheduleViewHolder {
-        val binding = ItemScheduleListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemScheduleListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        navController = Navigation.findNavController(parent)
         return ScheduleViewHolder(binding)
     }
+
+    private var navController: NavController? = null
 
     override fun onBindViewHolder(
         holder: ScheduleViewHolder,
         position: Int
     ) {
         holder.bindScheduleFix(currentList[position])
+    }
+
+    override fun onCurrentListChanged(
+        previousList: MutableList<ScheduleDTO>,
+        currentList: MutableList<ScheduleDTO>
+    ) {
+        super.onCurrentListChanged(previousList, currentList)
     }
 
     companion object {
@@ -45,12 +64,20 @@ class ScheduleFixAdapter : ListAdapter<ScheduleDTO, ScheduleViewHolder>(diffUtil
 
     inner class ScheduleViewHolder(val binding: ItemScheduleListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-            fun bindScheduleFix(schedule: ScheduleDTO) {
-                with(binding) {
-                    scheduleNameTV.text = schedule.userName
-                    scheduleTimeTV.text = schedule.scheduleTimeName
+        fun bindScheduleFix(schedule: ScheduleDTO) {
+            with(binding) {
+                scheduleNameTV.text = schedule.userName
+                scheduleTimeTV.text = schedule.scheduleTimeName
+
+                rejectBtn.throttleClicks(lifecycleOwner) {
+                    val action =
+                        ScheduleFragmentDirections.actionScheduleFragmentToScheduleDeleteDialog(
+                            dateString = currentDate,
+                            scheduleId = schedule.scheduleId,
+                        )
+                    navController?.navigate(action)
                 }
             }
-
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.kitching.common
+package com.kitching.common.util
 
 import java.time.format.DateTimeFormatter
 

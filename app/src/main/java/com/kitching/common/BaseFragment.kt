@@ -1,9 +1,15 @@
 package com.kitching.common
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +39,7 @@ abstract class BaseFragment<VB : ViewBinding>(
 
     fun setRvLayout(recyclerView: RecyclerView){
         with(recyclerView){
-            layoutManager = LinearLayoutManager(KitchingApplication.Companion.getAppContext())
+            layoutManager = LinearLayoutManager(KitchingApplication.getAppContext())
 //            addItemDecoration(
 //                DividerItemDecoration(
 //                    KitchingApplication.getAppContext(),
@@ -41,5 +47,44 @@ abstract class BaseFragment<VB : ViewBinding>(
 //                )
 //            )
         }
+    }
+
+    /** 액션바 +버튼 */
+    fun setActionBtn(onClickAddBtn: () -> Unit) {
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menu.add(
+                        ActionMenuType.ADD.groupId,
+                        ActionMenuType.ADD.itemId,
+                        ActionMenuType.ADD.order,
+                        ActionMenuType.ADD.title
+                    ).apply {
+                        setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+                        setIcon(ActionMenuType.ADD.icon)
+                        val typedValue = TypedValue()
+
+                        val theme = requireContext().theme
+                        theme.resolveAttribute(android.R.attr.colorControlNormal, typedValue, true)
+                        val color = ContextCompat.getColor(requireContext(), typedValue.resourceId)
+
+                        icon?.setTint(color)
+                    }
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                val actionMenu = ActionMenuType.findMenuByItemId(menuItem.itemId)
+                return if (ActionMenuType.findMenuByItemId(menuItem.itemId) != null) {
+                    when(actionMenu) {
+                        ActionMenuType.ADD -> {
+                            onClickAddBtn()
+                            true
+                        }
+                        else -> false
+                    }
+                } else {
+                    false
+                }
+            }
+        }, viewLifecycleOwner)
     }
 }

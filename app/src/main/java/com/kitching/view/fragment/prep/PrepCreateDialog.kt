@@ -7,7 +7,7 @@ import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import com.kitching.common.BaseDialog
-import com.kitching.common.throttleFirst
+import com.kitching.common.util.throttleFirst
 import com.kitching.databinding.DialogCreatePrepBinding
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
