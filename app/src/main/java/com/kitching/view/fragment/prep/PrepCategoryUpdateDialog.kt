@@ -6,6 +6,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.radiobutton.MaterialRadioButton
 import com.kitching.common.ColorInputBaseDialog
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
@@ -15,9 +17,11 @@ import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class PrepCategoryCreateDialog(): ColorInputBaseDialog() {
+class PrepCategoryUpdateDialog(): ColorInputBaseDialog() {
 
     private val viewModel = PrepViewModel.instance
+
+    private val args: PrepCategoryUpdateDialogArgs by navArgs()
 
     private lateinit var teamId: String
 
@@ -32,14 +36,16 @@ class PrepCategoryCreateDialog(): ColorInputBaseDialog() {
 
         with(binding) {
             textField.hint = "카테고리 이름"
+            textInputEditText.setText(args.name)
+            colorPickerRG.findViewWithTag<MaterialRadioButton>(args.color).isChecked = true
 
             with(confirmBtn) {
-                text = "생성"
+                text = "수정"
 
                 throttleClicks(viewLifecycleOwner) {
-                    viewModel.createPrepCategory(teamId, getTextInput(), getCheckedColor())
+                    viewModel.updatePrepCategory(args.categoryId, getTextInput(), getCheckedColor())
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.createPrepCategoryResult.collectLatest {
+                        viewModel.updatePrepCategoryResult.collectLatest {
                             when (it) {
                                 is FirebaseResult.Success -> {
                                     viewModel.getPrepCategory(teamId)

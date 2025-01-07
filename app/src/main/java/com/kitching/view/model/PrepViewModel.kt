@@ -13,6 +13,10 @@ import kotlinx.coroutines.launch
 
 class PrepViewModel(private val repository: PrepRepository = PrepRepository()) : ViewModel() {
 
+    companion object {
+        val instance = PrepViewModel()
+    }
+
     private val _prepCategory = MutableStateFlow<FirebaseResult<MutableList<PrepCategoryDTO>>>(FirebaseResult.Loading)
     val prepCategory get() = _prepCategory.asStateFlow()
 
@@ -24,6 +28,39 @@ class PrepViewModel(private val repository: PrepRepository = PrepRepository()) :
         }
     }
 
+    private val _createPrepCategoryResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val createPrepCategoryResult get() = _createPrepCategoryResult.asStateFlow()
+
+    fun createPrepCategory(teamId: String, categoryName: String, color: String) {
+        viewModelScope.launch {
+            repository.createPrepCategory(teamId, categoryName, color).collectLatest {
+                _createPrepCategoryResult.value = it
+            }
+        }
+    }
+
+    private val _updatePrepCategoryResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val updatePrepCategoryResult get() = _updatePrepCategoryResult.asStateFlow()
+
+    fun updatePrepCategory(categoryId: String, categoryName: String, color: String) {
+        viewModelScope.launch {
+            repository.updatePrepCategory(categoryId, categoryName, color).collectLatest {
+                _updatePrepCategoryResult.value = it
+            }
+        }
+    }
+
+    private val _deletePrepCategoryResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val deletePrepCategoryResult get() = _deletePrepCategoryResult.asStateFlow()
+
+    fun deletePrepCategory(scheduleId: String) {
+        viewModelScope.launch {
+            repository.deletePrepCategory(scheduleId).collectLatest {
+                _deletePrepCategoryResult.value = it
+            }
+        }
+    }
+
     private val _prepList = MutableStateFlow<FirebaseResult<MutableList<PrepDTO>>>(FirebaseResult.Loading)
     val prepList get() = _prepList.asStateFlow()
 
@@ -31,6 +68,39 @@ class PrepViewModel(private val repository: PrepRepository = PrepRepository()) :
         viewModelScope.launch {
             repository.getPrepList(categoryId).collectLatest {
                 _prepList.value = it
+            }
+        }
+    }
+
+    private val _createPrepResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val createPrepResult get() = _createPrepResult.asStateFlow()
+
+    fun createPrep(categoryId: String, name: String) {
+        viewModelScope.launch {
+            repository.createPrep(categoryId, name).collectLatest {
+                _createPrepResult.value = it
+            }
+        }
+    }
+
+    private val _updatePrepResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val updatePrepResult get() = _updatePrepResult.asStateFlow()
+
+    fun updatePrep(prepId: String, name: String) {
+        viewModelScope.launch {
+            repository.updatePrep(prepId, name).collectLatest {
+                _updatePrepResult.value = it
+            }
+        }
+    }
+
+    private val _deletePrepResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val deletePrepResult get() = _deletePrepResult.asStateFlow()
+
+    fun deletePrep(prepId: String) {
+        viewModelScope.launch {
+            repository.deletePrep(prepId).collectLatest {
+                _deletePrepResult.value = it
             }
         }
     }

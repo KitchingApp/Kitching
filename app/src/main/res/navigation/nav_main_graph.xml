@@ -71,7 +71,52 @@
         <action
             android:id="@+id/action_prepFragment_to_prepListFragment"
             app:destination="@id/prepListFragment" />
+        <action
+            android:id="@+id/action_prepFragment_to_prepCategoryCreateDialog"
+            app:destination="@id/prepCategoryCreateDialog" />
+        <action
+            android:id="@+id/action_prepFragment_to_prepCategoryDeleteDialog"
+            app:destination="@id/prepCategoryDeleteDialog" />
+        <action
+            android:id="@+id/action_prepFragment_to_prepCategoryUpdateDialog"
+            app:destination="@id/prepCategoryUpdateDialog" />
     </fragment>
+
+    <dialog
+        android:id="@+id/prepCategoryCreateDialog"
+        android:name="com.kitching.view.fragment.prep.PrepCategoryCreateDialog"
+        tools:layout="@layout/dialog_input_text_color">
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/prepCategoryDeleteDialog"
+        android:name="com.kitching.view.fragment.prep.PrepCategoryDeleteDialog"
+        tools:layout="@layout/dialog_confirm">
+
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/prepCategoryUpdateDialog"
+        android:name="com.kitching.view.fragment.prep.PrepCategoryUpdateDialog"
+        tools:layout="@layout/dialog_input_text_color">
+
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="color"
+            app:argType="string" />
+
+
+    </dialog>
 
     <fragment
         android:id="@+id/prepListFragment"
@@ -83,7 +128,59 @@
             android:name="prepCategoryId"
             app:argType="string" />
 
+        <action
+            android:id="@+id/action_prepListFragment_to_prepCreateDialog"
+            app:destination="@id/prepCreateDialog" />
+        <action
+            android:id="@+id/action_prepListFragment_to_prepUpdateDialog"
+            app:destination="@id/prepUpdateDialog" />
+        <action
+            android:id="@+id/action_prepListFragment_to_prepDeleteDialog"
+            app:destination="@id/prepDeleteDialog" />
+
     </fragment>
+
+    <dialog
+        android:id="@+id/prepCreateDialog"
+        android:name="com.kitching.view.fragment.prep.PrepCreateDialog"
+        tools:layout="@layout/dialog_input_text">
+
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/prepUpdateDialog"
+        android:name="com.kitching.view.fragment.prep.PrepUpdateDialog"
+        tools:layout="@layout/dialog_create_prep">
+
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
+        <argument
+            android:name="prepId"
+            app:argType="string" />
+        <argument
+            android:name="prepName"
+            app:argType="string" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/prepDeleteDialog"
+        android:name="com.kitching.view.fragment.prep.PrepDeleteDialog"
+        tools:layout="@layout/dialog_confirm">
+
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
+        <argument
+            android:name="prepId"
+            app:argType="string" />
+
+    </dialog>
 
     <fragment
         android:id="@+id/recipeFragment"

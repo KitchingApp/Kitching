@@ -21,9 +21,7 @@ import kotlinx.coroutines.launch
 class PrepListFragment : BaseFragment<FragmentPrepListBinding>(FragmentPrepListBinding::inflate) {
     private lateinit var navController: NavController
 
-    private val viewModel by viewModels<PrepViewModel> {
-        viewModelFactory
-    }
+    private val viewModel = PrepViewModel.instance
 
     private val args: PrepListFragmentArgs by navArgs()
 
@@ -57,6 +55,11 @@ class PrepListFragment : BaseFragment<FragmentPrepListBinding>(FragmentPrepListB
 
                 this.adapter = prepAdapter
             }
+        }
+
+        setActionBtn {
+            val action = PrepListFragmentDirections.actionPrepListFragmentToPrepCreateDialog(args.prepCategoryId)
+            navController.navigate(action)
         }
     }
 }

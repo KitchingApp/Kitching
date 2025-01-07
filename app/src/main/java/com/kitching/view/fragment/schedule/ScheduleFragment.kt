@@ -72,12 +72,6 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
                     }.launchIn(viewLifecycleOwner.lifecycleScope)
                 }
             }
-            launch {
-                collectFixedSchedules()
-            }
-            launch {
-                collectAppliedSchedules()
-            }
         }
 
         setAdapters()

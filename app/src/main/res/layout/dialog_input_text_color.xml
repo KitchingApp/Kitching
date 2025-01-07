@@ -8,7 +8,7 @@
         android:id="@+id/textField"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="텍스트 입력 힌트"
+        android:hint="@string/textInputHint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

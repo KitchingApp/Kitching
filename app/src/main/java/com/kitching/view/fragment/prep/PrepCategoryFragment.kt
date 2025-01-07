@@ -1,6 +1,7 @@
 package com.kitching.view.fragment.prep
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -25,9 +26,7 @@ import ru.ldralighieri.corbind.view.clicks
 class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBinding::inflate) {
     private lateinit var navController: NavController
 
-    private val viewModel by viewModels<PrepViewModel> {
-        viewModelFactory
-    }
+    private val viewModel = PrepViewModel.instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,13 +36,12 @@ class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBindi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lateinit var teamId: String
-        val prepCategoryAdapter = PrepCategoryAdapter(viewLifecycleOwner, navController)
+        val prepCategoryAdapter = PrepCategoryAdapter(viewLifecycleOwner)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
+                    val teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
                     viewModel.getPrepCategory(teamId)
                     viewModel.prepCategory.collectLatest {
                         when(it) {
@@ -60,23 +58,13 @@ class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBindi
         with(binding) {
             with(todoCategoryRV) {
                 setRvLayout(this)
-
                 this.adapter = prepCategoryAdapter
             }
+        }
 
-            with(createTodoCategoryBtn) {
-                clicks().throttleFirst().onEach {
-//                    navController.navigate(R.id.createPrepCategoryDialog)
-                }.launchIn(lifecycleScope)
-            }
-
-//            parentFragmentManager.setFragmentResultListener(TODO_CATEGORY_ARGS_REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
-//                val categoryName = bundle.getString(TODO_CATEGORY_NAME_KEY) ?: return@setFragmentResultListener
-//                val categoryColor = bundle.getString(TODO_CATEGORY_COLOR_KEY)?.let { Color.parseColor(it) } ?: return@setFragmentResultListener
-//
-////                todoCategoriesMockData.add(TodoCategory(categoryName, categoryColor))
-////                (todoCategoryRV.adapter as? TodoCategoryAdapter)?.submitList(todoCategoriesMockData.toList())
-//            }
+        setActionBtn {
+            val action = PrepCategoryFragmentDirections.actionPrepFragmentToPrepCategoryCreateDialog()
+            navController.navigate(action)
         }
     }
 }

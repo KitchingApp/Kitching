@@ -11,23 +11,32 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kitching.R
 import com.kitching.common.util.throttleFirst
 import com.kitching.data.dto.PrepCategoryDTO
+import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.ItemBigCategoryBinding
 import com.kitching.view.fragment.prep.PrepCategoryFragmentDirections
+import com.kitching.view.model.PrepViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import ru.ldralighieri.corbind.appcompat.itemClicks
 import ru.ldralighieri.corbind.view.clicks
 
 class PrepCategoryAdapter(
-    private val lifecycleOwner: LifecycleOwner,
-    private val navController: NavController
+    private val lifecycleOwner: LifecycleOwner
 ) : ListAdapter<PrepCategoryDTO, PrepCategoryAdapter.PrepCategoryViewHolder>(diffUtil),
     ViewModelProvider.Factory {
+
+    private val viewModel = PrepViewModel.instance
+
+    private var navController: NavController? = null
 
     private lateinit var context: Context
 
@@ -35,6 +44,7 @@ class PrepCategoryAdapter(
         context = parent.context
         val binding =
             ItemBigCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        navController = Navigation.findNavController(parent)
         return PrepCategoryViewHolder(binding)
     }
 
@@ -48,7 +58,7 @@ class PrepCategoryAdapter(
                 oldItem: PrepCategoryDTO,
                 newItem: PrepCategoryDTO
             ): Boolean {
-                return oldItem.categoryName == newItem.categoryName
+                return oldItem.categoryName == newItem.categoryName && oldItem.color == newItem.color
             }
 
             override fun areContentsTheSame(
@@ -68,37 +78,32 @@ class PrepCategoryAdapter(
                 categoryCV.setCardBackgroundColor(Color.parseColor(prepCategory.color))
                 categoryCV.clicks().throttleFirst().onEach {
                     val argActions = PrepCategoryFragmentDirections.actionPrepFragmentToPrepListFragment(prepCategory.categoryId)
-                    navController.navigate(argActions)
+                    navController?.navigate(argActions)
                 }.launchIn(lifecycleOwner.lifecycleScope)
                 optionBtn.clicks().throttleFirst().onEach {
-                    showMenu(optionBtn, R.menu.option_menu, adapterPosition)
+                    showMenu(optionBtn, R.menu.option_menu, prepCategory.categoryId, prepCategory.categoryName, prepCategory.color)
                 }.launchIn(lifecycleOwner.lifecycleScope)
             }
         }
     }
 
-    private fun showMenu(v: View, @MenuRes menuRes: Int, position: Int) {
+    private fun showMenu(v: View, @MenuRes menuRes: Int, categoryId: String, name: String, color: String) {
         val popup = PopupMenu(context, v)
         popup.menuInflater.inflate(menuRes, popup.menu)
 
-//        popup.itemClicks().onEach {
-//            Log.d("test", "$position 번 $it")
-//        }.launchIn(lifecycleOwner.lifecycleScope)
+        popup.itemClicks().onEach {
+            when(it.itemId) {
+                R.id.updateInOptionMenu -> {
+                    val action = PrepCategoryFragmentDirections.actionPrepFragmentToPrepCategoryUpdateDialog(categoryId, name, color)
+                    navController?.navigate(action)
+                }
+                R.id.deleteInOptionMenu -> {
+                    val action = PrepCategoryFragmentDirections.actionPrepFragmentToPrepCategoryDeleteDialog(categoryId)
+                    navController?.navigate(action)
+                }
+            }
+        }.launchIn(lifecycleOwner.lifecycleScope)
 
-        // Show the popup menu.
         popup.show()
-    }
-
-    private fun removeItem(position: Int) {
-        val newList = currentList.toMutableList()
-        newList.removeAt(position)
-        submitList(newList)
-    }
-
-    private fun updateItem(position: Int) {
-        val item = currentList[position]
-        val newList = currentList.toMutableList()
-        newList[position] = item.copy(categoryName = "수정된 카테고리입니당당구리구리")
-        submitList(newList)
     }
 }
