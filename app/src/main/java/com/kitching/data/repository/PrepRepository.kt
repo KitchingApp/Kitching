@@ -21,6 +21,10 @@ class PrepRepository(private val dataSource: FireStoreDataSource = FireStoreData
         )
     }
 
+    suspend fun createPrepCategory(teamId: String, categoryName: String, color: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.createPrepCategory(teamId, categoryName, color))
+    }
+
     suspend fun getPrepList(categoryId: String): Flow<FirebaseResult<MutableList<PrepDTO>>> {
         return fetchFirebaseDataFlow(
             fetcher = { dataSource.getPrepList(categoryId) },

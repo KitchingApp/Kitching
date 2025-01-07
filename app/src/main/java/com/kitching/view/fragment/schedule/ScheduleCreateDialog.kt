@@ -64,7 +64,6 @@ class ScheduleCreateDialog :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""

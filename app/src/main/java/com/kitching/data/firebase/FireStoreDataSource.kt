@@ -115,8 +115,7 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
 
         val document = db.collection(COLLECTION_SCHEDULE).add(scheduleWithOutId).await()
 
-        val scheduleWithId = scheduleWithOutId.copy(id = document.id)
-        db.collection(COLLECTION_SCHEDULE).document(document.id).set(scheduleWithId).addOnSuccessListener {
+        db.collection(COLLECTION_SCHEDULE).document(document.id).update("id", document.id).addOnSuccessListener {
             createTaskResult = true
         }.await()
 
@@ -192,6 +191,25 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
 
         return if (prepCategory.isEmpty) mutableListOf()
         else prepCategory.toObjects(PrepCategory::class.java) as MutableList<PrepCategory>
+    }
+
+    suspend fun createPrepCategory(teamId: String, categoryName: String, color: String): Boolean {
+        var createTaskResult = false
+
+        val prepCategoryWithOutId = PrepCategory(
+            id = "",
+            teamId = teamId,
+            name = categoryName,
+            color = color
+        )
+
+        val document = db.collection(COLLECTION_PREP_CATEGORY).add(prepCategoryWithOutId).await()
+
+        db.collection(COLLECTION_PREP_CATEGORY).document(document.id).update("id", document.id).addOnSuccessListener {
+            createTaskResult = true
+        }.await()
+
+        return createTaskResult
     }
 
     suspend fun getPrepList(categoryId: String): MutableList<Prep> {

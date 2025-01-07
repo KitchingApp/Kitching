@@ -71,7 +71,17 @@
         <action
             android:id="@+id/action_prepFragment_to_prepListFragment"
             app:destination="@id/prepListFragment" />
+        <action
+            android:id="@+id/action_prepFragment_to_prepCategoryCreateDialog"
+            app:destination="@id/prepCategoryCreateDialog" />
     </fragment>
+
+    <dialog
+        android:id="@+id/prepCategoryCreateDialog"
+        android:name="com.kitching.view.fragment.prep.PrepCategoryCreateDialog"
+        tools:layout="@layout/dialog_input_text_color">
+
+    </dialog>
 
     <fragment
         android:id="@+id/prepListFragment"

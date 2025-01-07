@@ -1,40 +1,71 @@
 package com.kitching.view.fragment.prep
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.RequiresApi
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.kitching.common.ColorInputBaseDialog
-import com.kitching.common.TODO_CATEGORY_ARGS_REQUEST_KEY
-import com.kitching.common.TODO_CATEGORY_COLOR_KEY
-import com.kitching.common.TODO_CATEGORY_NAME_KEY
-import com.kitching.common.util.throttleFirst
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import ru.ldralighieri.corbind.view.clicks
+import com.kitching.common.util.throttleClicks
+import com.kitching.data.datasource.PreferencesDataSource
+import com.kitching.data.firebase.FirebaseResult
+import com.kitching.view.model.PrepViewModel
+import com.kitching.view.model.factory.viewModelFactory
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-class PrepCategoryCreateDialog(private val initialName: String, private val initialColor: Int): ColorInputBaseDialog(
-    TODO_CATEGORY_ARGS_REQUEST_KEY, TODO_CATEGORY_NAME_KEY, TODO_CATEGORY_COLOR_KEY) {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+class PrepCategoryCreateDialog(): ColorInputBaseDialog() {
+
+    private val viewModel by viewModels<PrepViewModel> {
+        viewModelFactory
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    private lateinit var teamId: String
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
+            }
+        }
 
         with(binding) {
             textField.hint = "카테고리 이름"
 
             with(confirmBtn) {
                 text = "생성"
+
+                throttleClicks(viewLifecycleOwner) {
+                    viewModel.createPrepCategory(teamId, getTextInput(), getCheckedColor())
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        viewModel.createPrepCategoryResult.collectLatest {
+                            when (it) {
+                                is FirebaseResult.Success -> {
+                                    viewModel.getPrepCategory(teamId)
+                                    dismiss()
+                                }
+                                is FirebaseResult.Loading -> {
+
+                                }
+                                is FirebaseResult.Failure -> {
+
+                                }
+                                is FirebaseResult.DummyConstructor -> {
+
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             with(cancelBtn) {
-                clicks().throttleFirst().onEach {
+                throttleClicks(viewLifecycleOwner) {
                     dismiss()
-                }.launchIn(lifecycleScope)
+                }
             }
         }
     }

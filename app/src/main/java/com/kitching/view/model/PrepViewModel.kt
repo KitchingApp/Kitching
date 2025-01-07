@@ -24,6 +24,17 @@ class PrepViewModel(private val repository: PrepRepository = PrepRepository()) :
         }
     }
 
+    private val _createPrepCategoryResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val createPrepCategoryResult get() = _createPrepCategoryResult.asStateFlow()
+
+    fun createPrepCategory(teamId: String, categoryName: String, color: String) {
+        viewModelScope.launch {
+            repository.createPrepCategory(teamId, categoryName, color).collectLatest {
+                _createPrepCategoryResult.value = it
+            }
+        }
+    }
+
     private val _prepList = MutableStateFlow<FirebaseResult<MutableList<PrepDTO>>>(FirebaseResult.Loading)
     val prepList get() = _prepList.asStateFlow()
 
