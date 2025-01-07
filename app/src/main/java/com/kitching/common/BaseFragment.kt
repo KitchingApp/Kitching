@@ -1,9 +1,6 @@
 package com.kitching.common
 
-import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.Menu
@@ -11,15 +8,12 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.kitching.R
 
 typealias FragmentInflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
@@ -45,7 +39,7 @@ abstract class BaseFragment<VB : ViewBinding>(
 
     fun setRvLayout(recyclerView: RecyclerView){
         with(recyclerView){
-            layoutManager = LinearLayoutManager(KitchingApplication.Companion.getAppContext())
+            layoutManager = LinearLayoutManager(KitchingApplication.getAppContext())
 //            addItemDecoration(
 //                DividerItemDecoration(
 //                    KitchingApplication.getAppContext(),
@@ -55,6 +49,7 @@ abstract class BaseFragment<VB : ViewBinding>(
         }
     }
 
+    /** 액션바 +버튼 */
     fun setActionBtn(onClickAddBtn: () -> Unit) {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

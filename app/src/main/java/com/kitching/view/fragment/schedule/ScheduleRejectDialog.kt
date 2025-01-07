@@ -8,12 +8,12 @@ import com.kitching.common.BaseDialog
 import com.kitching.common.KitchingApplication
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
-import com.kitching.databinding.DialogConfirmBinding
+import com.kitching.databinding.DialogInputTextBinding
 import com.kitching.view.model.ScheduleViewModel
 import kotlinx.coroutines.launch
 
-class ScheduleDeleteDialog:
-    BaseDialog<DialogConfirmBinding>(DialogConfirmBinding::inflate) {
+class ScheduleRejectDialog:
+    BaseDialog<DialogInputTextBinding>(DialogInputTextBinding::inflate) {
 
     private val viewModel = ScheduleViewModel.instance
 
@@ -23,21 +23,21 @@ class ScheduleDeleteDialog:
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            messageTV.text = "스케줄을 삭제하시겠습니까?"
+            textField.hint = "신청 거절 사유를 입력해주세요."
 
-            with(confirmButton) {
-                text = "삭제"
+            with(confirmBtn) {
+                text = "거절"
                 throttleClicks(viewLifecycleOwner) {
                     viewLifecycleOwner.lifecycleScope.launch {
                         val teamId = PreferencesDataSource(KitchingApplication.getAppContext()).getTeamId() ?: ""
-                        viewModel.deleteSchedule(args.scheduleId)
+                        viewModel.deleteSchedule(args.scheduleId, true)
                         viewModel.getSchedules(teamId, args.dateString)
                         dismiss()
                     }
                 }
             }
 
-            with(cancelButton) {
+            with(cancelBtn) {
                 throttleClicks(viewLifecycleOwner) {
                     dismiss()
                 }
