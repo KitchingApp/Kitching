@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -21,7 +20,6 @@ import com.kitching.adapter.ScheduleFixAdapter
 import com.kitching.common.util.throttleClicks
 import com.kitching.common.util.throttleFirst
 import com.kitching.data.datasource.PreferencesDataSource
-import com.kitching.data.dto.ScheduleDTO
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.view.model.ScheduleViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -34,13 +32,11 @@ import java.time.LocalDate
 class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleBinding::inflate) {
     private lateinit var navController: NavController
 
-//    private val viewModel by viewModels<ScheduleViewModel> {
-//        viewModelFactory
-//    }
     private val viewModel = ScheduleViewModel.instance
 
     private lateinit var teamId: String
     private var currentDate = LocalDate.now()
+    private var selectedDepartment: String? = null
 
     private lateinit var fixAdapter: ScheduleFixAdapter
     private lateinit var applyAdapter: ScheduleApplyAdapter
@@ -48,8 +44,8 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
-        fixAdapter = ScheduleFixAdapter(viewLifecycleOwner.lifecycleScope, currentDate.toString())
-        applyAdapter = ScheduleApplyAdapter()
+        fixAdapter = ScheduleFixAdapter(viewLifecycleOwner, currentDate.toString())
+        applyAdapter = ScheduleApplyAdapter(viewLifecycleOwner, currentDate.toString())
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -63,20 +59,24 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
                     collectDepartments()
                 }
                 launch {
-                    collectSchedules(null)
+                    collectFixedSchedules()
+                }
+                launch {
+                    collectAppliedSchedules()
                 }
 
                 with(binding.departmentSelectDropdown) {
                     itemClickEvents().throttleFirst().onEach {
-                        collectSchedules(text.toString())
+                        collectFixedSchedules()
+                        collectAppliedSchedules()
                     }.launchIn(viewLifecycleOwner.lifecycleScope)
                 }
             }
             launch {
-                collectDepartments()
+                collectFixedSchedules()
             }
             launch {
-                collectSchedules(null)
+                collectAppliedSchedules()
             }
         }
 
@@ -91,7 +91,7 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         )
     }
 
-
+    /** 부서 업데이트 */
     private suspend fun collectDepartments() {
         viewModel.departments.collectLatest { departments ->
             when (departments) {
@@ -113,8 +113,9 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         }
     }
 
-    private suspend fun collectSchedules(selectedDepartment: String?) {
-        viewModel.schedules.collectLatest { schedules ->
+    /** 확정 스케줄 업데이트 */
+    private suspend fun collectFixedSchedules() {
+        viewModel.fixedSchedules.collectLatest { schedules ->
             when (schedules) {
                 is FirebaseResult.Success -> {
                     val filteredSchedules = if (selectedDepartment.isNullOrBlank()) {
@@ -122,9 +123,10 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
                     } else {
                         schedules.data.filter { it.departmentName == selectedDepartment }
                     }
-                    submitSchedules(filteredSchedules)
+                    Log.d("schedule - fixed", filteredSchedules.toString())
+                    fixAdapter.submitList(filteredSchedules)
+                    binding.scheduleDepartmentPeople.text = getString(R.string.scheduleDepartmentPeople, filteredSchedules.size)
                 }
-
                 is FirebaseResult.Loading -> {} // TODO("로딩 처리)
                 is FirebaseResult.Failure -> {} // TODO("예외 처리")
                 is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
@@ -132,11 +134,24 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         }
     }
 
-    /** 리사이클러뷰 어댑터에 스케줄 분리 후 전달 */
-    private fun submitSchedules(schedules: List<ScheduleDTO>) {
-        fixAdapter.submitList(schedules.filter { it.isFix })
-        applyAdapter.submitList(schedules.filter { !it.isFix })
-
+    /** 신청 스케줄 업데이트 */
+    private suspend fun collectAppliedSchedules() {
+        viewModel.appliedSchedules.collectLatest { schedules ->
+            when (schedules) {
+                is FirebaseResult.Success -> {
+                    val filteredSchedules = if (selectedDepartment.isNullOrBlank()) {
+                        schedules.data
+                    } else {
+                        schedules.data.filter { it.departmentName == selectedDepartment }
+                    }
+                    Log.d("schedule - applied", filteredSchedules.toString())
+                    applyAdapter.submitList(filteredSchedules)
+                }
+                is FirebaseResult.Loading -> {} // TODO("로딩 처리)
+                is FirebaseResult.Failure -> {} // TODO("예외 처리")
+                is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
+            }
+        }
     }
 
     /** 리사이클러뷰 어댑터 세팅 */
