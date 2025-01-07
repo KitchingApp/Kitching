@@ -21,4 +21,15 @@ class TeamViewModel(private val repository: TeamRepository = TeamRepository()) :
              }
         }
     }
+
+    private val _createTeamResult = MutableStateFlow<FirebaseResult<Unit>>(FirebaseResult.DummyConstructor)
+    val createTeamResult get() = _createTeamResult.asStateFlow()
+
+    fun createTeam(ownerId: String, teamName: String) {
+        viewModelScope.launch {
+            repository.createTeam(ownerId, teamName).collectLatest { result ->
+                _createTeamResult.value = result
+            }
+        }
+    }
 }
