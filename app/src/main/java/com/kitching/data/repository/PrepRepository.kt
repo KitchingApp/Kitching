@@ -25,6 +25,14 @@ class PrepRepository(private val dataSource: FireStoreDataSource = FireStoreData
         return fetchFirebaseDataFlow(dataSource.createPrepCategory(teamId, categoryName, color))
     }
 
+    suspend fun updatePrepCategory(categoryId: String, categoryName: String, color: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.updatePrepCategory(categoryId, categoryName, color))
+    }
+
+    suspend fun deletePrepCategory(scheduleId: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.deletePrepCategory(scheduleId))
+    }
+
     suspend fun getPrepList(categoryId: String): Flow<FirebaseResult<MutableList<PrepDTO>>> {
         return fetchFirebaseDataFlow(
             fetcher = { dataSource.getPrepList(categoryId) },

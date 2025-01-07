@@ -212,6 +212,26 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
         return createTaskResult
     }
 
+    suspend fun updatePrepCategory(categoryId: String, categoryName: String, color: String): Boolean {
+        var updateTaskResult = false
+
+        val document = db.collection(COLLECTION_PREP_CATEGORY).document(categoryId).update("name", categoryName, "color", color).addOnSuccessListener {
+            updateTaskResult = true
+        }.await()
+
+        return updateTaskResult
+    }
+
+    suspend fun deletePrepCategory(scheduleId: String): Boolean {
+        var deleteTaskResult = false
+
+        val document = db.collection(COLLECTION_PREP_CATEGORY).document(scheduleId).delete().addOnSuccessListener {
+            deleteTaskResult = true
+        }.await()
+
+        return deleteTaskResult
+    }
+
     suspend fun getPrepList(categoryId: String): MutableList<Prep> {
         val prepList = db.collection(COLLECTION_PREP).whereEqualTo("categoryId", categoryId).get().await()
 

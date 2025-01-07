@@ -17,9 +17,7 @@ import kotlinx.coroutines.launch
 
 class PrepCategoryCreateDialog(): ColorInputBaseDialog() {
 
-    private val viewModel by viewModels<PrepViewModel> {
-        viewModelFactory
-    }
+    private val viewModel = PrepViewModel.instance
 
     private lateinit var teamId: String
 

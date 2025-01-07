@@ -26,9 +26,7 @@ import ru.ldralighieri.corbind.view.clicks
 class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBinding::inflate) {
     private lateinit var navController: NavController
 
-    private val viewModel by viewModels<PrepViewModel> {
-        viewModelFactory
-    }
+    private val viewModel = PrepViewModel.instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +37,8 @@ class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBindi
         super.onViewCreated(view, savedInstanceState)
 
         lateinit var teamId: String
-        val prepCategoryAdapter = PrepCategoryAdapter(viewLifecycleOwner, navController)
+
+        val prepCategoryAdapter = PrepCategoryAdapter(viewLifecycleOwner)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

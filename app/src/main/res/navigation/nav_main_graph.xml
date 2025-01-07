@@ -74,12 +74,26 @@
         <action
             android:id="@+id/action_prepFragment_to_prepCategoryCreateDialog"
             app:destination="@id/prepCategoryCreateDialog" />
+        <action
+            android:id="@+id/action_prepFragment_to_prepCategoryDeleteDialog"
+            app:destination="@id/prepCategoryDeleteDialog" />
     </fragment>
 
     <dialog
         android:id="@+id/prepCategoryCreateDialog"
         android:name="com.kitching.view.fragment.prep.PrepCategoryCreateDialog"
         tools:layout="@layout/dialog_input_text_color">
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/prepCategoryDeleteDialog"
+        android:name="com.kitching.view.fragment.prep.PrepCategoryDeleteDialog"
+        tools:layout="@layout/dialog_confirm">
+
+        <argument
+            android:name="cetegoryId"
+            app:argType="string" />
 
     </dialog>
 
