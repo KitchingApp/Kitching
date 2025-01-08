@@ -99,4 +99,16 @@ class OtherRepository(private val dataSource: FireStoreDataSource = FireStoreDat
             }
         )
     }
+
+    suspend fun createNotice(userId: String, teamId: String, title: String, content: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.createNotice(userId, teamId, title, content))
+    }
+
+    suspend fun updateNotice(noticeId: String,title: String, content: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.updateNotice(noticeId, title, content))
+    }
+
+    suspend fun deleteNotice(noticeId: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.deleteNotice(noticeId))
+    }
 }

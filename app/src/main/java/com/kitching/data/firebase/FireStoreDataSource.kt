@@ -14,6 +14,7 @@ import com.kitching.common.COLLECTION_STAFF_LEVEL
 import com.kitching.common.COLLECTION_TEAM
 import com.kitching.common.COLLECTION_USER
 import com.kitching.common.COLLECTION_USER_TEAM
+import com.kitching.common.util.dateFormatter
 import com.kitching.domain.entities.Order
 import com.kitching.domain.entities.OrderCategory
 import com.kitching.domain.entities.Department
@@ -28,6 +29,7 @@ import com.kitching.domain.entities.StaffLevel
 import com.kitching.domain.entities.Team
 import com.kitching.domain.entities.UserTeam
 import kotlinx.coroutines.tasks.await
+import java.time.LocalDate
 
 class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) {
 
@@ -418,5 +420,44 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
 
         return if (notices.isEmpty) mutableListOf()
         else notices.toObjects(Notice::class.java)
+    }
+
+    suspend fun createNotice(userId: String, teamId: String, title: String, content: String): Boolean {
+        var createTaskResult = false
+
+        val noticeWithOutId = Notice(
+            id = "",
+            date = LocalDate.now().toString(),
+            title = title,
+            content = content,
+            writerId = userId,
+            teamId = teamId
+        )
+
+        db.collection(COLLECTION_NOTICE).add(noticeWithOutId).await().apply {
+            this.update("id", this.id).addOnSuccessListener { createTaskResult = true }.await()
+        }
+
+        return createTaskResult
+    }
+
+    suspend fun updateNotice(noticeId: String, title: String, content: String): Boolean {
+        var updateTaskResult = false
+
+        db.collection(COLLECTION_NOTICE).document(noticeId).update("title", title, "content", content).addOnSuccessListener {
+            updateTaskResult = true
+        }.await()
+
+        return updateTaskResult
+    }
+
+    suspend fun deleteNotice(noticeId: String): Boolean {
+        var deleteTaskResult = false
+
+        db.collection(COLLECTION_NOTICE).document(noticeId).delete().addOnSuccessListener {
+            deleteTaskResult = true
+        }.await()
+
+        return deleteTaskResult
     }
 }

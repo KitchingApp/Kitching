@@ -11,9 +11,12 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.kitching.R
 
 typealias FragmentInflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
@@ -32,6 +35,7 @@ abstract class BaseFragment<VB : ViewBinding>(
         _binding = inflate.invoke(inflater, container, false)
         return binding.root
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -50,7 +54,7 @@ abstract class BaseFragment<VB : ViewBinding>(
     }
 
     /** 액션바 +버튼 */
-    fun setActionBtn(onClickAddBtn: () -> Unit) {
+    fun setPlusActionBtn(onClickAddBtn: () -> Unit) {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     menu.add(
@@ -83,6 +87,29 @@ abstract class BaseFragment<VB : ViewBinding>(
                     }
                 } else {
                     false
+                }
+            }
+        }, viewLifecycleOwner)
+    }
+
+    /** 액션바 옵션버튼 */
+    fun setOptionsActionBtn(onClickUpdateBtn: () -> Unit, onClickDeleteBtn: () -> Unit) {
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.option_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when(menuItem.itemId) {
+                    R.id.updateInOptionMenu -> {
+                        onClickUpdateBtn()
+                        true
+                    }
+                    R.id.deleteInOptionMenu -> {
+                        onClickDeleteBtn()
+                        true
+                    }
+                    else -> false
                 }
             }
         }, viewLifecycleOwner)

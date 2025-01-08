@@ -77,7 +77,7 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         setAdapters()
         setDateBtn(viewLifecycleOwner)
         setBottomSheet()
-        setActionBtn (
+        setPlusActionBtn (
             onClickAddBtn = {
                 val action = ScheduleFragmentDirections.actionScheduleFragmentToScheduleCreateDialog(currentDate.toString())
                 navController.navigate(action)
