@@ -58,19 +58,13 @@ class NoticeCreateFragment : BaseFragment<FragmentNoticeCreateBinding>(FragmentN
                 throttleClicks(viewLifecycleOwner) {
                     val title = noticeTitleTV.text.toString()
                     val content = noticeContentTV.text.toString()
-                    Log.d("notice - confirm", "${teamId}, ${userId}")
                     viewModel.createNotice(userId, teamId, title, content)
-                    viewModel.getNotices(teamId)
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         viewModel.createNoticeResult.collectLatest {
-                            when(it) {
-                                is FirebaseResult.Success -> {
-                                    findNavController().popBackStack()
-                                }
-                                is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                                is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                                is FirebaseResult.DummyConstructor -> {} // TODO()
+                            firebaseResultHandler(it) {
+                                viewModel.getNotices(teamId)
+                                findNavController().popBackStack()
                             }
                         }
                     }
