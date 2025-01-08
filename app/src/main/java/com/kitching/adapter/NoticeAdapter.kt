@@ -2,22 +2,27 @@ package com.kitching.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kitching.common.util.throttleFirst
+import com.kitching.common.util.throttleClicks
 import com.kitching.data.dto.NoticeDTO
+import com.kitching.data.dto.ParcelableNoticeDTO
 import com.kitching.databinding.ItemNoticeBinding
-import kotlinx.coroutines.flow.onEach
-import ru.ldralighieri.corbind.view.clicks
+import com.kitching.view.fragment.other.NoticeFragmentDirections
 
-class NoticeAdapter : ListAdapter<NoticeDTO, NoticeAdapter.NoticeViewHolder>(diffUtil){
+class NoticeAdapter(private val lifecycleOwner: LifecycleOwner) :
+    ListAdapter<NoticeDTO, NoticeAdapter.NoticeViewHolder>(diffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): NoticeViewHolder {
         val binding = ItemNoticeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NoticeViewHolder(binding)
+        return NoticeViewHolder(binding, findNavController(parent))
     }
 
     override fun onBindViewHolder(
@@ -42,19 +47,31 @@ class NoticeAdapter : ListAdapter<NoticeDTO, NoticeAdapter.NoticeViewHolder>(dif
             ): Boolean {
                 return oldItem == newItem
             }
-
         }
     }
 
-    inner class NoticeViewHolder(val binding: ItemNoticeBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class NoticeViewHolder(val binding: ItemNoticeBinding, val navController: NavController) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bindNotice(notice: NoticeDTO) {
             with(binding) {
-                dateTV.text = notice.date.toString()
+                noticeDateTV.text = notice.date.toString()
                 writerTV.text = notice.writerName
                 noticeTitleTV.text = notice.title
                 noticeContentPreviewTV.text = notice.content
-                noticeCV.clicks().throttleFirst().onEach {
-
+                noticeCV.throttleClicks(lifecycleOwner) {
+                    val parcelableNotice = ParcelableNoticeDTO(
+                        dateString = notice.date.toString(),
+                        noticeId = notice.noticeId,
+                        writerId = notice.writerId,
+                        writerName = notice.writerName,
+                        title = notice.title,
+                        content = notice.content
+                    )
+                    val action =
+                        NoticeFragmentDirections.actionNoticeFragmentToNoticeDetailFragment(
+                            parcelableNotice
+                        )
+                    navController.navigate(action)
                 }
             }
         }

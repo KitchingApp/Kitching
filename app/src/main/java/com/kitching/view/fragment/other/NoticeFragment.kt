@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class NoticeFragment : BaseFragment<FragmentNoticeBinding>(FragmentNoticeBinding::inflate) {
-    private lateinit var navController: NavController
 
     private val viewModel by viewModels<NoticeViewModel> {
         viewModelFactory
@@ -28,14 +27,13 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(FragmentNoticeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        navController = findNavController()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         lateinit var teamId: String
-        val noticeAdapter = NoticeAdapter()
+        val noticeAdapter = NoticeAdapter(viewLifecycleOwner)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -52,13 +50,17 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(FragmentNoticeBinding
                     }
                 }
             }
-
         }
         with(binding.noticeRV)
         {
             setRvLayout(this)
             layoutManager = LinearLayoutManager(requireContext())
             adapter = noticeAdapter
+        }
+
+        setPlusActionBtn {
+            val action = NoticeFragmentDirections.actionNoticeFragmentToNoticeCreateFragment()
+            findNavController().navigate(action)
         }
     }
 }

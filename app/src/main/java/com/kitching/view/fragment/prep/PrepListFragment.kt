@@ -2,7 +2,6 @@ package com.kitching.view.fragment.prep
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -14,7 +13,6 @@ import com.kitching.common.BaseFragment
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentPrepListBinding
 import com.kitching.view.model.PrepViewModel
-import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -57,7 +55,7 @@ class PrepListFragment : BaseFragment<FragmentPrepListBinding>(FragmentPrepListB
             }
         }
 
-        setActionBtn {
+        setPlusActionBtn {
             val action = PrepListFragmentDirections.actionPrepListFragmentToPrepCreateDialog(args.prepCategoryId)
             navController.navigate(action)
         }
