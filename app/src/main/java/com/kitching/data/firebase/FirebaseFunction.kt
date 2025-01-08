@@ -1,16 +1,7 @@
 package com.kitching.data.firebase
 
-import android.content.Context
-import com.kitching.common.commonToast
-import com.kitching.common.util.ProgressDialog
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
 
 /**
  * for List<T>
@@ -31,7 +22,6 @@ suspend fun <T, R> fetchFirebaseDataFlow(
         onFailure = { emit(FirebaseResult.Failure(it)) }
     )
 }
-    .flowOn(Dispatchers.IO)
 
 /**
  * create, update, delete에 사용
@@ -47,43 +37,4 @@ suspend fun fetchFirebaseDataFlow(
         onSuccess = { emit(FirebaseResult.Success(it)) },
         onFailure = { emit(FirebaseResult.Failure(it)) }
     )
-}
-
-/** viewModel에서 사용 */
-fun <T> firebaseFlowHandler(
-    variable: MutableStateFlow<FirebaseResult<T>>,
-    coroutineScope: CoroutineScope,
-    fetch: suspend () -> Flow<FirebaseResult<T>>
-) {
-    coroutineScope.launch {
-        variable.value = FirebaseResult.Loading
-        fetch().collectLatest {
-            variable.value = it
-        }
-    }
-}
-
-/**
- * firebase 결과 분기에 따른 progress bar 처리 /
- * BaseFragment, BaseDialog에서 context 포함해서 재정의됨 /
- * (이 함수 말고 재정의 된 함수 사용)
- *  */
-fun <T>firebaseResultHandler(
-    firebaseResult: FirebaseResult<T>,
-    context: Context,
-    onSuccess: (T) -> Unit
-) {
-    when (firebaseResult) {
-        is FirebaseResult.Success -> {
-            onSuccess(firebaseResult.data)
-            ProgressDialog.cancel()
-        }
-        is FirebaseResult.Failure -> {
-            ProgressDialog.cancel()
-            commonToast("오류로 인해 데이터를 가져오지 못했습니다. : ${firebaseResult.throwable}")
-        }
-        else -> {
-            ProgressDialog.show(context)
-        }
-    }
 }
