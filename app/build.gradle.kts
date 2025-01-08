@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.corbind.appcompat)
     implementation(libs.circleimageview)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.fragment.ktx)
