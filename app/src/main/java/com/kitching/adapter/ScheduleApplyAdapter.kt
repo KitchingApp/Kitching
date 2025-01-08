@@ -1,8 +1,8 @@
 package com.kitching.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kitching.common.KitchingApplication
+import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.dto.ScheduleDTO
-import com.kitching.data.firebase.firebaseResultHandler
 import com.kitching.databinding.ItemScheduleApplylistBinding
 import com.kitching.view.fragment.schedule.ScheduleFragmentDirections
 import com.kitching.view.model.ScheduleViewModel
@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class ScheduleApplyAdapter(
-    private val context: Context,
+    private val fragment: Fragment,
     private val lifecycleOwner: LifecycleOwner,
     private val currentDate: String
 ): ListAdapter<ScheduleDTO, ScheduleApplyAdapter.ScheduleViewHolder>(diffUtil) {
@@ -72,7 +72,7 @@ class ScheduleApplyAdapter(
                         teamId = PreferencesDataSource(KitchingApplication.getAppContext()).getTeamId() ?: ""
                         viewModel.applySchedule(schedule.scheduleId)
                         viewModel.applyScheduleResult.collectLatest {
-                            firebaseResultHandler(it, context) {
+                            fragment.firebaseResultHandler(it) {
                                 viewModel.getSchedules(teamId, currentDate)
                             }
                         }

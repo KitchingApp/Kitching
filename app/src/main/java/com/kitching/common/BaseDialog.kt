@@ -28,9 +28,9 @@ abstract class BaseDialog<VB : ViewBinding>(
         _binding = null
     }
 
-    fun <T>firebaseResultHandler(firebaseResult: FirebaseResult<T>, onSuccess: (T) -> Unit) {
-        return com.kitching.data.firebase.firebaseResultHandler(firebaseResult, requireContext()) {
-            onSuccess(it)
-        }
-    }
+//    fun <T>firebaseResultHandler(firebaseResult: FirebaseResult<T>, onSuccess: (T) -> Unit) {
+//        return com.kitching.data.firebase.firebaseResultHandler(firebaseResult, requireContext()) {
+//            onSuccess(it)
+//        }
+//    }
 }

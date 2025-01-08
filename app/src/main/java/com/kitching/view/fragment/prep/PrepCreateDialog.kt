@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.kitching.common.BaseDialog
+import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.common.util.throttleFirst
 import com.kitching.data.firebase.FirebaseResult

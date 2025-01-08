@@ -2,15 +2,13 @@ package com.kitching.view.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kitching.common.commonToast
+import com.kitching.common.firebaseFlowHandler
 import com.kitching.data.dto.ScheduleDTO
 import com.kitching.data.dto.DropDownDepartmentsDTO
 import com.kitching.data.dto.DropDownMembersDTO
 import com.kitching.data.dto.ScheduleTimeChipsDTO
 import com.kitching.data.firebase.FirebaseResult
-import com.kitching.data.firebase.firebaseFlowHandler
 import com.kitching.data.repository.ScheduleRepository
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -107,12 +105,6 @@ class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRep
     fun getScheduleTimes(teamId: String) {
         firebaseFlowHandler(_scheduleTimes) {
             repository.getScheduleTimes(teamId)
-        }
-    }
-
-    private fun <T> firebaseFlowHandler(variable: MutableStateFlow<FirebaseResult<T>>, fetch: suspend () -> Flow<FirebaseResult<T>>) {
-        return com.kitching.data.firebase.firebaseFlowHandler(variable, viewModelScope) {
-            fetch()
         }
     }
 }

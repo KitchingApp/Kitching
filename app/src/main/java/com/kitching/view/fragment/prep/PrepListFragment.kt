@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.kitching.adapter.PrepAdapter
 import com.kitching.common.BaseFragment
+import com.kitching.common.firebaseResultHandler
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentPrepListBinding
 import com.kitching.view.model.PrepViewModel
