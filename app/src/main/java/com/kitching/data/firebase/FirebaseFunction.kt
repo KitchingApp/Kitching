@@ -1,12 +1,10 @@
 package com.kitching.data.firebase
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
 import com.kitching.common.commonToast
 import com.kitching.common.util.ProgressDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -16,8 +14,8 @@ import kotlinx.coroutines.launch
 
 /**
  * for List<T>
- *  fetcher: DB에서 Entity List 반환
- *  mapper: Entity를 DTO로 변환
+ *  fetcher: DB에서 Entity List 반환 /
+ *  mapper: Entity를 DTO로 변환 /
  *  return: Flow<FirebaseResult<MutableList<DTO>>>
  *  */
 suspend fun <T, R> fetchFirebaseDataFlow(
@@ -51,6 +49,7 @@ suspend fun fetchFirebaseDataFlow(
     )
 }
 
+/** viewModel에서 사용 */
 fun <T> firebaseFlowHandler(
     variable: MutableStateFlow<FirebaseResult<T>>,
     coroutineScope: CoroutineScope,
@@ -64,6 +63,11 @@ fun <T> firebaseFlowHandler(
     }
 }
 
+/**
+ * firebase 결과 분기에 따른 progress bar 처리 /
+ * BaseFragment, BaseDialog에서 context 포함해서 재정의됨 /
+ * (이 함수 말고 재정의 된 함수 사용)
+ *  */
 fun <T>firebaseResultHandler(
     firebaseResult: FirebaseResult<T>,
     context: Context,
