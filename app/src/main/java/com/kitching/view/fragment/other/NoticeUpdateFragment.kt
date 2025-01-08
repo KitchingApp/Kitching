@@ -58,13 +58,8 @@ class NoticeUpdateFragment : BaseFragment<FragmentNoticeCreateBinding>(FragmentN
 
                         launch {
                             viewModel.updateNoticeResult.collectLatest {
-                                when(it) {
-                                    is FirebaseResult.Success -> {
-                                        findNavController().navigate(NoticeUpdateFragmentDirections.actionNoticeUpdateFragmentToNoticeFragment())
-                                    }
-                                    is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                                    is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                                    is FirebaseResult.DummyConstructor -> {} // TODO()
+                                firebaseResultHandler(it) {
+                                    findNavController().navigate(NoticeUpdateFragmentDirections.actionNoticeUpdateFragmentToNoticeFragment())
                                 }
                             }
                         }

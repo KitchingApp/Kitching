@@ -58,15 +58,15 @@ class ScheduleRepository(private val dataSource: FireStoreDataSource = FireStore
         )
     }
 
-    suspend fun createSchedule(teamId: String, dateString: String, userId: String, scheduleTimeId: String, isFix: Boolean = true): Boolean {
-        return dataSource.createSchedule(teamId, dateString, userId, scheduleTimeId, isFix)
+    suspend fun createSchedule(teamId: String, dateString: String, userId: String, scheduleTimeId: String, isFix: Boolean = true): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.createSchedule(teamId, dateString, userId, scheduleTimeId, isFix))
     }
 
-    suspend fun deleteSchedule(scheduleId: String): Boolean {
-        return dataSource.deleteSchedule(scheduleId)
+    suspend fun deleteSchedule(scheduleId: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.deleteSchedule(scheduleId))
     }
 
-    suspend fun applySchedule(scheduleId: String): Boolean {
-        return dataSource.applySchedule(scheduleId)
+    suspend fun applySchedule(scheduleId: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.applySchedule(scheduleId))
     }
 }

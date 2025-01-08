@@ -46,20 +46,9 @@ class PrepCategoryUpdateDialog(): ColorInputBaseDialog() {
                     viewModel.updatePrepCategory(args.categoryId, getTextInput(), getCheckedColor())
                     viewLifecycleOwner.lifecycleScope.launch {
                         viewModel.updatePrepCategoryResult.collectLatest {
-                            when (it) {
-                                is FirebaseResult.Success -> {
-                                    viewModel.getPrepCategory(teamId)
-                                    dismiss()
-                                }
-                                is FirebaseResult.Loading -> {
-
-                                }
-                                is FirebaseResult.Failure -> {
-
-                                }
-                                is FirebaseResult.DummyConstructor -> {
-
-                                }
+                            firebaseResultHandler(it) {
+                                viewModel.getPrepCategory(teamId)
+                                dismiss()
                             }
                         }
                     }

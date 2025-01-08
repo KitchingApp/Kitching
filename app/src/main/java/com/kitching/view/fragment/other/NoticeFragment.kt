@@ -25,10 +25,6 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(FragmentNoticeBinding
         viewModelFactory
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -40,13 +36,8 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(FragmentNoticeBinding
                 teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
                 viewModel.getNotices(teamId)
                 viewModel.notices.collectLatest {
-                    when (it) {
-                        is FirebaseResult.Success -> {
-                            noticeAdapter.submitList(it.data)
-                        }
-                        is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                        is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                        is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
+                    firebaseResultHandler(it) { data ->
+                        noticeAdapter.submitList(data)
                     }
                 }
             }

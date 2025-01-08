@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.kitching.R
+import com.kitching.data.firebase.FirebaseResult
 
 typealias FragmentInflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
@@ -113,5 +114,11 @@ abstract class BaseFragment<VB : ViewBinding>(
                 }
             }
         }, viewLifecycleOwner)
+    }
+
+    fun <T>firebaseResultHandler(firebaseResult: FirebaseResult<T>, onSuccess: (T) -> Unit) {
+        return com.kitching.data.firebase.firebaseResultHandler(firebaseResult, requireContext()) {
+            onSuccess(it)
+        }
     }
 }
