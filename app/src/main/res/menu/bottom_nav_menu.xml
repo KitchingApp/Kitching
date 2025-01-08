@@ -2,26 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/scheduleFragment"
-        android:icon="@drawable/baseline_calendar_month_24"
+        android:icon="@drawable/scheduleicon"
         android:title="스케줄" />
 
     <item
         android:id="@+id/prepFragment"
-        android:icon="@drawable/baseline_checklist_24"
+        android:icon="@drawable/prepicon"
         android:title="할일" />
 
     <item
         android:id="@+id/recipeFragment"
-        android:icon="@drawable/baseline_bakery_dining_24"
+        android:icon="@drawable/recipeicon"
         android:title="레시피" />
 
     <item
         android:id="@+id/orderFragment"
-        android:icon="@drawable/baseline_assignment_add_24"
+        android:icon="@drawable/ordericon"
         android:title="발주목록" />
 
     <item
         android:id="@+id/otherFragment"
-        android:icon="@drawable/baseline_apps_24"
+        android:icon="@drawable/othericon"
         android:title="Other" />
 </menu>
