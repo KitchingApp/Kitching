@@ -1,5 +1,6 @@
 package com.kitching.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -13,12 +14,15 @@ import com.kitching.common.KitchingApplication
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.dto.ScheduleDTO
+import com.kitching.data.firebase.firebaseResultHandler
 import com.kitching.databinding.ItemScheduleApplylistBinding
 import com.kitching.view.fragment.schedule.ScheduleFragmentDirections
 import com.kitching.view.model.ScheduleViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class ScheduleApplyAdapter(
+    private val context: Context,
     private val lifecycleOwner: LifecycleOwner,
     private val currentDate: String
 ): ListAdapter<ScheduleDTO, ScheduleApplyAdapter.ScheduleViewHolder>(diffUtil) {
@@ -67,7 +71,11 @@ class ScheduleApplyAdapter(
                     lifecycleOwner.lifecycleScope.launch {
                         teamId = PreferencesDataSource(KitchingApplication.getAppContext()).getTeamId() ?: ""
                         viewModel.applySchedule(schedule.scheduleId)
-                        viewModel.getSchedules(teamId, currentDate)
+                        viewModel.applyScheduleResult.collectLatest {
+                            firebaseResultHandler(it, context) {
+                                viewModel.getSchedules(teamId, currentDate)
+                            }
+                        }
                     }
                 }
 

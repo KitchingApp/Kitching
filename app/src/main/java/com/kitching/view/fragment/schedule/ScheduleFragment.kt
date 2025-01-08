@@ -45,7 +45,7 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
         fixAdapter = ScheduleFixAdapter(viewLifecycleOwner, currentDate.toString())
-        applyAdapter = ScheduleApplyAdapter(viewLifecycleOwner, currentDate.toString())
+        applyAdapter = ScheduleApplyAdapter(requireContext(), viewLifecycleOwner, currentDate.toString())
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -88,42 +88,46 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
     /** 부서 업데이트 */
     private suspend fun collectDepartments() {
         viewModel.departments.collectLatest { departments ->
-            when (departments) {
-                is FirebaseResult.Success -> {
-                    if (departments.data.isNotEmpty()) {
-                        with(binding.departmentSelectDropdown) {
-                            setText("부서", false)
-                            setSimpleItems(departments.data.map { it.departmentName }
-                                .toTypedArray())
-                        }
+            firebaseResultHandler(departments) { data ->
+                if (data.isNotEmpty()) {
+                    with(binding.departmentSelectDropdown) {
+                        setText("부서", false)
+                        setSimpleItems(data.map { it.departmentName }
+                            .toTypedArray())
                     }
-                    setAdapters()
                 }
-
-                is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
+                setAdapters()
             }
+//            when (departments) {
+//                is FirebaseResult.Success -> {
+//                    if (departments.data.isNotEmpty()) {
+//                        with(binding.departmentSelectDropdown) {
+//                            setText("부서", false)
+//                            setSimpleItems(departments.data.map { it.departmentName }
+//                                .toTypedArray())
+//                        }
+//                    }
+//                    setAdapters()
+//                }
+//
+//                is FirebaseResult.Loading -> {} // TODO("로딩 처리)
+//                is FirebaseResult.Failure -> {} // TODO("예외 처리")
+//                is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
+//            }
         }
     }
 
     /** 확정 스케줄 업데이트 */
     private suspend fun collectFixedSchedules() {
         viewModel.fixedSchedules.collectLatest { schedules ->
-            when (schedules) {
-                is FirebaseResult.Success -> {
-                    val filteredSchedules = if (selectedDepartment.isNullOrBlank()) {
-                        schedules.data
-                    } else {
-                        schedules.data.filter { it.departmentName == selectedDepartment }
-                    }
-                    Log.d("schedule - fixed", filteredSchedules.toString())
-                    fixAdapter.submitList(filteredSchedules)
-                    binding.scheduleDepartmentPeople.text = getString(R.string.scheduleDepartmentPeople, filteredSchedules.size)
+            firebaseResultHandler(schedules) { data ->
+                val filteredSchedules = if (selectedDepartment.isNullOrBlank()) {
+                    data
+                } else {
+                    data.filter { it.departmentName == selectedDepartment }
                 }
-                is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
+                fixAdapter.submitList(filteredSchedules)
+                binding.scheduleDepartmentPeople.text = getString(R.string.scheduleDepartmentPeople, filteredSchedules.size)
             }
         }
     }
@@ -131,20 +135,28 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
     /** 신청 스케줄 업데이트 */
     private suspend fun collectAppliedSchedules() {
         viewModel.appliedSchedules.collectLatest { schedules ->
-            when (schedules) {
-                is FirebaseResult.Success -> {
-                    val filteredSchedules = if (selectedDepartment.isNullOrBlank()) {
-                        schedules.data
-                    } else {
-                        schedules.data.filter { it.departmentName == selectedDepartment }
-                    }
-                    Log.d("schedule - applied", filteredSchedules.toString())
-                    applyAdapter.submitList(filteredSchedules)
+            firebaseResultHandler(schedules) { data ->
+                val filteredSchedules = if (selectedDepartment.isNullOrBlank()) {
+                    data
+                } else {
+                    data.filter { it.departmentName == selectedDepartment }
                 }
-                is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
+                applyAdapter.submitList(filteredSchedules)
             }
+//            when (schedules) {
+//                is FirebaseResult.Success -> {
+//                    val filteredSchedules = if (selectedDepartment.isNullOrBlank()) {
+//                        schedules.data
+//                    } else {
+//                        schedules.data.filter { it.departmentName == selectedDepartment }
+//                    }
+//                    Log.d("schedule - applied", filteredSchedules.toString())
+//                    applyAdapter.submitList(filteredSchedules)
+//                }
+//                is FirebaseResult.Loading -> {} // TODO("로딩 처리)
+//                is FirebaseResult.Failure -> {} // TODO("예외 처리")
+//                is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
+//            }
         }
     }
 

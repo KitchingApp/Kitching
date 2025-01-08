@@ -1,12 +1,18 @@
 package com.kitching.data.firebase
 
 import android.content.Context
+import androidx.lifecycle.ViewModel
 import com.kitching.common.commonToast
 import com.kitching.common.util.ProgressDialog
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 
 /**
  * for List<T>
@@ -19,7 +25,7 @@ suspend fun <T, R> fetchFirebaseDataFlow(
     mapper: suspend (T) -> R
 ): Flow<FirebaseResult<MutableList<R>>> = flow {
     emit(FirebaseResult.Loading) // Loading 상태 emit
-    Thread.sleep(3000) // progress indicator 확인용
+//    Thread.sleep(3000) // progress indicator 확인용
     runCatching {
         fetcher().map { mapper(it) }.toMutableList()
     }.fold(
@@ -36,7 +42,7 @@ suspend fun fetchFirebaseDataFlow(
     fetcher: Boolean
 ): Flow<FirebaseResult<Boolean>> = flow {
     emit(FirebaseResult.Loading)
-    Thread.sleep(3000) // progressbar 확인용
+//    Thread.sleep(3000) // progressbar 확인용
     runCatching {
         fetcher
     }.fold(
@@ -45,7 +51,20 @@ suspend fun fetchFirebaseDataFlow(
     )
 }
 
-fun <T> firebaseResultHandler(
+fun <T> firebaseFlowHandler(
+    variable: MutableStateFlow<FirebaseResult<T>>,
+    coroutineScope: CoroutineScope,
+    fetch: suspend () -> Flow<FirebaseResult<T>>
+) {
+    coroutineScope.launch {
+        variable.value = FirebaseResult.Loading
+        fetch().collectLatest {
+            variable.value = it
+        }
+    }
+}
+
+fun <T>firebaseResultHandler(
     firebaseResult: FirebaseResult<T>,
     context: Context,
     onSuccess: (T) -> Unit

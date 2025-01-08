@@ -49,7 +49,6 @@ class ScheduleCreateDialog :
         android.R.layout.simple_dropdown_item_1line,
         dataList
     ) {
-
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = super.getView(position, convertView, parent)
 
@@ -72,34 +71,22 @@ class ScheduleCreateDialog :
 
                 launch {
                     viewModel.members.collectLatest { members ->
-                        when (members) {
-                            is FirebaseResult.Success -> {
-                                if (members.data.isNotEmpty()) {
-                                    with(binding.autoCompleteTV) {
-                                        setAdapter(DropDownAdapter(members.data))
-                                    }
+                        firebaseResultHandler(members) { data ->
+                            if (data.isNotEmpty()) {
+                                with(binding.autoCompleteTV) {
+                                    setAdapter(DropDownAdapter(data))
                                 }
                             }
-
-                            is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                            is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                            is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
                         }
                     }
                 }
 
                 launch {
                     viewModel.scheduleTimes.collectLatest { scheduleTimes ->
-                        when (scheduleTimes) {
-                            is FirebaseResult.Success -> {
-                                if (scheduleTimes.data.isNotEmpty()) {
-                                    createChips(scheduleTimes.data)
-                                }
+                        firebaseResultHandler(scheduleTimes) { data ->
+                            if (data.isNotEmpty()) {
+                                createChips(data)
                             }
-
-                            is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                            is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                            is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
                         }
                     }
                 }
@@ -120,15 +107,12 @@ class ScheduleCreateDialog :
             with(confirmBtn) {
                 text = "배정"
                 clicks().throttleFirst().onEach {
-                    val result = ScheduleRepository().createSchedule(
-                        teamId,
-                        args.dateString,
-                        userId,
-                        scheduleTimeId
-                    )
-                    if (result) {
-                        viewModel.getSchedules(teamId, args.dateString)
-                        dismiss()
+                    viewModel.createSchedule(teamId, args.dateString, userId, scheduleTimeId)
+                    viewModel.createScheduleResult.collectLatest {
+                        firebaseResultHandler(it) {
+                            viewModel.getSchedules(teamId, args.dateString)
+                            dismiss()
+                        }
                     }
                 }.launchIn(lifecycleScope)
             }
