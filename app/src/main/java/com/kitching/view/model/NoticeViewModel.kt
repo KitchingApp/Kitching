@@ -2,6 +2,7 @@ package com.kitching.view.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kitching.common.firebaseFlowHandler
 import com.kitching.data.dto.NoticeDTO
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.data.repository.OtherRepository
@@ -46,12 +47,6 @@ class NoticeViewModel(private val repository: OtherRepository = OtherRepository(
     fun deleteNotice(noticeId: String) {
         firebaseFlowHandler(_deleteNoticeResult) {
             repository.deleteNotice(noticeId)
-        }
-    }
-
-    private fun <T> firebaseFlowHandler(variable: MutableStateFlow<FirebaseResult<T>>, fetch: suspend () -> Flow<FirebaseResult<T>>) {
-        return com.kitching.data.firebase.firebaseFlowHandler(variable, viewModelScope) {
-            fetch()
         }
     }
 }

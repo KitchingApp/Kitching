@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kitching.adapter.NoticeAdapter
 import com.kitching.common.BaseFragment
+import com.kitching.common.firebaseResultHandler
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentNoticeBinding

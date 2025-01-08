@@ -2,6 +2,7 @@ package com.kitching.view.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kitching.common.firebaseFlowHandler
 import com.kitching.data.dto.PrepCategoryDTO
 import com.kitching.data.dto.PrepDTO
 import com.kitching.data.firebase.FirebaseResult
@@ -87,12 +88,6 @@ class PrepViewModel(private val repository: PrepRepository = PrepRepository()) :
     fun deletePrep(prepId: String) {
         firebaseFlowHandler(_deletePrepResult) {
             repository.deletePrep(prepId)
-        }
-    }
-
-    private fun <T> firebaseFlowHandler(variable: MutableStateFlow<FirebaseResult<T>>, fetch: suspend () -> Flow<FirebaseResult<T>>) {
-        return com.kitching.data.firebase.firebaseFlowHandler(variable, viewModelScope) {
-            fetch()
         }
     }
 }

@@ -17,6 +17,7 @@ import com.kitching.adapter.ScheduleApplyAdapter
 import com.kitching.common.BaseFragment
 import com.kitching.databinding.FragmentScheduleBinding
 import com.kitching.adapter.ScheduleFixAdapter
+import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.common.util.throttleFirst
 import com.kitching.data.datasource.PreferencesDataSource
@@ -45,7 +46,7 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
         fixAdapter = ScheduleFixAdapter(viewLifecycleOwner, currentDate.toString())
-        applyAdapter = ScheduleApplyAdapter(requireContext(), viewLifecycleOwner, currentDate.toString())
+        applyAdapter = ScheduleApplyAdapter(this, viewLifecycleOwner, currentDate.toString())
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
