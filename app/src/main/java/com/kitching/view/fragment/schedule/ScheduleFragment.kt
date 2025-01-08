@@ -98,22 +98,6 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
                 }
                 setAdapters()
             }
-//            when (departments) {
-//                is FirebaseResult.Success -> {
-//                    if (departments.data.isNotEmpty()) {
-//                        with(binding.departmentSelectDropdown) {
-//                            setText("부서", false)
-//                            setSimpleItems(departments.data.map { it.departmentName }
-//                                .toTypedArray())
-//                        }
-//                    }
-//                    setAdapters()
-//                }
-//
-//                is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-//                is FirebaseResult.Failure -> {} // TODO("예외 처리")
-//                is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
-//            }
         }
     }
 
@@ -143,20 +127,6 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
                 }
                 applyAdapter.submitList(filteredSchedules)
             }
-//            when (schedules) {
-//                is FirebaseResult.Success -> {
-//                    val filteredSchedules = if (selectedDepartment.isNullOrBlank()) {
-//                        schedules.data
-//                    } else {
-//                        schedules.data.filter { it.departmentName == selectedDepartment }
-//                    }
-//                    Log.d("schedule - applied", filteredSchedules.toString())
-//                    applyAdapter.submitList(filteredSchedules)
-//                }
-//                is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-//                is FirebaseResult.Failure -> {} // TODO("예외 처리")
-//                is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
-//            }
         }
     }
 
