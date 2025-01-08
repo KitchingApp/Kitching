@@ -40,20 +40,9 @@ class PrepCategoryCreateDialog(): ColorInputBaseDialog() {
                     viewModel.createPrepCategory(teamId, getTextInput(), getCheckedColor())
                     viewLifecycleOwner.lifecycleScope.launch {
                         viewModel.createPrepCategoryResult.collectLatest {
-                            when (it) {
-                                is FirebaseResult.Success -> {
-                                    viewModel.getPrepCategory(teamId)
-                                    dismiss()
-                                }
-                                is FirebaseResult.Loading -> {
-
-                                }
-                                is FirebaseResult.Failure -> {
-
-                                }
-                                is FirebaseResult.DummyConstructor -> {
-
-                                }
+                            firebaseResultHandler(it) {
+                                viewModel.getPrepCategory(teamId)
+                                dismiss()
                             }
                         }
                     }

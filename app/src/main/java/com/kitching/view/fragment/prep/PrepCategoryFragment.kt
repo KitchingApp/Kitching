@@ -37,11 +37,8 @@ class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBindi
                     val teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
                     viewModel.getPrepCategory(teamId)
                     viewModel.prepCategory.collectLatest {
-                        when(it) {
-                            is FirebaseResult.Success -> prepCategoryAdapter.submitList(it.data)
-                            is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                            is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                            is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
+                        firebaseResultHandler(it) { data ->
+                            prepCategoryAdapter.submitList(data)
                         }
                     }
                 }
