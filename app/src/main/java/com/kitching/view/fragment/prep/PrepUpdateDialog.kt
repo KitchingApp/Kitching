@@ -36,14 +36,9 @@ class PrepUpdateDialog: BaseDialog<DialogCreatePrepBinding>(DialogCreatePrepBind
                     viewModel.updatePrep(args.prepId, prepNameTI.text.toString())
                     viewLifecycleOwner.lifecycleScope.launch {
                         viewModel.updatePrepResult.collectLatest {
-                            when(it) {
-                                is FirebaseResult.Success -> {
-                                    viewModel.getPrepList(args.categoryId)
-                                    dismiss()
-                                }
-                                is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                                is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                                is FirebaseResult.DummyConstructor -> {} // TODO()
+                            firebaseResultHandler(it) {
+                                viewModel.getPrepList(args.categoryId)
+                                dismiss()
                             }
                         }
                     }
