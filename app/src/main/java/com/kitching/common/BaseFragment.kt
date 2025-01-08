@@ -87,4 +87,43 @@ abstract class BaseFragment<VB : ViewBinding>(
             }
         }, viewLifecycleOwner)
     }
+
+    /** 액션바 v버튼 */
+    fun setSaveActionBtn(onClickAddBtn: () -> Unit) {
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menu.add(
+                    ActionMenuType.SAVE.groupId,
+                    ActionMenuType.SAVE.itemId,
+                    ActionMenuType.SAVE.order,
+                    ActionMenuType.SAVE.title
+                ).apply {
+                    setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+                    setIcon(ActionMenuType.SAVE.icon)
+                    val typedValue = TypedValue()
+
+                    val theme = requireContext().theme
+                    theme.resolveAttribute(android.R.attr.colorControlNormal, typedValue, true)
+                    val color = ContextCompat.getColor(requireContext(), typedValue.resourceId)
+
+                    icon?.setTint(color)
+                }
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                val actionMenu = ActionMenuType.findMenuByItemId(menuItem.itemId)
+                return if (ActionMenuType.findMenuByItemId(menuItem.itemId) != null) {
+                    when(actionMenu) {
+                        ActionMenuType.SAVE -> {
+                            onClickAddBtn()
+                            true
+                        }
+                        else -> false
+                    }
+                } else {
+                    false
+                }
+            }
+        }, viewLifecycleOwner)
+    }
 }

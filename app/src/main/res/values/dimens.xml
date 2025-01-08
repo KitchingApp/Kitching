@@ -34,6 +34,7 @@
     <dimen name="recipeDetailImageHeight">300dp</dimen>
     <dimen name="recipeDetailIngredientsTableHeight">40dp</dimen>
     <dimen name="recipeImageHeight">200dp</dimen>
+    <dimen name="recipeInputHeight">60dp</dimen>
     <dimen name="scheduleListItemHeight">50dp</dimen>
     <dimen name="teamListItemHeight">70dp</dimen>
 

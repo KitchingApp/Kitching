@@ -192,6 +192,9 @@
         <action
             android:id="@+id/action_recipeFragment_to_recipeDetailFragment"
             app:destination="@id/recipeDetailFragment" />
+        <action
+            android:id="@+id/action_recipeFragment_to_recipeCreateFragment"
+            app:destination="@id/recipeCreateFragment" />
     </fragment>
 
     <fragment
@@ -225,6 +228,12 @@
             />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/recipeCreateFragment"
+        android:name="com.kitching.view.fragment.recipe.RecipeCreateFragment"
+        tools:layout="@layout/fragment_create_recipe"
+        />
 
     <fragment
         android:id="@+id/orderFragment"
