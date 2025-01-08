@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
+import com.kitching.data.firebase.FirebaseResult
 
 abstract class BaseDialog<VB : ViewBinding>(
     private val inflate: FragmentInflate<VB>
@@ -25,5 +26,11 @@ abstract class BaseDialog<VB : ViewBinding>(
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun <T>firebaseResultHandler(firebaseResult: FirebaseResult<T>, onSuccess: (T) -> Unit) {
+        return com.kitching.data.firebase.firebaseResultHandler(firebaseResult, requireContext()) {
+            onSuccess(it)
+        }
     }
 }
