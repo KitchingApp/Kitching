@@ -58,6 +58,9 @@ class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        addIngredientRow()
+        addStepRow()
+
         setSaveActionBtn{
             saveRecipe()
         }
@@ -249,10 +252,6 @@ class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCr
                 }
             }
         }
-    }
-
-    private fun showError(error: Throwable?) {
-        commonToast("작업 실패: ${error?.message}")
     }
 
     private fun navigateRecipeFragmentWithClearStack() {

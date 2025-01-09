@@ -1,7 +1,6 @@
 package com.kitching.view.fragment.recipe
 
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -122,7 +121,6 @@ class RecipeDetailFragment: BaseFragment<FragmentRecipeDetailBinding>(FragmentRe
     /** steps 출력 함수*/
     private fun createStepsTextView() {
         val stepsString = args.recipeStep
-        Log.d("RecipeDetailFragment", "stepsString: $stepsString")
 
         val stepsList = stepsString?.split("|")?.mapIndexed { index, step ->
             "${index + 1}. $step"

@@ -68,8 +68,4 @@ class CreateTeamFragment: BaseFragment<FragmentCreateTeamBinding>(FragmentCreate
             .replace(R.id.fragmentContainer, LoginTeamsFragment())
             .commit()
     }
-
-    private fun showError(error: Throwable?) {
-        Toast.makeText(requireContext(), "팀 생성 실패: ${error?.message}", Toast.LENGTH_SHORT).show()
-    }
 }
