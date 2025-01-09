@@ -1,6 +1,8 @@
 package com.kitching.data.firebase
 
+import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.kitching.common.COLLECTION_DEPARTMENT
 import com.kitching.common.COLLECTION_NOTICE
 import com.kitching.common.COLLECTION_ORDER
@@ -271,6 +273,49 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
             )
         }
         return recipes
+    }
+
+    // 파이어베이스 스토리지
+    private val storage: FirebaseStorage = FirebaseStorage.getInstance()
+
+    // 이미지 업로드
+    suspend fun uploadImageToStorage(imageUri: Uri, imageName: String): String {
+        val storageRef = storage.reference.child("recipeImage/$imageName")
+        storageRef.putFile(imageUri).await()
+        return storageRef.downloadUrl.await().toString()
+    }
+
+    // 레시피 저장
+    suspend fun saveRecipe(
+        name: String,
+        picture: String,
+        steps: List<String>,
+        teamId: String
+    ): String {
+        val recipeData = mapOf(
+            "id" to "",
+            "name" to name,
+            "picture" to picture,
+            "steps" to steps,
+            "teamId" to teamId
+        )
+        val recipeDocument = db.collection("recipe").add(recipeData).await()
+        db.collection("recipe").document(recipeDocument.id).update("id", recipeDocument.id).await()
+        return recipeDocument.id
+    }
+
+    // 재료 저장
+    suspend fun saveIngredients(recipeId: String, ingredients: List<Map<String, String>>): Boolean {
+        val ingredientCollection = db.collection("recipe").document(recipeId).collection("ingredient")
+        return ingredients.all { ingredient ->
+            try {
+                val ingredientDocument = ingredientCollection.add(ingredient).await()
+                ingredientCollection.document(ingredientDocument.id).update("id", ingredientDocument.id).await()
+                true
+            } catch (e: Exception) {
+                false
+            }
+        }
     }
 
     /** Prep */

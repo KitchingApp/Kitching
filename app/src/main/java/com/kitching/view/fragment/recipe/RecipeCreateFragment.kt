@@ -1,5 +1,7 @@
 package com.kitching.view.fragment.recipe
 
+import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -13,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.kitching.common.BaseFragment
@@ -23,8 +26,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.kitching.R
+import com.kitching.data.datasource.PreferencesDataSource
+import com.kitching.data.firebase.FirebaseResult
 import com.kitching.view.model.RecipeViewModel
 import com.kitching.view.model.factory.viewModelFactory
+import kotlinx.coroutines.flow.collectLatest
 import kotlin.getValue
 
 class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCreateRecipeBinding::inflate) {
@@ -50,7 +56,7 @@ class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCr
         super.onViewCreated(view, savedInstanceState)
 
         setSaveActionBtn{
-
+            saveRecipe()
         }
 
         with(binding) {
@@ -166,5 +172,85 @@ class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCr
                 setMargins(0, 16, 0, 0)
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun saveRecipe() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val recipeName = binding.recipeNameETV.text.toString()
+            if (recipeName.isBlank()) {
+                commonToast("레시피 이름을 입력해주세요.")
+                return@launch
+            }
+
+            val steps = (0 until binding.gridLayout2.childCount)
+                .mapNotNull { index ->
+                    val child = binding.gridLayout2.getChildAt(index)
+                    if (child is AppCompatEditText) child.text.toString() else null
+                }
+
+            val ingredients = (0 until binding.gridLayout1.childCount / 4)
+                .map { index ->
+                    val offset = index * 4
+                    mapOf(
+                        "once" to (binding.gridLayout1.getChildAt(offset) as? AppCompatEditText)?.text.toString(),
+                        "twice" to (binding.gridLayout1.getChildAt(offset + 1) as? AppCompatEditText)?.text.toString(),
+                        "each" to (binding.gridLayout1.getChildAt(offset + 2) as? AppCompatEditText)?.text.toString(),
+                        "name" to (binding.gridLayout1.getChildAt(offset + 3) as? AppCompatEditText)?.text.toString()
+                    )
+                }
+
+            val preferencesDataSource = PreferencesDataSource(requireContext())
+            val teamId = preferencesDataSource.getTeamId() ?: run {
+                commonToast("팀 ID를 찾을 수 없습니다.")
+                return@launch
+            }
+
+            viewModel.uploadImage(Uri.parse(imagePath), imageName)
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.uploadImageResult.collectLatest { result ->
+                    when (result) {
+                        is FirebaseResult.Loading -> {}
+                        is FirebaseResult.Success -> {
+                            val pictureUrl = result.data
+                            viewModel.saveRecipe(recipeName, pictureUrl, steps, teamId
+                            )
+                        }
+                        is FirebaseResult.Failure -> showError(result.throwable)
+                        else -> {}
+                    }
+                }
+            }
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.saveRecipeResult.collectLatest { result ->
+                    when (result) {
+                        is FirebaseResult.Loading -> {}
+                        is FirebaseResult.Success -> {
+                            val recipeId = result.data
+                            viewModel.saveIngredients(recipeId, ingredients)
+                        }
+                        is FirebaseResult.Failure -> showError(result.throwable)
+                        else -> {}
+                    }
+                }
+            }
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.saveIngredientsResult.collectLatest { result ->
+                    when (result) {
+                        is FirebaseResult.Loading -> {}
+                        is FirebaseResult.Success -> commonToast("레시피 저장 완료!")
+                        is FirebaseResult.Failure -> showError(result.throwable)
+                        else -> {}
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showError(error: Throwable?) {
+        commonToast("작업 실패: ${error?.message}")
     }
 }
