@@ -475,15 +475,79 @@
 
     <fragment
         android:id="@+id/scheduleTimeFragment"
-        android:name="com.kitching.view.fragment.other.ScheduleTimeFragment"
+        android:name="com.kitching.view.fragment.other.scheduletime.ScheduleTimeFragment"
         tools:layout="@layout/fragment_schedule_time">
 
+        <action
+            android:id="@+id/action_scheduleTimeFragment_to_scheduleTimeCreateDialog"
+            app:destination="@id/scheduleTimeCreateDialog" />
+        <action
+            android:id="@+id/action_scheduleTimeFragment_to_scheduleTimeUpdateDialog"
+            app:destination="@id/scheduleTimeUpdateDialog" />
+        <action
+            android:id="@+id/action_scheduleTimeFragment_to_scheduleTimeDeleteDialog"
+            app:destination="@id/scheduleTimeDeleteDialog" />
+
     </fragment>
+
+    <dialog
+        android:id="@+id/scheduleTimeCreateDialog"
+        android:name="com.kitching.view.fragment.other.scheduletime.ScheduleTimeCreateDialog"
+        tools:layout="@layout/dialog_create_schedule_time">
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/scheduleTimeDeleteDialog"
+        android:name="com.kitching.view.fragment.other.scheduletime.ScheduleTimeDeleteDialog"
+        tools:layout="@layout/dialog_confirm">
+
+        <argument
+            android:name="scheduleTimeId"
+            app:argType="string" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/scheduleTimeUpdateDialog"
+        android:name="com.kitching.view.fragment.other.scheduletime.ScheduleTimeUpdateDialog"
+        tools:layout="@layout/dialog_create_schedule_time">
+
+        <argument
+            android:name="scheduleTimeId"
+            app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="color"
+            app:argType="string" />
+        <argument
+            android:name="startTime"
+            app:argType="string" />
+        <argument
+            android:name="endTime"
+            app:argType="string" />
+
+    </dialog>
 
     <fragment
         android:id="@+id/memberListFragment"
         android:name="com.kitching.view.fragment.other.MemberListFragment"
         tools:layout="@layout/fragment_memberlist">
+
+        <action
+            android:id="@+id/action_departmentFragment_to_staffLevelFragment"
+            app:destination="@id/staffLevelFragment" />
+        <action
+            android:id="@+id/action_departmentFragment_to_departmentCreateDialog"
+            app:destination="@id/departmentCreateDialog" />
+        <action
+            android:id="@+id/action_departmentFragment_to_departmentUpdateDialog"
+            app:destination="@id/departmentUpdateDialog" />
+        <action
+            android:id="@+id/action_departmentFragment_to_departmentDeleteDialog"
+            app:destination="@id/departmentDeleteDialog" />
 
     </fragment>
 

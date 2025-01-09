@@ -6,7 +6,7 @@
     >
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/scheduleTimeNameTI"
+        android:id="@+id/scheduleTimeNameTIL"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/timeNameHint"
@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/scheduleTimeNameTI"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -27,10 +28,11 @@
         android:text="@string/startTime"
         android:textSize="@dimen/text_M"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scheduleTimeNameTI" />
+        app:layout_constraintTop_toBottomOf="@+id/scheduleTimeNameTIL" />
 
     <TimePicker
         android:id="@+id/startTimeTP"
+        style="@style/ThemeOverlay.Material3.MaterialTimePicker.Display.TextInputEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:timePickerMode="spinner"
@@ -45,7 +47,7 @@
         android:padding="@dimen/padding_S"
         android:text="@string/endTime"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startTimeTP" />
+        app:layout_constraintTop_toBottomOf="@+id/startTimeTP"/>
 
     <TimePicker
         android:id="@+id/endTimeTP"
@@ -56,6 +58,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/endTimeTV" />
 
+    <RadioGroup
+        android:id="@+id/colorPickerRG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/endTimeTP"
+        app:layout_constraintBottom_toTopOf="@+id/confirmBtn">
+    </RadioGroup>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirmBtn"
         style="@style/dialogConfirmBtn"
@@ -63,7 +76,7 @@
         android:text="@string/add"
         app:layout_constraintEnd_toStartOf="@id/cancelBtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/endTimeTP" />
+        app:layout_constraintTop_toBottomOf="@+id/colorPickerRG" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancelBtn"
@@ -72,6 +85,6 @@
         android:text="@string/cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/confirmBtn"
-        app:layout_constraintTop_toBottomOf="@+id/endTimeTP" />
+        app:layout_constraintTop_toBottomOf="@+id/colorPickerRG" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

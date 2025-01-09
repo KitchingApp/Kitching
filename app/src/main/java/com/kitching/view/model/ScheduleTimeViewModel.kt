@@ -12,13 +12,50 @@ import kotlinx.coroutines.launch
 
 class ScheduleTimeViewModel(private val repository: OtherRepository = OtherRepository()) : ViewModel() {
 
-    private val _scheduleTime = MutableStateFlow<FirebaseResult<MutableList<ScheduleTimeListDTO>>>(FirebaseResult.Loading)
+    companion object {
+        val instance = ScheduleTimeViewModel()
+    }
+
+    private var _scheduleTime = MutableStateFlow<FirebaseResult<MutableList<ScheduleTimeListDTO>>>(FirebaseResult.Loading)
     val scheduleTime get() = _scheduleTime.asStateFlow()
 
     fun getScheduleTimes(teamId: String) {
         viewModelScope.launch {
-            repository.getScheduleTimeList(teamId).collectLatest {
+            repository.getScheduleTimes(teamId).collectLatest {
                 _scheduleTime.value = it
+            }
+        }
+    }
+
+    private var _createScheduleTimeResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val createScheduleTimeResult get() = _createScheduleTimeResult.asStateFlow()
+
+    fun createScheduleTime(teamId: String, name: String, color: String, startTime: String, endTime: String) {
+        viewModelScope.launch {
+            repository.createScheduleTime(teamId, name, color, startTime, endTime).collectLatest {
+                _createScheduleTimeResult.value = it
+            }
+        }
+    }
+
+    private var _updateScheduleTimeResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val updateScheduleTimeResult get() = _updateScheduleTimeResult.asStateFlow()
+
+    fun updateScheduleTime(scheduleTimeId: String, name: String, color: String, startTime: String, endTime: String) {
+        viewModelScope.launch {
+            repository.updateScheduleTime(scheduleTimeId, name, color, startTime, endTime).collectLatest {
+                _updateScheduleTimeResult.value = it
+            }
+        }
+    }
+
+    private var _deleteScheduleTimeResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val deleteScheduleTimeResult get() = _deleteScheduleTimeResult.asStateFlow()
+
+    fun deleteScheduleTime(scheduleTimeId: String) {
+        viewModelScope.launch {
+            repository.deleteScheduleTime(scheduleTimeId).collectLatest {
+                _deleteScheduleTimeResult.value = it
             }
         }
     }

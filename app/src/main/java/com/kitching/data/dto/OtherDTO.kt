@@ -63,4 +63,6 @@ data class MemberDTO(val userId: String, val userName: String, val departmentNam
 
 data class MemberListDTO(val teamName: String, val members: List<MemberDTO>)
 
-data class ScheduleTimeListDTO(val scheduleTimeId: String, val scheduleTimeName: String, val color: String, val startTime: LocalTime, val endTime: LocalTime)
+//data class ScheduleTimeListDTO(val scheduleTimeId: String, val scheduleTimeName: String, val color: String, val startTime: LocalTime, val endTime: LocalTime)
+
+data class ScheduleTimeListDTO(val scheduleTimeId: String, val scheduleTimeName: String, val color: String, val startTime: String, val endTime: String)
