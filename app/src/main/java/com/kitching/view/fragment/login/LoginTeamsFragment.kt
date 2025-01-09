@@ -9,9 +9,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.kitching.R
 import com.kitching.adapter.TeamListAdapter
 import com.kitching.common.BaseFragment
+import com.kitching.common.firebaseResultHandler
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.dto.TeamDTO
-import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentLoginTeamsBinding
 import com.kitching.view.model.LoginViewModel
 import com.kitching.view.model.factory.viewModelFactory
@@ -42,11 +42,8 @@ class LoginTeamsFragment: BaseFragment<FragmentLoginTeamsBinding>(FragmentLoginT
 
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.teamList.collectLatest {
-                    when(it) {
-                        is FirebaseResult.Success -> notifyTeamList(it.data)
-                        is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                        is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                        is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
+                    firebaseResultHandler(it) { data ->
+                        notifyTeamList(data)
                     }
                 }
             }

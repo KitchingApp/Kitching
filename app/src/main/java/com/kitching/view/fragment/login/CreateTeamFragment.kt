@@ -10,7 +10,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.kitching.common.BaseFragment
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
-import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentCreateTeamBinding
 import com.kitching.view.model.TeamViewModel
 import com.kitching.view.model.factory.viewModelFactory
@@ -18,6 +17,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.getValue
 import com.kitching.R
+import com.kitching.common.commonToast
+import com.kitching.common.firebaseResultHandler
 
 class CreateTeamFragment: BaseFragment<FragmentCreateTeamBinding>(FragmentCreateTeamBinding::inflate) {
     private val viewModel by viewModels<TeamViewModel> {
@@ -52,15 +53,10 @@ class CreateTeamFragment: BaseFragment<FragmentCreateTeamBinding>(FragmentCreate
 
                 viewModel.createTeam(ownerId.toString(), teamName)
 
-                viewModel.createTeamResult.collectLatest { result ->
-                    when (result) {
-                        is FirebaseResult.Loading -> {}
-                        is FirebaseResult.Success -> {
-                            Toast.makeText(requireContext(), "팀 생성 완료!", Toast.LENGTH_SHORT).show()
-                            navigateToNextScreen()
-                        }
-                        is FirebaseResult.Failure -> showError(result.throwable)
-                        is FirebaseResult.DummyConstructor -> {}
+                viewModel.createTeamResult.collectLatest {
+                    firebaseResultHandler(it) {
+                        commonToast("팀 생성 완료!")
+                        navigateToNextScreen()
                     }
                 }
             }

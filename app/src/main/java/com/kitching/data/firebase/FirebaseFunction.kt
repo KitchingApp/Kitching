@@ -38,3 +38,12 @@ suspend fun fetchFirebaseDataFlow(
         onFailure = { emit(FirebaseResult.Failure(it)) }
     )
 }
+
+suspend fun <T> fetchFirebaseDataFlow(fetcher: suspend () -> T): Flow<FirebaseResult<T>> = flow {
+    emit(FirebaseResult.Loading)
+    runCatching { fetcher() }
+        .fold(
+            onSuccess = { emit(FirebaseResult.Success(it)) },
+            onFailure = { emit(FirebaseResult.Failure(it)) }
+        )
+}

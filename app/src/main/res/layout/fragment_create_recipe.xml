@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.fragment.recipe.RecipeCreateFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/recipeIV"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/recipeDetailImageHeight"
+            android:background="@drawable/baseline_add_24"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/recipeNameInputLayout"
+            android:hint="이름을 입력해주세요."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            app:layout_constraintTop_toBottomOf="@id/recipeIV"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/recipeDetailTitle"
+                android:id="@+id/recipeNameETV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/recipeIngredientsTitleTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/recipeDetailTitle"
+            android:text="@string/ingredients"
+
+            app:layout_constraintTop_toBottomOf="@id/recipeNameInputLayout" />
+
+        <GridLayout
+            android:id="@+id/gridLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:columnCount="4"
+            android:orientation="horizontal"
+            style="@style/recipeDetailTitle"
+
+            app:layout_constraintTop_toBottomOf="@id/recipeIngredientsTitleTV"
+            >
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recipeIngredientsTV1"
+                android:text="X 1"
+                android:background="@drawable/border_box"
+                android:layout_columnWeight="1"
+                style="@style/recipeIngredientsTable"
+                />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recipeIngredientsTV2"
+                android:text="X 2"
+                android:layout_columnWeight="1"
+                android:background="@drawable/border_box"
+                style="@style/recipeIngredientsTable"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recipeIngredientsTV3"
+                android:text="Unit"
+                android:layout_columnWeight="1"
+                android:background="@drawable/border_box"
+                style="@style/recipeIngredientsTable"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recipeIngredientsTV4"
+                android:text="Ingredients"
+                android:layout_columnWeight="2.5"
+                android:background="@drawable/border_box"
+                style="@style/recipeIngredientsNameTable"
+                />
+
+        </GridLayout>
+
+        <ImageButton
+            android:id="@+id/gridLayout1PlusBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_S"
+            android:src="@drawable/baseline_add_24"
+            android:backgroundTint="@color/md_theme_primaryFixed"
+
+            app:layout_constraintTop_toBottomOf="@id/gridLayout1"
+            app:layout_constraintStart_toStartOf="@id/gridLayout1"
+            app:layout_constraintEnd_toEndOf="@id/gridLayout1"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/recipeStepTV1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/recipeDetailTitle"
+            android:text="순서"
+            app:layout_constraintTop_toBottomOf="@id/gridLayout1PlusBtn" />
+
+        <GridLayout
+            android:id="@+id/gridLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="1"
+            android:orientation="vertical"
+            android:background="@drawable/border_box"
+            android:paddingTop="@dimen/padding_S"
+            android:paddingHorizontal="@dimen/padding_S"
+            style="@style/recipeDetailTitle"
+
+            app:layout_constraintTop_toBottomOf="@id/recipeStepTV1">
+
+            <ImageButton
+                android:id="@+id/gridLayout2PlusBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_S"
+                android:src="@drawable/baseline_add_24"
+                android:backgroundTint="@color/md_theme_primaryFixed"
+                android:layout_gravity="center"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+        </GridLayout>
+
+        <View
+            android:id="@+id/spaceBelowGridLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_L"
+
+            app:layout_constraintTop_toBottomOf="@id/gridLayout2"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

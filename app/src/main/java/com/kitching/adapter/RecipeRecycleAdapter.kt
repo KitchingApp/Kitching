@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.kitching.databinding.ItemRecipeBinding
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
@@ -55,9 +56,14 @@ class RecipeRecycleAdapter(private val lifecycleOwner: LifecycleOwner, private v
         RecyclerView.ViewHolder(binding.root) {
             fun  bindRecipe(recipe: RecipeDetailDTO) {
                 with(binding) {
-                    val picture = R.drawable.pancake
-                    recipeIV.setImageResource(picture)
+                    Glide.with(binding.root.context)
+                        .load(recipe.picture)
+                        .placeholder(R.drawable.pancake) // 로딩 중 표시할 기본 이미지
+                        .error(R.drawable.chestnutcream) // 로드 실패 시 표시할 이미지
+                        .into(recipeIV)
+
                     recipeNameTV.text = recipe.recipeName
+
                     recipeCV.clicks().throttleFirst().onEach {
                         val argsAction = RecipeFragmentDirections.actionRecipeFragmentToRecipeDetailFragment(
                             recipe.picture, recipe.recipeName, recipe.ingredients.joinToString("|").toString(), recipe.steps.joinToString("|").toString()

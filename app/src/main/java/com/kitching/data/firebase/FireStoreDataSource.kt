@@ -1,6 +1,8 @@
 package com.kitching.data.firebase
 
+import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.kitching.common.COLLECTION_DEPARTMENT
 import com.kitching.common.COLLECTION_NOTICE
 import com.kitching.common.COLLECTION_ORDER
@@ -27,6 +29,7 @@ import com.kitching.domain.entities.Schedule
 import com.kitching.domain.entities.ScheduleTime
 import com.kitching.domain.entities.StaffLevel
 import com.kitching.domain.entities.Team
+import com.kitching.domain.entities.User
 import com.kitching.domain.entities.UserTeam
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
@@ -41,10 +44,10 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
             if (userSnapshot.exists()) {
                 true
             } else {
-                val userMap = mapOf(
-                    "id" to uid,
-                    "userName" to userName,
-                    "userImage" to userImage
+                val userMap = User(
+                    uid,
+                    userName,
+                    userImage
                 )
                 userRef.set(userMap).await()
                 true
@@ -80,24 +83,20 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
 
     suspend fun createTeam(inviteCode: String, ownerId: String, teamName: String): Boolean {
         return try {
-            val teamData = mapOf(
-                "id" to "",
-                "inviteCode" to inviteCode,
-                "ownerId" to ownerId,
-                "teamName" to teamName
+            val teamData = Team(
+                "",
+                inviteCode,
+                ownerId,
+                teamName
             )
             val teamDocument = db.collection(COLLECTION_TEAM).add(teamData).await()
 
             db.collection(COLLECTION_TEAM).document(teamDocument.id).update("id", teamDocument.id).await()
 
-            val userTeamData = mapOf(
-                "id" to "",
-                "isManager" to true,
-                "teamId" to teamDocument.id,
-                "userId" to ownerId,
-                "departmentId" to "",
-                "staffLevelId" to ""
+            val userTeamData = UserTeam(
+                "", "", "", teamDocument.id, ownerId, true
             )
+
             val userTeamDocument = db.collection(COLLECTION_USER_TEAM).add(userTeamData).await()
 
             db.collection(COLLECTION_USER_TEAM).document(userTeamDocument.id).update("id", userTeamDocument.id).await()
@@ -273,6 +272,57 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
             )
         }
         return recipes
+    }
+
+    // 파이어베이스 스토리지
+    private val storage: FirebaseStorage = FirebaseStorage.getInstance()
+
+    // 이미지 업로드
+    suspend fun uploadImageToStorage(imageUri: Uri, imageName: String): String {
+        val storageRef = storage.reference.child("recipeImage/$imageName")
+        storageRef.putFile(imageUri).await()
+        return storageRef.downloadUrl.await().toString()
+    }
+
+    // 레시피 저장
+    suspend fun saveRecipe(
+        name: String,
+        picture: String,
+        steps: List<String>,
+        teamId: String
+    ): String {
+        val recipeData = mapOf(
+            "id" to "",
+            "name" to name,
+            "picture" to picture,
+            "steps" to steps,
+            "teamId" to teamId
+        )
+        val recipeDocument = db.collection("recipe").add(recipeData).await()
+        db.collection("recipe").document(recipeDocument.id).update("id", recipeDocument.id).await()
+        return recipeDocument.id
+    }
+
+    // 재료 저장
+    suspend fun saveIngredients(recipeId: String, ingredients: List<Map<String, String>>): Boolean {
+        val ingredientCollection = db.collection("recipe").document(recipeId).collection("ingredient")
+        return ingredients.all { ingredient ->
+            try {
+                // MutableMap<String, Any>로 변환
+                val ingredientData = ingredient.mapValues { (key, value) ->
+                    when (key) {
+                        "once", "twice" -> value.toIntOrNull() ?: 0
+                        else -> value
+                    }
+                }
+
+                val ingredientDocument = ingredientCollection.add(ingredientData).await()
+                ingredientCollection.document(ingredientDocument.id).update("id", ingredientDocument.id).await()
+                true
+            } catch (e: Exception) {
+                false
+            }
+        }
     }
 
     /** Prep */
