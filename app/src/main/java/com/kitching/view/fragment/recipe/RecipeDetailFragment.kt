@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.kitching.R
 import com.kitching.common.BaseFragment
 import com.kitching.data.dto.IngredientDTO
@@ -29,8 +30,12 @@ class RecipeDetailFragment: BaseFragment<FragmentRecipeDetailBinding>(FragmentRe
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            val picture = R.drawable.pancake
-            recipeIV.setImageResource(picture)
+            Glide.with(binding.root.context)
+                .load(args.recipeImage)
+                .placeholder(R.drawable.pancake) // 로딩 중 표시할 기본 이미지
+                .error(R.drawable.chestnutcream) // 로드 실패 시 표시할 이미지
+                .into(recipeIV)
+
             recipeNameTV.text = args.recipeName
         }
         gridLayoutSetting()
