@@ -9,6 +9,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.kitching.common.ColorInputBaseDialog
+import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.firebase.FirebaseResult
@@ -46,20 +47,9 @@ class PrepCategoryUpdateDialog(): ColorInputBaseDialog() {
                     viewModel.updatePrepCategory(args.categoryId, getTextInput(), getCheckedColor())
                     viewLifecycleOwner.lifecycleScope.launch {
                         viewModel.updatePrepCategoryResult.collectLatest {
-                            when (it) {
-                                is FirebaseResult.Success -> {
-                                    viewModel.getPrepCategory(teamId)
-                                    dismiss()
-                                }
-                                is FirebaseResult.Loading -> {
-
-                                }
-                                is FirebaseResult.Failure -> {
-
-                                }
-                                is FirebaseResult.DummyConstructor -> {
-
-                                }
+                            firebaseResultHandler(it) {
+                                viewModel.getPrepCategory(teamId)
+                                dismiss()
                             }
                         }
                     }

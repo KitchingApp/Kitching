@@ -1,4 +1,4 @@
-package com.kitching.view.fragment.other
+package com.kitching.view.fragment.other.department
 
 import android.os.Bundle
 import android.view.View
@@ -9,22 +9,21 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kitching.adapter.NoticeAdapter
+import com.kitching.adapter.DepartmentAdapter
 import com.kitching.common.BaseFragment
+import com.kitching.common.firebaseResultHandler
 import com.kitching.data.datasource.PreferencesDataSource
-import com.kitching.data.firebase.FirebaseResult
-import com.kitching.databinding.FragmentNoticeBinding
-import com.kitching.view.model.NoticeViewModel
+import com.kitching.databinding.FragmentDepartmentBinding
+import com.kitching.view.model.DepartmentViewModel
 import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class NoticeFragment : BaseFragment<FragmentNoticeBinding>(FragmentNoticeBinding::inflate) {
+class DepartmentFragment :
+    BaseFragment<FragmentDepartmentBinding>(FragmentDepartmentBinding::inflate) {
     private lateinit var navController: NavController
 
-    private val viewModel by viewModels<NoticeViewModel> {
-        viewModelFactory
-    }
+    private val viewModel = DepartmentViewModel.instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,30 +34,28 @@ class NoticeFragment : BaseFragment<FragmentNoticeBinding>(FragmentNoticeBinding
         super.onViewCreated(view, savedInstanceState)
 
         lateinit var teamId: String
-        val noticeAdapter = NoticeAdapter()
+        val departmentAdapter = DepartmentAdapter(requireContext(), viewLifecycleOwner, navController)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
-                viewModel.getNotices(teamId)
-                viewModel.notices.collectLatest {
-                    when (it) {
-                        is FirebaseResult.Success -> {
-                            noticeAdapter.submitList(it.data)
-                        }
-                        is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                        is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                        is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
+                viewModel.getDepartments(teamId)
+                viewModel.departments.collectLatest {
+                    firebaseResultHandler(it) { data ->
+                        departmentAdapter.submitList(data)
                     }
                 }
             }
-
         }
-        with(binding.noticeRV)
-        {
+
+        with(binding.departmentRV) {
             setRvLayout(this)
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = noticeAdapter
+            this.adapter = departmentAdapter
+        }
+
+        setPlusActionBtn {
+            navController.navigate(DepartmentFragmentDirections.actionDepartmentFragmentToDepartmentCreateDialog())
         }
     }
 }

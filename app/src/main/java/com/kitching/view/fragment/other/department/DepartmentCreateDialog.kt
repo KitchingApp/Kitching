@@ -1,8 +1,7 @@
-package com.kitching.view.fragment.prep
+package com.kitching.view.fragment.other.department
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -10,15 +9,13 @@ import com.kitching.common.ColorInputBaseDialog
 import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
-import com.kitching.data.firebase.FirebaseResult
-import com.kitching.view.model.PrepViewModel
-import com.kitching.view.model.factory.viewModelFactory
+import com.kitching.view.model.DepartmentViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class PrepCategoryCreateDialog(): ColorInputBaseDialog() {
+class DepartmentCreateDialog(): ColorInputBaseDialog() {
 
-    private val viewModel = PrepViewModel.instance
+    private val viewModel = DepartmentViewModel.instance
 
     private lateinit var teamId: String
 
@@ -32,17 +29,17 @@ class PrepCategoryCreateDialog(): ColorInputBaseDialog() {
         }
 
         with(binding) {
-            textField.hint = "카테고리 이름"
+            textField.hint = "부서 이름"
 
             with(confirmBtn) {
                 text = "생성"
 
                 throttleClicks(viewLifecycleOwner) {
-                    viewModel.createPrepCategory(teamId, getTextInput(), getCheckedColor())
+                    viewModel.createDepartment(teamId, getTextInput(), getCheckedColor())
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.createPrepCategoryResult.collectLatest {
+                        viewModel.createDepartmentResult.collectLatest {
                             firebaseResultHandler(it) {
-                                viewModel.getPrepCategory(teamId)
+                                viewModel.getDepartments(teamId)
                                 dismiss()
                             }
                         }

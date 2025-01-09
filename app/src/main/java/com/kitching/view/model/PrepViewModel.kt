@@ -2,10 +2,12 @@ package com.kitching.view.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kitching.common.firebaseFlowHandler
 import com.kitching.data.dto.PrepCategoryDTO
 import com.kitching.data.dto.PrepDTO
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.data.repository.PrepRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -21,10 +23,8 @@ class PrepViewModel(private val repository: PrepRepository = PrepRepository()) :
     val prepCategory get() = _prepCategory.asStateFlow()
 
     fun getPrepCategory(teamId: String) {
-        viewModelScope.launch {
-            repository.getPrepCategory(teamId).collectLatest {
-                _prepCategory.value = it
-            }
+        firebaseFlowHandler(_prepCategory) {
+            repository.getPrepCategory(teamId)
         }
     }
 
@@ -32,10 +32,8 @@ class PrepViewModel(private val repository: PrepRepository = PrepRepository()) :
     val createPrepCategoryResult get() = _createPrepCategoryResult.asStateFlow()
 
     fun createPrepCategory(teamId: String, categoryName: String, color: String) {
-        viewModelScope.launch {
-            repository.createPrepCategory(teamId, categoryName, color).collectLatest {
-                _createPrepCategoryResult.value = it
-            }
+        firebaseFlowHandler(_createPrepCategoryResult) {
+            repository.createPrepCategory(teamId, categoryName, color)
         }
     }
 
@@ -43,10 +41,8 @@ class PrepViewModel(private val repository: PrepRepository = PrepRepository()) :
     val updatePrepCategoryResult get() = _updatePrepCategoryResult.asStateFlow()
 
     fun updatePrepCategory(categoryId: String, categoryName: String, color: String) {
-        viewModelScope.launch {
-            repository.updatePrepCategory(categoryId, categoryName, color).collectLatest {
-                _updatePrepCategoryResult.value = it
-            }
+        firebaseFlowHandler(_updatePrepCategoryResult) {
+            repository.updatePrepCategory(categoryId, categoryName, color)
         }
     }
 
@@ -54,10 +50,8 @@ class PrepViewModel(private val repository: PrepRepository = PrepRepository()) :
     val deletePrepCategoryResult get() = _deletePrepCategoryResult.asStateFlow()
 
     fun deletePrepCategory(scheduleId: String) {
-        viewModelScope.launch {
-            repository.deletePrepCategory(scheduleId).collectLatest {
-                _deletePrepCategoryResult.value = it
-            }
+        firebaseFlowHandler(_deletePrepCategoryResult) {
+            repository.deletePrepCategory(scheduleId)
         }
     }
 
@@ -65,10 +59,8 @@ class PrepViewModel(private val repository: PrepRepository = PrepRepository()) :
     val prepList get() = _prepList.asStateFlow()
 
     fun getPrepList(categoryId: String) {
-        viewModelScope.launch {
-            repository.getPrepList(categoryId).collectLatest {
-                _prepList.value = it
-            }
+        firebaseFlowHandler(_prepList) {
+            repository.getPrepList(categoryId)
         }
     }
 
@@ -76,10 +68,8 @@ class PrepViewModel(private val repository: PrepRepository = PrepRepository()) :
     val createPrepResult get() = _createPrepResult.asStateFlow()
 
     fun createPrep(categoryId: String, name: String) {
-        viewModelScope.launch {
-            repository.createPrep(categoryId, name).collectLatest {
-                _createPrepResult.value = it
-            }
+        firebaseFlowHandler(_createPrepResult) {
+            repository.createPrep(categoryId, name)
         }
     }
 
@@ -87,10 +77,8 @@ class PrepViewModel(private val repository: PrepRepository = PrepRepository()) :
     val updatePrepResult get() = _updatePrepResult.asStateFlow()
 
     fun updatePrep(prepId: String, name: String) {
-        viewModelScope.launch {
-            repository.updatePrep(prepId, name).collectLatest {
-                _updatePrepResult.value = it
-            }
+        firebaseFlowHandler(_updatePrepResult) {
+            repository.updatePrep(prepId, name)
         }
     }
 
@@ -98,10 +86,8 @@ class PrepViewModel(private val repository: PrepRepository = PrepRepository()) :
     val deletePrepResult get() = _deletePrepResult.asStateFlow()
 
     fun deletePrep(prepId: String) {
-        viewModelScope.launch {
-            repository.deletePrep(prepId).collectLatest {
-                _deletePrepResult.value = it
-            }
+        firebaseFlowHandler(_deletePrepResult) {
+            repository.deletePrep(prepId)
         }
     }
 }

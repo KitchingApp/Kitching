@@ -1,9 +1,7 @@
 package com.kitching.view.fragment.prep
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -11,17 +9,13 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.kitching.adapter.PrepCategoryAdapter
 import com.kitching.common.BaseFragment
-import com.kitching.common.util.throttleFirst
+import com.kitching.common.firebaseResultHandler
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentPrepBinding
 import com.kitching.view.model.PrepViewModel
-import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import ru.ldralighieri.corbind.view.clicks
 
 class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBinding::inflate) {
     private lateinit var navController: NavController
@@ -44,11 +38,8 @@ class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBindi
                     val teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
                     viewModel.getPrepCategory(teamId)
                     viewModel.prepCategory.collectLatest {
-                        when(it) {
-                            is FirebaseResult.Success -> prepCategoryAdapter.submitList(it.data)
-                            is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                            is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                            is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
+                        firebaseResultHandler(it) { data ->
+                            prepCategoryAdapter.submitList(data)
                         }
                     }
                 }
@@ -62,7 +53,7 @@ class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBindi
             }
         }
 
-        setActionBtn {
+        setPlusActionBtn {
             val action = PrepCategoryFragmentDirections.actionPrepFragmentToPrepCategoryCreateDialog()
             navController.navigate(action)
         }

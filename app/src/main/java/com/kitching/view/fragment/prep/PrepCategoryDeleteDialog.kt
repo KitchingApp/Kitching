@@ -6,10 +6,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.kitching.common.BaseDialog
 import com.kitching.common.KitchingApplication
+import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.databinding.DialogConfirmBinding
 import com.kitching.view.model.PrepViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class PrepCategoryDeleteDialog:
@@ -31,8 +33,12 @@ class PrepCategoryDeleteDialog:
                     viewLifecycleOwner.lifecycleScope.launch {
                         val teamId = PreferencesDataSource(KitchingApplication.getAppContext()).getTeamId() ?: ""
                         viewModel.deletePrepCategory(args.categoryId)
-                        viewModel.getPrepCategory(teamId)
-                        dismiss()
+                        viewModel.createPrepCategoryResult.collectLatest {
+                            firebaseResultHandler(it) {
+                                viewModel.getPrepCategory(teamId)
+                                dismiss()
+                            }
+                        }
                     }
                 }
             }

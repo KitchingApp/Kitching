@@ -1,40 +1,36 @@
-package com.kitching.view.fragment.schedule
+package com.kitching.view.fragment.other.department
 
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.kitching.common.BaseDialog
-import com.kitching.common.KitchingApplication
 import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
-import com.kitching.data.datasource.PreferencesDataSource
-import com.kitching.databinding.DialogConfirmBinding
-import com.kitching.view.model.ScheduleViewModel
+import com.kitching.databinding.DialogCreatePrepBinding
+import com.kitching.view.model.DepartmentViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ScheduleDeleteDialog:
-    BaseDialog<DialogConfirmBinding>(DialogConfirmBinding::inflate) {
+class StaffLevelCreateDialog: BaseDialog<DialogCreatePrepBinding>(DialogCreatePrepBinding::inflate) {
+    private val args: StaffLevelCreateDialogArgs by navArgs()
 
-    private val viewModel = ScheduleViewModel.instance
-
-    private val args: ScheduleDeleteDialogArgs by navArgs()
+    private val viewModel = DepartmentViewModel.instance
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            messageTV.text = "스케줄을 삭제하시겠습니까?"
+            prepNameTIL.hint = "직급 이름"
 
             with(confirmButton) {
-                text = "삭제"
+                text = "생성"
                 throttleClicks(viewLifecycleOwner) {
+                    viewModel.createStaffLevel(args.departmentId, prepNameTI.text.toString())
                     viewLifecycleOwner.lifecycleScope.launch {
-                        val teamId = PreferencesDataSource(KitchingApplication.getAppContext()).getTeamId() ?: ""
-                        viewModel.deleteSchedule(args.scheduleId)
-                        viewModel.deleteScheduleResult.collect {
+                        viewModel.createStaffLevelResult.collectLatest {
                             firebaseResultHandler(it) {
-                                viewModel.getSchedules(teamId, args.dateString)
+                                viewModel.getStaffLevels(args.departmentId)
                                 dismiss()
                             }
                         }

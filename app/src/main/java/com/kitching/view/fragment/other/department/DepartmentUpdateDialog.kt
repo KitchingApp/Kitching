@@ -1,24 +1,26 @@
-package com.kitching.view.fragment.prep
+package com.kitching.view.fragment.other.department
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.radiobutton.MaterialRadioButton
 import com.kitching.common.ColorInputBaseDialog
 import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
-import com.kitching.data.firebase.FirebaseResult
+import com.kitching.view.model.DepartmentViewModel
 import com.kitching.view.model.PrepViewModel
-import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class PrepCategoryCreateDialog(): ColorInputBaseDialog() {
+class DepartmentUpdateDialog(): ColorInputBaseDialog() {
 
-    private val viewModel = PrepViewModel.instance
+    private val viewModel = DepartmentViewModel.instance
+
+    private val args: DepartmentUpdateDialogArgs by navArgs()
 
     private lateinit var teamId: String
 
@@ -32,17 +34,19 @@ class PrepCategoryCreateDialog(): ColorInputBaseDialog() {
         }
 
         with(binding) {
-            textField.hint = "카테고리 이름"
+            textField.hint = "부서 이름"
+            textInputEditText.setText(args.name)
+            colorPickerRG.findViewWithTag<MaterialRadioButton>(args.color).isChecked = true
 
             with(confirmBtn) {
-                text = "생성"
+                text = "수정"
 
                 throttleClicks(viewLifecycleOwner) {
-                    viewModel.createPrepCategory(teamId, getTextInput(), getCheckedColor())
+                    viewModel.updateDepartment(args.departmentId, getTextInput(), getCheckedColor())
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.createPrepCategoryResult.collectLatest {
+                        viewModel.updateDepartmentResult.collectLatest {
                             firebaseResultHandler(it) {
-                                viewModel.getPrepCategory(teamId)
+                                viewModel.getDepartments(teamId)
                                 dismiss()
                             }
                         }

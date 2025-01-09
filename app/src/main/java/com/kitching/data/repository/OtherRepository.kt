@@ -72,16 +72,16 @@ class OtherRepository(private val dataSource: FireStoreDataSource = FireStoreDat
         )
     }
 
-    suspend fun getStaffLevels(departmentId: String): Flow<FirebaseResult<MutableList<StaffLevelDTO>>> {
-        return fetchFirebaseDataFlow(
-            fetcher = { dataSource.getStaffLevels(departmentId) },
-            mapper = {
-                StaffLevelDTO(
-                    staffLevelId = it.id,
-                    staffLevelName = it.name
-                )
-            }
-        )
+    suspend fun createDepartment(teamId: String, name: String, color: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.createDepartment(teamId, name, color))
+    }
+
+    suspend fun updateDepartment(departmentId: String, name: String, color: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.updateDepartment(departmentId, name, color))
+    }
+
+    suspend fun deleteDepartment(departmentId: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.deleteDepartment(departmentId))
     }
 
     suspend fun getNotices(teamId: String): Flow<FirebaseResult<MutableList<NoticeDTO>>> {
@@ -98,5 +98,41 @@ class OtherRepository(private val dataSource: FireStoreDataSource = FireStoreDat
                 )
             }
         )
+    }
+
+    suspend fun createNotice(userId: String, teamId: String, title: String, content: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.createNotice(userId, teamId, title, content))
+    }
+
+    suspend fun updateNotice(noticeId: String,title: String, content: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.updateNotice(noticeId, title, content))
+    }
+
+    suspend fun deleteNotice(noticeId: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.deleteNotice(noticeId))
+    }
+
+    suspend fun getStaffLevels(departmentId: String): Flow<FirebaseResult<MutableList<StaffLevelDTO>>> {
+        return fetchFirebaseDataFlow(
+            fetcher = { dataSource.getStaffLevels(departmentId) },
+            mapper = {
+                StaffLevelDTO(
+                    staffLevelId = it.id,
+                    staffLevelName = it.name
+                )
+            }
+        )
+    }
+
+    suspend fun createStaffLevel(departmentId: String, name: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.createStaffLevel(departmentId, name))
+    }
+
+    suspend fun updateStaffLevel(staffLevelId: String, name: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.updateStaffLevel(staffLevelId, name))
+    }
+
+    suspend fun deleteStaffLevel(staffLevelId: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.deleteStaffLevel(staffLevelId))
     }
 }

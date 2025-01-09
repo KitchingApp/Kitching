@@ -6,6 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.kitching.common.BaseDialog
 import com.kitching.common.KitchingApplication
+import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.databinding.DialogInputTextBinding
@@ -31,8 +32,12 @@ class ScheduleRejectDialog:
                     viewLifecycleOwner.lifecycleScope.launch {
                         val teamId = PreferencesDataSource(KitchingApplication.getAppContext()).getTeamId() ?: ""
                         viewModel.deleteSchedule(args.scheduleId, true)
-                        viewModel.getSchedules(teamId, args.dateString)
-                        dismiss()
+                        viewModel.deleteScheduleResult.collect {
+                            firebaseResultHandler(it) {
+                                viewModel.getSchedules(teamId, args.dateString)
+                                dismiss()
+                            }
+                        }
                     }
                 }
             }

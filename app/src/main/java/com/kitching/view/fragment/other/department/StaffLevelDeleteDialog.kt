@@ -1,56 +1,51 @@
-package com.kitching.view.fragment.prep
+package com.kitching.view.fragment.other.department
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import com.kitching.common.ColorInputBaseDialog
+import androidx.navigation.fragment.navArgs
+import com.kitching.common.BaseDialog
+import com.kitching.common.KitchingApplication
 import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.firebase.FirebaseResult
+import com.kitching.databinding.DialogConfirmBinding
+import com.kitching.view.model.DepartmentViewModel
 import com.kitching.view.model.PrepViewModel
-import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class PrepCategoryCreateDialog(): ColorInputBaseDialog() {
+class StaffLevelDeleteDialog:
+    BaseDialog<DialogConfirmBinding>(DialogConfirmBinding::inflate) {
 
-    private val viewModel = PrepViewModel.instance
+    private val viewModel = DepartmentViewModel.instance
 
-    private lateinit var teamId: String
+    private val args: StaffLevelDeleteDialogArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                teamId = PreferencesDataSource(requireContext()).getTeamId() ?: ""
-            }
-        }
-
         with(binding) {
-            textField.hint = "카테고리 이름"
+            messageTV.text = "직급을 삭제하시겠습니까?"
 
-            with(confirmBtn) {
-                text = "생성"
-
+            with(confirmButton) {
+                text = "삭제"
                 throttleClicks(viewLifecycleOwner) {
-                    viewModel.createPrepCategory(teamId, getTextInput(), getCheckedColor())
+                    viewModel.deleteStaffLevel(args.departmentId)
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.createPrepCategoryResult.collectLatest {
+                        viewModel.deleteStaffLevelResult.collectLatest {
                             firebaseResultHandler(it) {
-                                viewModel.getPrepCategory(teamId)
+                                viewModel.getStaffLevels(args.departmentId)
                                 dismiss()
                             }
                         }
+                        dismiss()
                     }
                 }
             }
 
-            with(cancelBtn) {
+            with(cancelButton) {
                 throttleClicks(viewLifecycleOwner) {
                     dismiss()
                 }

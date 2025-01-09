@@ -8,14 +8,16 @@
     <fragment
         android:id="@+id/scheduleFragment"
         android:name="com.kitching.view.fragment.schedule.ScheduleFragment"
-        tools:layout="@layout/fragment_schedule"
-        >
+        tools:layout="@layout/fragment_schedule">
 
-        <action android:id="@+id/action_scheduleFragment_to_scheduleCreateDialog"
+        <action
+            android:id="@+id/action_scheduleFragment_to_scheduleCreateDialog"
             app:destination="@id/scheduleCreateDialog" />
-        <action android:id="@+id/action_scheduleFragment_to_scheduleDeleteDialog"
+        <action
+            android:id="@+id/action_scheduleFragment_to_scheduleDeleteDialog"
             app:destination="@id/scheduleDeleteDialog" />
-        <action android:id="@+id/action_scheduleFragment_to_scheduleRejectDialog"
+        <action
+            android:id="@+id/action_scheduleFragment_to_scheduleRejectDialog"
             app:destination="@id/scheduleRejectDialog" />
 
     </fragment>
@@ -23,8 +25,7 @@
     <dialog
         android:id="@+id/scheduleCreateDialog"
         android:name="com.kitching.view.fragment.schedule.ScheduleCreateDialog"
-        tools:layout="@layout/dialog_create_schedule"
-        >
+        tools:layout="@layout/dialog_create_schedule">
 
         <argument
             android:name="dateString"
@@ -35,8 +36,7 @@
     <dialog
         android:id="@+id/scheduleDeleteDialog"
         android:name="com.kitching.view.fragment.schedule.ScheduleDeleteDialog"
-        tools:layout="@layout/dialog_confirm"
-        >
+        tools:layout="@layout/dialog_confirm">
 
         <argument
             android:name="dateString"
@@ -50,8 +50,7 @@
     <dialog
         android:id="@+id/scheduleRejectDialog"
         android:name="com.kitching.view.fragment.schedule.ScheduleRejectDialog"
-        tools:layout="@layout/dialog_input_text"
-        >
+        tools:layout="@layout/dialog_input_text">
 
         <argument
             android:name="dateString"
@@ -65,8 +64,7 @@
     <fragment
         android:id="@+id/prepFragment"
         android:name="com.kitching.view.fragment.prep.PrepCategoryFragment"
-        tools:layout="@layout/fragment_prep"
-        >
+        tools:layout="@layout/fragment_prep">
 
         <action
             android:id="@+id/action_prepFragment_to_prepListFragment"
@@ -121,8 +119,7 @@
     <fragment
         android:id="@+id/prepListFragment"
         android:name="com.kitching.view.fragment.prep.PrepListFragment"
-        tools:layout="@layout/fragment_prep_list"
-        >
+        tools:layout="@layout/fragment_prep_list">
 
         <argument
             android:name="prepCategoryId"
@@ -185,8 +182,7 @@
     <fragment
         android:id="@+id/recipeFragment"
         android:name="com.kitching.view.fragment.recipe.RecipeFragment"
-        tools:layout="@layout/fragment_recipe"
-        >
+        tools:layout="@layout/fragment_recipe">
 
 
         <action
@@ -200,32 +196,27 @@
     <fragment
         android:id="@+id/recipeDetailFragment"
         android:name="com.kitching.view.fragment.recipe.RecipeDetailFragment"
-        tools:layout="@layout/fragment_recipe_detail"
-        >
+        tools:layout="@layout/fragment_recipe_detail">
 
         <argument
             android:name="recipeImage"
-            app:argType="string"
             android:defaultValue=""
-            />
+            app:argType="string" />
 
         <argument
             android:name="recipeName"
-            app:argType="string"
             android:defaultValue=""
-            />
+            app:argType="string" />
 
         <argument
             android:name="recipeIngredients"
-            app:argType="string"
             android:defaultValue=""
-            />
+            app:argType="string" />
 
         <argument
             android:name="recipeStep"
-            app:argType="string"
             android:defaultValue=""
-            />
+            app:argType="string" />
 
     </fragment>
 
@@ -242,8 +233,7 @@
     <fragment
         android:id="@+id/orderFragment"
         android:name="com.kitching.view.fragment.order.OrderFragment"
-        tools:layout="@layout/fragment_order"
-        >
+        tools:layout="@layout/fragment_order">
 
 
         <action
@@ -254,22 +244,19 @@
     <fragment
         android:id="@+id/orderListFragment"
         android:name="com.kitching.view.fragment.order.OrderListFragment"
-        tools:layout="@layout/fragment_orderlist"
-        >
+        tools:layout="@layout/fragment_orderlist">
 
         <argument
             android:name="orderCategoryId"
-            app:argType="string"
             android:defaultValue=""
-            />
+            app:argType="string" />
 
     </fragment>
 
     <fragment
         android:id="@+id/otherFragment"
         android:name="com.kitching.view.fragment.other.OtherFragment"
-        tools:layout="@layout/fragment_other"
-        >
+        tools:layout="@layout/fragment_other">
 
         <action
             android:id="@+id/action_otherFragment_to_inviteFragment"
@@ -291,54 +278,212 @@
     <fragment
         android:id="@+id/inviteFragment"
         android:name="com.kitching.view.fragment.other.InviteCodeFragment"
-        tools:layout="@layout/fragment_invite_code"
-        >
+        tools:layout="@layout/fragment_invite_code">
 
     </fragment>
 
     <fragment
         android:id="@+id/noticeFragment"
-        android:name="com.kitching.view.fragment.other.NoticeFragment"
-        tools:layout="@layout/fragment_notice"
-        >
+        android:name="com.kitching.view.fragment.other.notice.NoticeFragment"
+        tools:layout="@layout/fragment_notice">
+
+        <action
+            android:id="@+id/action_noticeFragment_to_noticeDetailFragment"
+            app:destination="@id/noticeDetailFragment" />
+
+        <action
+            android:id="@+id/action_noticeFragment_to_noticeCreateFragment"
+            app:destination="@id/noticeCreateFragment" />
 
     </fragment>
 
     <fragment
+        android:id="@+id/noticeCreateFragment"
+        android:name="com.kitching.view.fragment.other.notice.NoticeCreateFragment"
+        tools:layout="@layout/fragment_notice_create">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/noticeDetailFragment"
+        android:name="com.kitching.view.fragment.other.notice.NoticeDetailFragment"
+        tools:layout="@layout/fragment_notice_detail">
+
+        <action
+            android:id="@+id/action_noticeDetailFragment_to_noticeUpdateFragment"
+            app:destination="@id/noticeUpdateFragment" />
+
+        <action
+            android:id="@+id/action_noticeDetailFragment_to_noticeDeleteDialog"
+            app:destination="@id/noticeDeleteDialog" />
+
+        <argument
+            android:name="notice"
+            app:argType="com.kitching.data.dto.ParcelableNoticeDTO" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/noticeUpdateFragment"
+        android:name="com.kitching.view.fragment.other.notice.NoticeUpdateFragment"
+        tools:layout="@layout/fragment_notice_create">
+
+        <action
+            android:id="@+id/action_noticeUpdateFragment_to_noticeFragment"
+            app:destination="@id/noticeFragment" />
+
+        <argument
+            android:name="notice"
+            app:argType="com.kitching.data.dto.ParcelableNoticeDTO" />
+
+    </fragment>
+
+    <dialog
+        android:id="@+id/noticeDeleteDialog"
+        android:name="com.kitching.view.fragment.other.notice.NoticeDeleteDialog"
+        tools:layout="@layout/dialog_confirm">
+
+        <action
+            android:id="@+id/action_noticeDeleteDialog_to_noticeFragment"
+            app:destination="@id/noticeFragment" />
+
+        <argument
+            android:name="noticeId"
+            app:argType="string" />
+
+    </dialog>
+
+    <fragment
         android:id="@+id/departmentFragment"
-        android:name="com.kitching.view.fragment.other.DepartmentFragment"
-        tools:layout="@layout/fragment_department"
-        >
+        android:name="com.kitching.view.fragment.other.department.DepartmentFragment"
+        tools:layout="@layout/fragment_department">
 
         <action
             android:id="@+id/action_departmentFragment_to_staffLevelFragment"
             app:destination="@id/staffLevelFragment" />
+        <action
+            android:id="@+id/action_departmentFragment_to_departmentCreateDialog"
+            app:destination="@id/departmentCreateDialog" />
+        <action
+            android:id="@+id/action_departmentFragment_to_departmentUpdateDialog"
+            app:destination="@id/departmentUpdateDialog" />
+        <action
+            android:id="@+id/action_departmentFragment_to_departmentDeleteDialog"
+            app:destination="@id/departmentDeleteDialog" />
+
     </fragment>
 
-    <fragment
-        android:id="@+id/staffLevelFragment"
-        android:name="com.kitching.view.fragment.other.StaffLevelFragment"
-        tools:layout="@layout/fragment_stafflevel"
-        >
+    <dialog
+        android:id="@+id/departmentCreateDialog"
+        android:name="com.kitching.view.fragment.other.department.DepartmentCreateDialog"
+        tools:layout="@layout/dialog_confirm">
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/departmentUpdateDialog"
+        android:name="com.kitching.view.fragment.other.department.DepartmentUpdateDialog"
+        tools:layout="@layout/dialog_confirm">
+
+        <action
+            android:id="@+id/action_departmentUpdateDialog_to_departmentFragment"
+            app:destination="@id/departmentFragment" />
 
         <argument
             android:name="departmentId"
             app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="color"
+            app:argType="string" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/departmentDeleteDialog"
+        android:name="com.kitching.view.fragment.other.department.DepartmentDeleteDialog"
+        tools:layout="@layout/dialog_confirm">
+
+        <action
+            android:id="@+id/action_departmentDeleteDialog_to_departmentFragment"
+            app:destination="@id/departmentFragment" />
+
+        <argument
+            android:name="departmentId"
+            app:argType="string" />
+
+    </dialog>
+
+    <fragment
+        android:id="@+id/staffLevelFragment"
+        android:name="com.kitching.view.fragment.other.department.StaffLevelFragment"
+        tools:layout="@layout/fragment_stafflevel">
+
+        <argument
+            android:name="departmentId"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_staffLevelFragment_to_staffLevelCreateDialog"
+            app:destination="@id/staffLevelCreateDialog" />
+        <action
+            android:id="@+id/action_staffLevelFragment_to_staffLevelUpdateDialog"
+            app:destination="@id/staffLevelUpdateDialog" />
+        <action
+            android:id="@+id/action_staffLevelFragment_to_staffLevelDeleteDialog"
+            app:destination="@id/staffLevelDeleteDialog" />
+
     </fragment>
+
+    <dialog
+        android:id="@+id/staffLevelCreateDialog"
+        android:name="com.kitching.view.fragment.other.department.StaffLevelCreateDialog"
+        tools:layout="@layout/dialog_input_text">
+
+        <argument
+            android:name="departmentId"
+            app:argType="string" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/staffLevelUpdateDialog"
+        android:name="com.kitching.view.fragment.other.department.StaffLevelUpdateDialog"
+        tools:layout="@layout/dialog_input_text">
+
+        <argument
+            android:name="departmentId"
+            app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/staffLevelDeleteDialog"
+        android:name="com.kitching.view.fragment.other.department.StaffLevelDeleteDialog"
+        tools:layout="@layout/dialog_confirm">
+
+        <argument
+            android:name="departmentId"
+            app:argType="string" />
+
+    </dialog>
 
     <fragment
         android:id="@+id/scheduleTimeFragment"
         android:name="com.kitching.view.fragment.other.ScheduleTimeFragment"
-        tools:layout="@layout/fragment_schedule_time"
-        >
+        tools:layout="@layout/fragment_schedule_time">
 
     </fragment>
 
     <fragment
         android:id="@+id/memberListFragment"
         android:name="com.kitching.view.fragment.other.MemberListFragment"
-        tools:layout="@layout/fragment_memberlist"
-        >
+        tools:layout="@layout/fragment_memberlist">
 
     </fragment>
 

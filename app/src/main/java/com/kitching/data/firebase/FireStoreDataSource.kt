@@ -16,6 +16,7 @@ import com.kitching.common.COLLECTION_STAFF_LEVEL
 import com.kitching.common.COLLECTION_TEAM
 import com.kitching.common.COLLECTION_USER
 import com.kitching.common.COLLECTION_USER_TEAM
+import com.kitching.common.util.dateFormatter
 import com.kitching.domain.entities.Order
 import com.kitching.domain.entities.OrderCategory
 import com.kitching.domain.entities.Department
@@ -31,6 +32,7 @@ import com.kitching.domain.entities.Team
 import com.kitching.domain.entities.User
 import com.kitching.domain.entities.UserTeam
 import kotlinx.coroutines.tasks.await
+import java.time.LocalDate
 
 class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) {
 
@@ -453,7 +455,91 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
         else scheduleTime.toObjects(ScheduleTime::class.java) as MutableList<ScheduleTime>
     }
 
+    suspend fun getNotices(teamId: String): MutableList<Notice> {
+        val notices = db.collection(COLLECTION_NOTICE).whereEqualTo("teamId", teamId).get().await()
+
+        return if (notices.isEmpty) mutableListOf()
+        else notices.toObjects(Notice::class.java)
+    }
+
+    suspend fun createNotice(userId: String, teamId: String, title: String, content: String): Boolean {
+        var createTaskResult = false
+
+        val noticeWithOutId = Notice(
+            id = "",
+            date = LocalDate.now().toString(),
+            title = title,
+            content = content,
+            writerId = userId,
+            teamId = teamId
+        )
+
+        db.collection(COLLECTION_NOTICE).add(noticeWithOutId).await().apply {
+            this.update("id", this.id).addOnSuccessListener { createTaskResult = true }.await()
+        }
+
+        return createTaskResult
+    }
+
+    suspend fun updateNotice(noticeId: String, title: String, content: String): Boolean {
+        var updateTaskResult = false
+
+        db.collection(COLLECTION_NOTICE).document(noticeId).update("title", title, "content", content).addOnSuccessListener {
+            updateTaskResult = true
+        }.await()
+
+        return updateTaskResult
+    }
+
+    suspend fun deleteNotice(noticeId: String): Boolean {
+        var deleteTaskResult = false
+
+        db.collection(COLLECTION_NOTICE).document(noticeId).delete().addOnSuccessListener {
+            deleteTaskResult = true
+        }.await()
+
+        return deleteTaskResult
+    }
+
     /** department / staff level management */
+
+    suspend fun createDepartment(teamId: String, name: String, color: String): Boolean {
+        var createTaskResult = false
+
+        val departmentWithOutId = Department(
+            id = "",
+            teamId = teamId,
+            name = name,
+            color = color
+        )
+
+        db.collection(COLLECTION_DEPARTMENT).add(departmentWithOutId).await().apply {
+            this.update("id", this.id).addOnSuccessListener { createTaskResult = true }.await()
+        }
+
+        return createTaskResult
+    }
+
+    suspend fun updateDepartment(departmentId: String, name: String, color: String): Boolean {
+        var updateTaskResult = false
+
+        db.collection(COLLECTION_DEPARTMENT).document(departmentId).update("name", name, "color", color).addOnSuccessListener {
+            updateTaskResult = true
+        }.await()
+
+        return updateTaskResult
+    }
+
+    suspend fun deleteDepartment(departmentId: String): Boolean {
+        var deleteTaskResult = false
+
+        db.collection(COLLECTION_DEPARTMENT).document(departmentId).delete().addOnSuccessListener {
+            deleteTaskResult = true
+        }.await()
+
+        return deleteTaskResult
+    }
+
     suspend fun getStaffLevels(departmentId: String): MutableList<StaffLevel> {
         val staffLevels =
             db.collection(COLLECTION_STAFF_LEVEL).whereEqualTo("departmentId", departmentId).get()
@@ -463,10 +549,41 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
         else staffLevels.toObjects(StaffLevel::class.java)
     }
 
-    suspend fun getNotices(teamId: String): MutableList<Notice> {
-        val notices = db.collection(COLLECTION_NOTICE).whereEqualTo("teamId", teamId).get().await()
+    suspend fun createStaffLevel(departmentId: String, staffLevelName: String): Boolean {
+        var createTaskResult = false
 
-        return if (notices.isEmpty) mutableListOf()
-        else notices.toObjects(Notice::class.java)
+        val staffLevelWithOutId = StaffLevel(
+            id = "",
+            departmentId = departmentId,
+            name = staffLevelName
+        )
+
+        db.collection(COLLECTION_STAFF_LEVEL).add(staffLevelWithOutId).await().apply {
+            this.update("id", this.id).addOnSuccessListener {
+                createTaskResult = true
+            }.await()
+        }
+
+        return createTaskResult
+    }
+
+    suspend fun updateStaffLevel(staffLevelId: String, name: String): Boolean {
+        var updateTaskResult = false
+
+        db.collection(COLLECTION_STAFF_LEVEL).document(staffLevelId).update("name", name).addOnSuccessListener {
+            updateTaskResult = true
+        }.await()
+
+        return updateTaskResult
+    }
+
+    suspend fun deleteStaffLevel(staffLevelId: String): Boolean {
+        var deleteTaskResult = false
+
+        db.collection(COLLECTION_STAFF_LEVEL).document(staffLevelId).delete().addOnSuccessListener {
+            deleteTaskResult = true
+        }.await()
+
+        return deleteTaskResult
     }
 }

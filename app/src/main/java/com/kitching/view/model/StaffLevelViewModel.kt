@@ -12,14 +12,7 @@ import kotlinx.coroutines.launch
 
 class StaffLevelViewModel(private val repository: OtherRepository = OtherRepository()) : ViewModel() {
 
-    private val _staffLevels = MutableStateFlow<FirebaseResult<MutableList<StaffLevelDTO>>>(FirebaseResult.Loading)
-    val staffLevels get() = _staffLevels.asStateFlow()
 
-    fun getStaffLevels(departmentId: String) {
-        viewModelScope.launch {
-            repository.getStaffLevels(departmentId).collectLatest {
-                _staffLevels.value = it
-            }
-        }
-    }
+
+
 }

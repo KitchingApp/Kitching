@@ -2,7 +2,6 @@ package com.kitching.view.fragment.prep
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -11,10 +10,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.kitching.adapter.PrepAdapter
 import com.kitching.common.BaseFragment
+import com.kitching.common.firebaseResultHandler
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentPrepListBinding
 import com.kitching.view.model.PrepViewModel
-import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -39,11 +38,8 @@ class PrepListFragment : BaseFragment<FragmentPrepListBinding>(FragmentPrepListB
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getPrepList(args.prepCategoryId)
                 viewModel.prepList.collectLatest {
-                    when (it) {
-                        is FirebaseResult.Success -> prepAdapter.submitList(it.data)
-                        is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                        is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                        is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
+                    firebaseResultHandler(it) { data ->
+                        prepAdapter.submitList(data)
                     }
                 }
             }
@@ -57,7 +53,7 @@ class PrepListFragment : BaseFragment<FragmentPrepListBinding>(FragmentPrepListB
             }
         }
 
-        setActionBtn {
+        setPlusActionBtn {
             val action = PrepListFragmentDirections.actionPrepListFragmentToPrepCreateDialog(args.prepCategoryId)
             navController.navigate(action)
         }
