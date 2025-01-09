@@ -17,7 +17,7 @@ import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.databinding.FragmentLoginMainBinding
 import kotlinx.coroutines.launch
 import com.kitching.R
-import com.kitching.data.firebase.FirebaseResult
+import com.kitching.common.firebaseResultHandler
 import com.kitching.view.model.LoginViewModel
 import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
@@ -41,22 +41,6 @@ class LoginMainFragment: BaseFragment<FragmentLoginMainBinding>(FragmentLoginMai
             performKakaoLogin()
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.checkAndSaveUser.collectLatest { result ->
-                    when (result) {
-                        is FirebaseResult.Loading -> {}
-                        is FirebaseResult.Success -> {
-                            viewModel.userId.value?.let { uid ->
-                                saveUserIdToDataStore(uid)
-                            }
-                        }
-                        is FirebaseResult.Failure -> { showError(result.throwable) }
-                        is FirebaseResult.DummyConstructor -> {}
-                    }
-                }
-            }
-        }
     }
 
     private fun performKakaoLogin() {
@@ -91,6 +75,22 @@ class LoginMainFragment: BaseFragment<FragmentLoginMainBinding>(FragmentLoginMai
                 val kakaoProfileImage = user.kakaoAccount?.profile?.profileImageUrl.orEmpty()
 
                 viewModel.checkAndSaveUser(kakaoUid, kakaoNickname, kakaoProfileImage)
+
+                observeCheckAndSaveUser()
+            }
+        }
+    }
+
+    private fun observeCheckAndSaveUser() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.checkAndSaveUser.collectLatest {
+                    firebaseResultHandler(it) {
+                        viewModel.userId.value?.let { uid ->
+                            saveUserIdToDataStore(uid)
+                        }
+                    }
+                }
             }
         }
     }
