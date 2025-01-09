@@ -31,6 +31,7 @@ import com.kitching.data.firebase.FirebaseResult
 import com.kitching.view.model.RecipeViewModel
 import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
+import java.io.File
 import kotlin.getValue
 
 class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCreateRecipeBinding::inflate) {
@@ -206,7 +207,7 @@ class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCr
                 return@launch
             }
 
-            viewModel.uploadImage(Uri.parse(imagePath), imageName)
+            viewModel.uploadImage(Uri.fromFile(File(imagePath)), imageName)
 
             viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.uploadImageResult.collectLatest { result ->

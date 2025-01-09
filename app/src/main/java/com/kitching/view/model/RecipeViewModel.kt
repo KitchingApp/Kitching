@@ -29,8 +29,8 @@ class RecipeViewModel(private val repository: RecipeRepository = RecipeRepositor
 
     fun uploadImage(imageUri: Uri, imageName: String) {
         viewModelScope.launch {
-            repository.uploadImage(imageUri, imageName).collectLatest { result ->
-                _uploadImageResult.value = result
+            repository.uploadImage(imageUri, imageName).collectLatest {
+                _uploadImageResult.value = it
             }
         }
     }
@@ -40,8 +40,8 @@ class RecipeViewModel(private val repository: RecipeRepository = RecipeRepositor
 
     fun saveRecipe(name: String, picture: String, steps: List<String>, teamId: String) {
         viewModelScope.launch {
-            repository.saveRecipe(name, picture, steps, teamId).collectLatest { result ->
-                _saveRecipeResult.value = result
+            repository.saveRecipe(name, picture, steps, teamId).collectLatest {
+                _saveRecipeResult.value = it
             }
         }
     }
@@ -51,8 +51,8 @@ class RecipeViewModel(private val repository: RecipeRepository = RecipeRepositor
 
     fun saveIngredients(recipeId: String, ingredients: List<Map<String, String>>) {
         viewModelScope.launch {
-            repository.saveIngredients(recipeId, ingredients).collectLatest { result ->
-                _saveIngredientsResult.value = result
+            repository.saveIngredients(recipeId, ingredients).collectLatest {
+                _saveIngredientsResult.value = it
             }
         }
     }
