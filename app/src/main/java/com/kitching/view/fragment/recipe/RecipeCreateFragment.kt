@@ -27,8 +27,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.kitching.R
+import com.kitching.common.firebaseResultHandler
 import com.kitching.data.datasource.PreferencesDataSource
-import com.kitching.data.firebase.FirebaseResult
 import com.kitching.view.model.RecipeViewModel
 import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
@@ -223,44 +223,28 @@ class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCr
             viewModel.uploadImage(Uri.fromFile(File(imagePath)), imageName)
 
             viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.uploadImageResult.collectLatest { result ->
-                    when (result) {
-                        is FirebaseResult.Loading -> {}
-                        is FirebaseResult.Success -> {
-                            val pictureUrl = result.data
-                            viewModel.saveRecipe(recipeName, pictureUrl, steps, teamId
-                            )
-                        }
-                        is FirebaseResult.Failure -> showError(result.throwable)
-                        else -> {}
+                viewModel.uploadImageResult.collectLatest {
+                    firebaseResultHandler(it) { data ->
+                        val pictureUrl = data
+                        viewModel.saveRecipe(recipeName, pictureUrl, steps, teamId)
                     }
                 }
             }
 
             viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.saveRecipeResult.collectLatest { result ->
-                    when (result) {
-                        is FirebaseResult.Loading -> {}
-                        is FirebaseResult.Success -> {
-                            val recipeId = result.data
-                            viewModel.saveIngredients(recipeId, ingredients)
-                        }
-                        is FirebaseResult.Failure -> showError(result.throwable)
-                        else -> {}
+                viewModel.saveRecipeResult.collectLatest {
+                    firebaseResultHandler(it) { data ->
+                        val recipeId = data
+                        viewModel.saveIngredients(recipeId, ingredients)
                     }
                 }
             }
 
             viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.saveIngredientsResult.collectLatest { result ->
-                    when (result) {
-                        is FirebaseResult.Loading -> {}
-                        is FirebaseResult.Success -> {
-                            commonToast("레시피 저장 완료!")
-                            navigateRecipeFragmentWithClearStack()
-                        }
-                        is FirebaseResult.Failure -> showError(result.throwable)
-                        else -> {}
+                viewModel.saveIngredientsResult.collectLatest {
+                    firebaseResultHandler(it) {
+                        commonToast("레시피 저장 완료!")
+                        navigateRecipeFragmentWithClearStack()
                     }
                 }
             }
