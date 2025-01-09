@@ -1,6 +1,5 @@
 package com.kitching.view.fragment.recipe
 
-import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -32,6 +31,7 @@ import com.kitching.view.model.RecipeViewModel
 import com.kitching.view.model.factory.viewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import java.io.File
+import java.util.UUID
 import kotlin.getValue
 
 class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCreateRecipeBinding::inflate) {
@@ -91,7 +91,7 @@ class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCr
                         cursor.moveToFirst()
                         imagePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                         imageMimeType = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE))
-                        imageName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DISPLAY_NAME)) ?: "No_Name"
+                        imageName = UUID.randomUUID().toString().replace("-", "")
                         imageOrientation = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.ORIENTATION))
                     } ?: Log.e("TAG", "이미지 파일 Pick Fail~~~")
             }

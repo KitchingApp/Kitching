@@ -28,6 +28,7 @@ import com.kitching.domain.entities.Schedule
 import com.kitching.domain.entities.ScheduleTime
 import com.kitching.domain.entities.StaffLevel
 import com.kitching.domain.entities.Team
+import com.kitching.domain.entities.User
 import com.kitching.domain.entities.UserTeam
 import kotlinx.coroutines.tasks.await
 
@@ -41,10 +42,10 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
             if (userSnapshot.exists()) {
                 true
             } else {
-                val userMap = mapOf(
-                    "id" to uid,
-                    "userName" to userName,
-                    "userImage" to userImage
+                val userMap = User(
+                    uid,
+                    userName,
+                    userImage
                 )
                 userRef.set(userMap).await()
                 true
@@ -80,24 +81,20 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
 
     suspend fun createTeam(inviteCode: String, ownerId: String, teamName: String): Boolean {
         return try {
-            val teamData = mapOf(
-                "id" to "",
-                "inviteCode" to inviteCode,
-                "ownerId" to ownerId,
-                "teamName" to teamName
+            val teamData = Team(
+                "",
+                inviteCode,
+                ownerId,
+                teamName
             )
             val teamDocument = db.collection(COLLECTION_TEAM).add(teamData).await()
 
             db.collection(COLLECTION_TEAM).document(teamDocument.id).update("id", teamDocument.id).await()
 
-            val userTeamData = mapOf(
-                "id" to "",
-                "isManager" to true,
-                "teamId" to teamDocument.id,
-                "userId" to ownerId,
-                "departmentId" to "",
-                "staffLevelId" to ""
+            val userTeamData = UserTeam(
+                "", "", "", teamDocument.id, ownerId, true
             )
+
             val userTeamDocument = db.collection(COLLECTION_USER_TEAM).add(userTeamData).await()
 
             db.collection(COLLECTION_USER_TEAM).document(userTeamDocument.id).update("id", userTeamDocument.id).await()
@@ -309,7 +306,15 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
         val ingredientCollection = db.collection("recipe").document(recipeId).collection("ingredient")
         return ingredients.all { ingredient ->
             try {
-                val ingredientDocument = ingredientCollection.add(ingredient).await()
+                // MutableMap<String, Any>로 변환
+                val ingredientData = ingredient.mapValues { (key, value) ->
+                    when (key) {
+                        "once", "twice" -> value.toIntOrNull() ?: 0
+                        else -> value
+                    }
+                }
+
+                val ingredientDocument = ingredientCollection.add(ingredientData).await()
                 ingredientCollection.document(ingredientDocument.id).update("id", ingredientDocument.id).await()
                 true
             } catch (e: Exception) {
