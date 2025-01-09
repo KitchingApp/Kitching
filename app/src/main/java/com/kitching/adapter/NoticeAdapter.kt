@@ -13,7 +13,7 @@ import com.kitching.common.util.throttleClicks
 import com.kitching.data.dto.NoticeDTO
 import com.kitching.data.dto.ParcelableNoticeDTO
 import com.kitching.databinding.ItemNoticeBinding
-import com.kitching.view.fragment.other.NoticeFragmentDirections
+import com.kitching.view.fragment.other.notice.NoticeFragmentDirections
 
 class NoticeAdapter(private val lifecycleOwner: LifecycleOwner) :
     ListAdapter<NoticeDTO, NoticeAdapter.NoticeViewHolder>(diffUtil) {

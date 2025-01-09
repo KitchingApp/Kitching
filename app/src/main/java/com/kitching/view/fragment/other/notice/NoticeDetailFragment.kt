@@ -1,4 +1,4 @@
-package com.kitching.view.fragment.other
+package com.kitching.view.fragment.other.notice
 
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod

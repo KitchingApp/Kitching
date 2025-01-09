@@ -4,6 +4,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.ListAdapter
 import com.kitching.common.util.ProgressDialog
 import com.kitching.data.firebase.FirebaseResult
 import kotlinx.coroutines.flow.Flow
