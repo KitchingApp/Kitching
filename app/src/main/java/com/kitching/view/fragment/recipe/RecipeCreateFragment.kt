@@ -17,6 +17,7 @@ import androidx.core.view.children
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.kitching.common.BaseFragment
 import com.kitching.common.commonToast
@@ -254,7 +255,10 @@ class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCr
                 viewModel.saveIngredientsResult.collectLatest { result ->
                     when (result) {
                         is FirebaseResult.Loading -> {}
-                        is FirebaseResult.Success -> commonToast("레시피 저장 완료!")
+                        is FirebaseResult.Success -> {
+                            commonToast("레시피 저장 완료!")
+                            navigateRecipeFragmentWithClearStack()
+                        }
                         is FirebaseResult.Failure -> showError(result.throwable)
                         else -> {}
                     }
@@ -265,5 +269,17 @@ class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCr
 
     private fun showError(error: Throwable?) {
         commonToast("작업 실패: ${error?.message}")
+    }
+
+    private fun navigateRecipeFragmentWithClearStack() {
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.recipeCreateFragment, true)
+            .build()
+
+        findNavController().navigate(
+            R.id.action_recipeCreateFragment_to_recipeFragment,
+            null,
+            navOptions
+        )
     }
 }
