@@ -405,16 +405,6 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
         else scheduleTime.toObjects(ScheduleTime::class.java) as MutableList<ScheduleTime>
     }
 
-    /** department / staff level management */
-    suspend fun getStaffLevels(departmentId: String): MutableList<StaffLevel> {
-        val staffLevels =
-            db.collection(COLLECTION_STAFF_LEVEL).whereEqualTo("departmentId", departmentId).get()
-                .await()
-
-        return if (staffLevels.isEmpty) mutableListOf()
-        else staffLevels.toObjects(StaffLevel::class.java)
-    }
-
     suspend fun getNotices(teamId: String): MutableList<Notice> {
         val notices = db.collection(COLLECTION_NOTICE).whereEqualTo("teamId", teamId).get().await()
 
@@ -455,6 +445,92 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
         var deleteTaskResult = false
 
         db.collection(COLLECTION_NOTICE).document(noticeId).delete().addOnSuccessListener {
+            deleteTaskResult = true
+        }.await()
+
+        return deleteTaskResult
+    }
+
+    /** department / staff level management */
+
+    suspend fun createDepartment(teamId: String, name: String, color: String): Boolean {
+        var createTaskResult = false
+
+        val departmentWithOutId = Department(
+            id = "",
+            teamId = teamId,
+            name = name,
+            color = color
+        )
+
+        db.collection(COLLECTION_DEPARTMENT).add(departmentWithOutId).await().apply {
+            this.update("id", this.id).addOnSuccessListener { createTaskResult = true }.await()
+        }
+
+        return createTaskResult
+    }
+
+    suspend fun updateDepartment(departmentId: String, name: String, color: String): Boolean {
+        var updateTaskResult = false
+
+        db.collection(COLLECTION_DEPARTMENT).document(departmentId).update("name", name, "color", color).addOnSuccessListener {
+            updateTaskResult = true
+        }.await()
+
+        return updateTaskResult
+    }
+
+    suspend fun deleteDepartment(departmentId: String): Boolean {
+        var deleteTaskResult = false
+
+        db.collection(COLLECTION_DEPARTMENT).document(departmentId).delete().addOnSuccessListener {
+            deleteTaskResult = true
+        }.await()
+
+        return deleteTaskResult
+    }
+
+    suspend fun getStaffLevels(departmentId: String): MutableList<StaffLevel> {
+        val staffLevels =
+            db.collection(COLLECTION_STAFF_LEVEL).whereEqualTo("departmentId", departmentId).get()
+                .await()
+
+        return if (staffLevels.isEmpty) mutableListOf()
+        else staffLevels.toObjects(StaffLevel::class.java)
+    }
+
+    suspend fun createStaffLevel(departmentId: String, staffLevelName: String): Boolean {
+        var createTaskResult = false
+
+        val staffLevelWithOutId = StaffLevel(
+            id = "",
+            departmentId = departmentId,
+            name = staffLevelName
+        )
+
+        db.collection(COLLECTION_STAFF_LEVEL).add(staffLevelWithOutId).await().apply {
+            this.update("id", this.id).addOnSuccessListener {
+                createTaskResult = true
+            }.await()
+        }
+
+        return createTaskResult
+    }
+
+    suspend fun updateStaffLevel(staffLevelId: String, name: String): Boolean {
+        var updateTaskResult = false
+
+        db.collection(COLLECTION_STAFF_LEVEL).document(staffLevelId).update("name", name).addOnSuccessListener {
+            updateTaskResult = true
+        }.await()
+
+        return updateTaskResult
+    }
+
+    suspend fun deleteStaffLevel(staffLevelId: String): Boolean {
+        var deleteTaskResult = false
+
+        db.collection(COLLECTION_STAFF_LEVEL).document(staffLevelId).delete().addOnSuccessListener {
             deleteTaskResult = true
         }.await()
 
