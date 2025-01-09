@@ -1,4 +1,4 @@
-package com.kitching.view.fragment.other
+package com.kitching.view.fragment.other.scheduletime
 
 import android.os.Bundle
 import android.view.View
@@ -22,9 +22,7 @@ import kotlinx.coroutines.launch
 class ScheduleTimeFragment : BaseFragment<FragmentScheduleTimeBinding>(FragmentScheduleTimeBinding::inflate) {
     private lateinit var navController: NavController
 
-    private val viewModel by viewModels<ScheduleTimeViewModel> {
-        viewModelFactory
-    }
+    private val viewModel = ScheduleTimeViewModel.instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +33,7 @@ class ScheduleTimeFragment : BaseFragment<FragmentScheduleTimeBinding>(FragmentS
         super.onViewCreated(view, savedInstanceState)
 
         lateinit var teamId: String
-        val scheduleTimeAdapter = ScheduleTimeAdapter()
+        val scheduleTimeAdapter = ScheduleTimeAdapter(viewLifecycleOwner)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -59,6 +57,11 @@ class ScheduleTimeFragment : BaseFragment<FragmentScheduleTimeBinding>(FragmentS
             setRvLayout(this)
             layoutManager = LinearLayoutManager(requireContext())
             this.adapter = scheduleTimeAdapter
+        }
+
+        setPlusActionBtn {
+            val action = ScheduleTimeFragmentDirections.actionScheduleTimeFragmentToScheduleTimeCreateDialog()
+            navController.navigate(action)
         }
     }
 }

@@ -17,47 +17,6 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 class OtherRepository(private val dataSource: FireStoreDataSource = FireStoreDataSource()) {
-    fun getMemberList(teamId: String): Flow<FirebaseResult<MemberListDTO>> = flow {
-        emit(FirebaseResult.Loading)
-        runCatching {
-            dataSource.getAllMembers(teamId).map {
-                MemberDTO(
-                    userId = it.userId,
-                    userName = dataSource.getUserName(it.userId),
-                    departmentName = if (it.departmentId !== null) dataSource.getDepartmentName(
-                        teamId,
-                        it.departmentId
-                    ) else null,
-                    staffLevelName = if (it.staffLevelId !== null) dataSource.getStaffLevelName(it.staffLevelId) else null
-                )
-            }
-        }
-            .onSuccess {
-                emit(
-                    FirebaseResult.Success(
-                    MemberListDTO(
-                        dataSource.getTeamName(teamId),
-                        it.toList()
-                    )
-                ))
-            }
-            .onFailure { emit(FirebaseResult.Failure(it)) }
-    }
-
-    suspend fun getScheduleTimeList(teamId: String): Flow<FirebaseResult<MutableList<ScheduleTimeListDTO>>> {
-        return fetchFirebaseDataFlow(
-            fetcher = { dataSource.getScheduleTimes(teamId) },
-            mapper = {
-                ScheduleTimeListDTO(
-                    scheduleTimeId = it.id,
-                    scheduleTimeName = it.name,
-                    color = it.color,
-                    startTime = LocalTime.parse(it.startTime, timeFormatter),
-                    endTime = LocalTime.parse(it.endTime, timeFormatter)
-                )
-            }
-        )
-    }
 
     suspend fun getDepartments(teamId: String): Flow<FirebaseResult<MutableList<DepartmentDTO>>> {
         return fetchFirebaseDataFlow(
@@ -134,5 +93,61 @@ class OtherRepository(private val dataSource: FireStoreDataSource = FireStoreDat
 
     suspend fun deleteStaffLevel(staffLevelId: String): Flow<FirebaseResult<Boolean>> {
         return fetchFirebaseDataFlow(dataSource.deleteStaffLevel(staffLevelId))
+    }
+
+    suspend fun getScheduleTimes(teamId: String): Flow<FirebaseResult<MutableList<ScheduleTimeListDTO>>> {
+        return fetchFirebaseDataFlow(
+            fetcher = { dataSource.getScheduleTimes(teamId) },
+            mapper = {
+                ScheduleTimeListDTO(
+                    scheduleTimeId = it.id,
+                    scheduleTimeName = it.name,
+                    color = it.color,
+//                    startTime = LocalTime.parse(it.startTime, timeFormatter),
+//                    endTime = LocalTime.parse(it.endTime, timeFormatter)
+                    startTime = it.startTime,
+                    endTime = it.endTime
+                )
+            }
+        )
+    }
+
+    suspend fun createScheduleTime(teamId: String, name: String, color: String, startTime: String, endTime: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.createScheduleTime(teamId, name, startTime, endTime, color))
+    }
+
+    suspend fun updateScheduleTime(scheduleTimeId: String, name: String, color: String, startTime: String, endTime: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.updateScheduleTime(scheduleTimeId, name, startTime, endTime, color))
+    }
+
+    suspend fun deleteScheduleTime(scheduleTimeId: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.deleteScheduleTime(scheduleTimeId))
+    }
+
+    fun getMemberList(teamId: String): Flow<FirebaseResult<MemberListDTO>> = flow {
+        emit(FirebaseResult.Loading)
+        runCatching {
+            dataSource.getAllMembers(teamId).map {
+                MemberDTO(
+                    userId = it.userId,
+                    userName = dataSource.getUserName(it.userId),
+                    departmentName = if (it.departmentId !== null) dataSource.getDepartmentName(
+                        teamId,
+                        it.departmentId
+                    ) else null,
+                    staffLevelName = if (it.staffLevelId !== null) dataSource.getStaffLevelName(it.staffLevelId) else null
+                )
+            }
+        }
+            .onSuccess {
+                emit(
+                    FirebaseResult.Success(
+                        MemberListDTO(
+                            dataSource.getTeamName(teamId),
+                            it.toList()
+                        )
+                    ))
+            }
+            .onFailure { emit(FirebaseResult.Failure(it)) }
     }
 }
