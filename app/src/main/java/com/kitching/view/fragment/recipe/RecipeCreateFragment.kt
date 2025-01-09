@@ -13,6 +13,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.view.children
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -190,16 +191,27 @@ class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCr
                     if (child is AppCompatEditText) child.text.toString() else null
                 }
 
-            val ingredients = (0 until binding.gridLayout1.childCount / 4)
-                .map { index ->
-                    val offset = index * 4
-                    mapOf(
-                        "once" to (binding.gridLayout1.getChildAt(offset) as? AppCompatEditText)?.text.toString(),
-                        "twice" to (binding.gridLayout1.getChildAt(offset + 1) as? AppCompatEditText)?.text.toString(),
-                        "each" to (binding.gridLayout1.getChildAt(offset + 2) as? AppCompatEditText)?.text.toString(),
-                        "name" to (binding.gridLayout1.getChildAt(offset + 3) as? AppCompatEditText)?.text.toString()
-                    )
+            val ingredients = mutableListOf<Map<String, String>>()
+
+            binding.gridLayout1.children.forEachIndexed { index, view ->
+                if (index % 4 == 0) {
+                    val child1 = binding.gridLayout1.getChildAt(index) as? AppCompatEditText
+                    val child2 = binding.gridLayout1.getChildAt(index + 1) as? AppCompatEditText
+                    val child3 = binding.gridLayout1.getChildAt(index + 2) as? AppCompatEditText
+                    val child4 = binding.gridLayout1.getChildAt(index + 3) as? AppCompatEditText
+
+                    if (child1 != null && child2 != null && child3 != null && child4 != null) {
+                        ingredients.add(
+                            mapOf(
+                                "once" to child1.text.toString(),
+                                "twice" to child2.text.toString(),
+                                "each" to child3.text.toString(),
+                                "name" to child4.text.toString()
+                            )
+                        )
+                    }
                 }
+            }
 
             val preferencesDataSource = PreferencesDataSource(requireContext())
             val teamId = preferencesDataSource.getTeamId() ?: run {
