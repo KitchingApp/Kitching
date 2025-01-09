@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.datastore.preferences.core)
+    implementation(libs.glide)
     implementation(libs.v2.user)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     testImplementation(libs.junit)
