@@ -170,13 +170,15 @@ class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCr
             this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             this.layoutParams = GridLayout.LayoutParams().apply {
                 width = GridLayout.LayoutParams.MATCH_PARENT
-                height = TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    30f,
-                    resources.displayMetrics
-                ).toInt()
+                height = GridLayout.LayoutParams.WRAP_CONTENT
                 setMargins(0, 16, 0, 0)
+                setPadding(0, 0, 0, 16)
             }
+            this.minHeight = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                30f,
+                resources.displayMetrics
+            ).toInt()
         }
     }
 
