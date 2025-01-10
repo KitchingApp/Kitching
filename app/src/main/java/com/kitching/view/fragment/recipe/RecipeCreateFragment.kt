@@ -122,10 +122,12 @@ class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCr
         val editText3 = createStyledEditText1(1f)
         val editText4 = createStyledEditText1(2.5f)
 
-        gridLayout.addView(editText1)
-        gridLayout.addView(editText2)
-        gridLayout.addView(editText3)
-        gridLayout.addView(editText4)
+        with(gridLayout) {
+            addView(editText1)
+            addView(editText2)
+            addView(editText3)
+            addView(editText4)
+        }
     }
 
     /**
@@ -170,13 +172,15 @@ class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCr
             this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             this.layoutParams = GridLayout.LayoutParams().apply {
                 width = GridLayout.LayoutParams.MATCH_PARENT
-                height = TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    30f,
-                    resources.displayMetrics
-                ).toInt()
+                height = GridLayout.LayoutParams.WRAP_CONTENT
                 setMargins(0, 16, 0, 0)
+                setPadding(0, 0, 0, 16)
             }
+            this.minHeight = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                30f,
+                resources.displayMetrics
+            ).toInt()
         }
     }
 

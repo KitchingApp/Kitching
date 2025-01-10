@@ -75,10 +75,12 @@ class RecipeDetailFragment: BaseFragment<FragmentRecipeDetailBinding>(FragmentRe
 
             val nameTextView = createNameStyledTextView(ingredient.ingredientName)
 
-            gridLayout.addView(onceTextView)
-            gridLayout.addView(twiceTextView)
-            gridLayout.addView(eachTextView)
-            gridLayout.addView(nameTextView)
+            with(gridLayout) {
+                addView(onceTextView)
+                addView(twiceTextView)
+                addView(eachTextView)
+                addView(nameTextView)
+            }
         }
     }
 
@@ -135,12 +137,15 @@ class RecipeDetailFragment: BaseFragment<FragmentRecipeDetailBinding>(FragmentRe
                 this.gravity = Gravity.START
                 this.layoutParams = GridLayout.LayoutParams().apply {
                     width = GridLayout.LayoutParams.MATCH_PARENT
-                    height = TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP,
-                        30f,
-                        resources.displayMetrics
-                    ).toInt()
+                    height = GridLayout.LayoutParams.WRAP_CONTENT
+                    setMargins(0, 16, 0, 0)
+                    setPadding(0, 0, 0, 16)
                 }
+                this.minHeight = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    30f,
+                    resources.displayMetrics
+                ).toInt()
             }
             gridLayout.addView(stepTextView)
         }
