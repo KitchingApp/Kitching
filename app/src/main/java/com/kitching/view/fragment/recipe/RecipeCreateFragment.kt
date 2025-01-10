@@ -122,10 +122,12 @@ class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCr
         val editText3 = createStyledEditText1(1f)
         val editText4 = createStyledEditText1(2.5f)
 
-        gridLayout.addView(editText1)
-        gridLayout.addView(editText2)
-        gridLayout.addView(editText3)
-        gridLayout.addView(editText4)
+        with(gridLayout) {
+            addView(editText1)
+            addView(editText2)
+            addView(editText3)
+            addView(editText4)
+        }
     }
 
     /**

@@ -75,10 +75,12 @@ class RecipeDetailFragment: BaseFragment<FragmentRecipeDetailBinding>(FragmentRe
 
             val nameTextView = createNameStyledTextView(ingredient.ingredientName)
 
-            gridLayout.addView(onceTextView)
-            gridLayout.addView(twiceTextView)
-            gridLayout.addView(eachTextView)
-            gridLayout.addView(nameTextView)
+            with(gridLayout) {
+                addView(onceTextView)
+                addView(twiceTextView)
+                addView(eachTextView)
+                addView(nameTextView)
+            }
         }
     }
 
