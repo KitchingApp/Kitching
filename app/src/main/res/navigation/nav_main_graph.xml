@@ -239,7 +239,52 @@
         <action
             android:id="@+id/action_orderFragment_to_orderListFragment"
             app:destination="@id/orderListFragment" />
+        <action
+            android:id="@+id/action_orderFragment_to_orderCategoryCreateDialog"
+            app:destination="@id/orderCategoryCreateDialog" />
+        <action
+            android:id="@+id/action_orderFragment_to_orderCategoryUpdateDialog"
+            app:destination="@id/orderCategoryUpdateDialog" />
+        <action
+            android:id="@+id/action_orderFragment_to_orderCategoryDeleteDialog"
+            app:destination="@id/orderCategoryDeleteDialog" />
     </fragment>
+
+    <dialog
+        android:id="@+id/orderCategoryCreateDialog"
+        android:name="com.kitching.view.fragment.order.OrderCategoryCreateDialog"
+        tools:layout="@layout/dialog_input_text_color">
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/orderCategoryDeleteDialog"
+        android:name="com.kitching.view.fragment.order.OrderCategoryDeleteDialog"
+        tools:layout="@layout/dialog_confirm">
+
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/orderCategoryUpdateDialog"
+        android:name="com.kitching.view.fragment.order.OrderCategoryUpdateDialog"
+        tools:layout="@layout/dialog_input_text_color">
+
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="color"
+            app:argType="string" />
+
+
+    </dialog>
 
     <fragment
         android:id="@+id/orderListFragment"
@@ -250,8 +295,59 @@
             android:name="orderCategoryId"
             android:defaultValue=""
             app:argType="string" />
+        <action
+            android:id="@+id/action_orderListFragment_to_orderCreateDialog"
+            app:destination="@id/orderCreateDialog" />
+        <action
+            android:id="@+id/action_orderListFragment_to_orderUpdateDialog"
+            app:destination="@id/orderUpdateDialog" />
+        <action
+            android:id="@+id/action_orderListFragment_to_orderDeleteDialog"
+            app:destination="@id/orderDeleteDialog" />
 
     </fragment>
+
+    <dialog
+        android:id="@+id/orderCreateDialog"
+        android:name="com.kitching.view.fragment.order.OrderListCreateDialog"
+        tools:layout="@layout/dialog_input_text">
+
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/orderUpdateDialog"
+        android:name="com.kitching.view.fragment.order.OrderListUpdateDialog"
+        tools:layout="@layout/dialog_create_prep">
+
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
+        <argument
+            android:name="orderId"
+            app:argType="string" />
+        <argument
+            android:name="orderName"
+            app:argType="string" />
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/orderDeleteDialog"
+        android:name="com.kitching.view.fragment.order.OrderListDeleteDialog"
+        tools:layout="@layout/dialog_confirm">
+
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
+        <argument
+            android:name="orderId"
+            app:argType="string" />
+
+    </dialog>
 
     <fragment
         android:id="@+id/otherFragment"
