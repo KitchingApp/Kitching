@@ -21,6 +21,10 @@ class OrderRepository(private val dataSource: FireStoreDataSource = FireStoreDat
         )
     }
 
+    suspend fun createOrderCategory(teamId: String, categoryName: String, color: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.createOrderCategory(teamId, categoryName, color))
+    }
+
     suspend fun getOrderList(categoryId: String): Flow<FirebaseResult<MutableList<OrderDTO>>> {
         return fetchFirebaseDataFlow(
             fetcher = { dataSource.getOrderList(categoryId) },

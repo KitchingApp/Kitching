@@ -2,6 +2,7 @@ package com.kitching.view.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kitching.common.firebaseFlowHandler
 import com.kitching.data.dto.OrderCategoryDTO
 import com.kitching.data.dto.OrderDTO
 import com.kitching.data.firebase.FirebaseResult
@@ -17,10 +18,17 @@ class OrderViewModel(private val repository: OrderRepository = OrderRepository()
     val orderCategory get() = _orderCategory.asStateFlow()
 
     fun getOrderCategory(teamId: String) {
-        viewModelScope.launch {
-            repository.getOrderCategory(teamId).collectLatest {
-                _orderCategory.value = it
-            }
+        firebaseFlowHandler(_orderCategory) {
+            repository.getOrderCategory(teamId)
+        }
+    }
+
+    private val _createOrderCategoryResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val createOrderCategoryResult get() = _createOrderCategoryResult.asStateFlow()
+
+    fun createOrderCategory(teamId: String, categoryName: String, color: String) {
+        firebaseFlowHandler(_createOrderCategoryResult) {
+            repository.createOrderCategory(teamId, categoryName, color)
         }
     }
 
@@ -28,10 +36,8 @@ class OrderViewModel(private val repository: OrderRepository = OrderRepository()
     val orderList get() = _orderList.asStateFlow()
 
     fun getOrderList(categoryId: String) {
-        viewModelScope.launch {
-            repository.getOrderList(categoryId).collectLatest {
-                _orderList.value = it
-            }
+        firebaseFlowHandler(_orderList) {
+            repository.getOrderList(categoryId)
         }
     }
 }
