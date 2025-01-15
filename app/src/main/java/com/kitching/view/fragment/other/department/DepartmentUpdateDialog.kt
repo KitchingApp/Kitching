@@ -11,14 +11,13 @@ import com.kitching.common.ColorInputBaseDialog
 import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
-import com.kitching.view.model.DepartmentViewModel
-import com.kitching.view.model.PrepViewModel
+import com.kitching.view.model.factory.FactoryDepartmentViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class DepartmentUpdateDialog(): ColorInputBaseDialog() {
 
-    private val viewModel = DepartmentViewModel.instance
+    private val viewModel = FactoryDepartmentViewModel.fetchDepartmentViewModel()
 
     private val args: DepartmentUpdateDialogArgs by navArgs()
 

@@ -30,7 +30,7 @@ import com.kitching.R
 import com.kitching.common.firebaseResultHandler
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.view.model.RecipeViewModel
-import com.kitching.view.model.factory.viewModelFactory
+import com.kitching.view.model.factory.ViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import java.io.File
 import java.util.UUID
@@ -39,7 +39,7 @@ import kotlin.getValue
 class RecipeCreateFragment: BaseFragment<FragmentCreateRecipeBinding>(FragmentCreateRecipeBinding::inflate) {
     private lateinit var navController: NavController
     private val viewModel by viewModels<RecipeViewModel> {
-        viewModelFactory
+        ViewModelFactory
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

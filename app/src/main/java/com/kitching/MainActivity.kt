@@ -22,7 +22,7 @@ import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.ActivityMainBinding
 import com.kitching.view.model.TeamViewModel
-import com.kitching.view.model.factory.viewModelFactory
+import com.kitching.view.model.factory.ViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var teamAdapter: TeamAdapter
 
     private val viewModel by viewModels<TeamViewModel> {
-        viewModelFactory
+        ViewModelFactory
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

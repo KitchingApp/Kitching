@@ -10,14 +10,14 @@ import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.databinding.DialogConfirmBinding
-import com.kitching.view.model.PrepViewModel
+import com.kitching.view.model.factory.FactoryPrepViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class PrepCategoryDeleteDialog:
     BaseDialog<DialogConfirmBinding>(DialogConfirmBinding::inflate) {
 
-    private val viewModel = PrepViewModel.instance
+    private val viewModel = FactoryPrepViewModel.fetchPrepViewModel()
 
     private val args: PrepCategoryDeleteDialogArgs by navArgs()
 

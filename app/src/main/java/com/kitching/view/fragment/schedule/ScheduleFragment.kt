@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +24,8 @@ import com.kitching.common.util.throttleFirst
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.view.model.ScheduleViewModel
+import com.kitching.view.model.factory.FactoryScheduleViewModel
+import com.kitching.view.model.factory.ViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -33,7 +36,11 @@ import java.time.LocalDate
 class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleBinding::inflate) {
     private lateinit var navController: NavController
 
-    private val viewModel = ScheduleViewModel.instance
+    //    private val viewModel = FactoryScheduleViewModel.fetchScheduleViewModel()
+    private val viewModel by viewModels<ScheduleViewModel> {
+        ViewModelFactory
+    }
+
 
     private lateinit var teamId: String
     private var currentDate = LocalDate.now()
@@ -78,9 +85,12 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
         setAdapters()
         setDateBtn(viewLifecycleOwner)
         setBottomSheet()
-        setPlusActionBtn (
+        setPlusActionBtn(
             onClickAddBtn = {
-                val action = ScheduleFragmentDirections.actionScheduleFragmentToScheduleCreateDialog(currentDate.toString())
+                val action =
+                    ScheduleFragmentDirections.actionScheduleFragmentToScheduleCreateDialog(
+                        currentDate.toString()
+                    )
                 navController.navigate(action)
             }
         )
@@ -112,7 +122,8 @@ class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(FragmentScheduleB
                     data.filter { it.departmentName == selectedDepartment }
                 }
                 fixAdapter.submitList(filteredSchedules)
-                binding.scheduleDepartmentPeople.text = getString(R.string.scheduleDepartmentPeople, filteredSchedules.size)
+                binding.scheduleDepartmentPeople.text =
+                    getString(R.string.scheduleDepartmentPeople, filteredSchedules.size)
             }
         }
     }

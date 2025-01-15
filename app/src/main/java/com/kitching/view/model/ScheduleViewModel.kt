@@ -1,5 +1,6 @@
 package com.kitching.view.model
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kitching.common.firebaseFlowHandler
@@ -16,10 +17,6 @@ import kotlinx.coroutines.launch
 
 class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRepository()) :
     ViewModel() {
-
-    companion object {
-        val instance = ScheduleViewModel()
-    }
 
     private val _departments =
         MutableStateFlow<FirebaseResult<List<DropDownDepartmentsDTO>>>(FirebaseResult.DummyConstructor)
@@ -47,6 +44,7 @@ class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRep
             repository.getSchedules(teamId, dateString).collectLatest { it ->
                 when (it) {
                     is FirebaseResult.Success -> {
+                        Log.d("viewModel - getSchedules", it.data.toString())
                         _fixedSchedules.value = FirebaseResult.Success(it.data.filter { it.isFix })
                         _appliedSchedules.value =
                             FirebaseResult.Success(it.data.filter { !it.isFix })

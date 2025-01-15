@@ -2,7 +2,6 @@ package com.kitching.view.fragment.prep
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -10,15 +9,13 @@ import com.kitching.common.ColorInputBaseDialog
 import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
-import com.kitching.data.firebase.FirebaseResult
-import com.kitching.view.model.PrepViewModel
-import com.kitching.view.model.factory.viewModelFactory
+import com.kitching.view.model.factory.FactoryPrepViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class PrepCategoryCreateDialog(): ColorInputBaseDialog() {
 
-    private val viewModel = PrepViewModel.instance
+    private val viewModel = FactoryPrepViewModel.fetchPrepViewModel()
 
     private lateinit var teamId: String
 

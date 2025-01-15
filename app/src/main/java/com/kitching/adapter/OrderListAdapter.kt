@@ -14,12 +14,14 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.view.clicks
 
-class OrderListAdapter(private val lifecycleOwner: LifecycleOwner): ListAdapter<OrderDTO, OrderListAdapter.OrderViewHolder>(diffUtil) {
+class OrderListAdapter(private val lifecycleOwner: LifecycleOwner) :
+    ListAdapter<OrderDTO, OrderListAdapter.OrderViewHolder>(diffUtil) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): OrderViewHolder {
-        val binding = ItemSmallCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemSmallCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return OrderViewHolder(binding)
     }
 
@@ -49,14 +51,10 @@ class OrderListAdapter(private val lifecycleOwner: LifecycleOwner): ListAdapter<
         }
     }
 
-    inner class OrderViewHolder(val binding: ItemSmallCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class OrderViewHolder(val binding: ItemSmallCategoryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bindSmallCategory(order: OrderDTO) {
-            with(binding) {
-                categoryNameTV.text = order.orderName
-                categoryCV.clicks().throttleFirst().onEach {
-
-                }.launchIn(lifecycleOwner.lifecycleScope)
-            }
+            binding.categoryNameTV.text = order.orderName
         }
     }
 }

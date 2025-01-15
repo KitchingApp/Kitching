@@ -5,21 +5,17 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.kitching.common.BaseDialog
-import com.kitching.common.KitchingApplication
 import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
-import com.kitching.data.datasource.PreferencesDataSource
-import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.DialogConfirmBinding
-import com.kitching.view.model.DepartmentViewModel
-import com.kitching.view.model.PrepViewModel
+import com.kitching.view.model.factory.FactoryDepartmentViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class StaffLevelDeleteDialog:
     BaseDialog<DialogConfirmBinding>(DialogConfirmBinding::inflate) {
 
-    private val viewModel = DepartmentViewModel.instance
+    private val viewModel = FactoryDepartmentViewModel.fetchDepartmentViewModel()
 
     private val args: StaffLevelDeleteDialogArgs by navArgs()
 

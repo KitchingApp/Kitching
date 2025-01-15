@@ -14,14 +14,14 @@ import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.dto.TeamDTO
 import com.kitching.databinding.FragmentLoginTeamsBinding
 import com.kitching.view.model.LoginViewModel
-import com.kitching.view.model.factory.viewModelFactory
+import com.kitching.view.model.factory.ViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.getValue
 
 class LoginTeamsFragment: BaseFragment<FragmentLoginTeamsBinding>(FragmentLoginTeamsBinding::inflate) {
     private val viewModel by viewModels<LoginViewModel> {
-        viewModelFactory
+        ViewModelFactory
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -12,7 +12,7 @@ import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.databinding.FragmentCreateTeamBinding
 import com.kitching.view.model.TeamViewModel
-import com.kitching.view.model.factory.viewModelFactory
+import com.kitching.view.model.factory.ViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.getValue
@@ -22,7 +22,7 @@ import com.kitching.common.firebaseResultHandler
 
 class CreateTeamFragment: BaseFragment<FragmentCreateTeamBinding>(FragmentCreateTeamBinding::inflate) {
     private val viewModel by viewModels<TeamViewModel> {
-        viewModelFactory
+        ViewModelFactory
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

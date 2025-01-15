@@ -18,6 +18,7 @@ import com.kitching.data.dto.ScheduleDTO
 import com.kitching.databinding.ItemScheduleApplylistBinding
 import com.kitching.view.fragment.schedule.ScheduleFragmentDirections
 import com.kitching.view.model.ScheduleViewModel
+import com.kitching.view.model.factory.FactoryScheduleViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -32,7 +33,7 @@ class ScheduleApplyAdapter(
         return ScheduleViewHolder(binding)
     }
 
-    private val viewModel = ScheduleViewModel.instance
+    private val viewModel = FactoryScheduleViewModel.fetchScheduleViewModel()
 
     private var navController: NavController? = null
 

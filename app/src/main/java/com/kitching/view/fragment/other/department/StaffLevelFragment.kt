@@ -13,7 +13,7 @@ import com.kitching.adapter.StaffLevelAdapter
 import com.kitching.common.BaseFragment
 import com.kitching.common.firebaseResultHandler
 import com.kitching.databinding.FragmentStafflevelBinding
-import com.kitching.view.model.DepartmentViewModel
+import com.kitching.view.model.factory.FactoryDepartmentViewModel
 import kotlinx.coroutines.launch
 
 class StaffLevelFragment :
@@ -22,7 +22,7 @@ class StaffLevelFragment :
 
     private val args: StaffLevelFragmentArgs by navArgs()
 
-    private val viewModel = DepartmentViewModel.instance
+    private val viewModel = FactoryDepartmentViewModel.fetchDepartmentViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

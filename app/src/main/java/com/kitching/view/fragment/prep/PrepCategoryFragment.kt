@@ -11,16 +11,15 @@ import com.kitching.adapter.PrepCategoryAdapter
 import com.kitching.common.BaseFragment
 import com.kitching.common.firebaseResultHandler
 import com.kitching.data.datasource.PreferencesDataSource
-import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentPrepBinding
-import com.kitching.view.model.PrepViewModel
+import com.kitching.view.model.factory.FactoryPrepViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class PrepCategoryFragment : BaseFragment<FragmentPrepBinding>(FragmentPrepBinding::inflate) {
     private lateinit var navController: NavController
 
-    private val viewModel = PrepViewModel.instance
+    private val viewModel = FactoryPrepViewModel.fetchPrepViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

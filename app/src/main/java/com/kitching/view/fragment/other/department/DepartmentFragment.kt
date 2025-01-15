@@ -14,8 +14,7 @@ import com.kitching.common.BaseFragment
 import com.kitching.common.firebaseResultHandler
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.databinding.FragmentDepartmentBinding
-import com.kitching.view.model.DepartmentViewModel
-import com.kitching.view.model.factory.viewModelFactory
+import com.kitching.view.model.factory.FactoryDepartmentViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -23,7 +22,7 @@ class DepartmentFragment :
     BaseFragment<FragmentDepartmentBinding>(FragmentDepartmentBinding::inflate) {
     private lateinit var navController: NavController
 
-    private val viewModel = DepartmentViewModel.instance
+    private val viewModel = FactoryDepartmentViewModel.fetchDepartmentViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

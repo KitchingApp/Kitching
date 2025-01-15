@@ -2,6 +2,7 @@ package com.kitching.view.fragment.schedule
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.kitching.common.BaseDialog
@@ -11,12 +12,17 @@ import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.databinding.DialogConfirmBinding
 import com.kitching.view.model.ScheduleViewModel
+import com.kitching.view.model.factory.FactoryScheduleViewModel
+import com.kitching.view.model.factory.ViewModelFactory
 import kotlinx.coroutines.launch
 
-class ScheduleDeleteDialog:
+class ScheduleDeleteDialog :
     BaseDialog<DialogConfirmBinding>(DialogConfirmBinding::inflate) {
 
-    private val viewModel = ScheduleViewModel.instance
+    //    private val viewModel = FactoryScheduleViewModel.fetchScheduleViewModel()
+    private val viewModel by viewModels<ScheduleViewModel> {
+        ViewModelFactory
+    }
 
     private val args: ScheduleDeleteDialogArgs by navArgs()
 
@@ -30,7 +36,9 @@ class ScheduleDeleteDialog:
                 text = "삭제"
                 throttleClicks(viewLifecycleOwner) {
                     viewLifecycleOwner.lifecycleScope.launch {
-                        val teamId = PreferencesDataSource(KitchingApplication.getAppContext()).getTeamId() ?: ""
+                        val teamId =
+                            PreferencesDataSource(KitchingApplication.getAppContext()).getTeamId()
+                                ?: ""
                         viewModel.deleteSchedule(args.scheduleId)
                         viewModel.deleteScheduleResult.collect {
                             firebaseResultHandler(it) {

@@ -11,16 +11,15 @@ import androidx.navigation.fragment.navArgs
 import com.kitching.adapter.PrepAdapter
 import com.kitching.common.BaseFragment
 import com.kitching.common.firebaseResultHandler
-import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentPrepListBinding
-import com.kitching.view.model.PrepViewModel
+import com.kitching.view.model.factory.FactoryPrepViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class PrepListFragment : BaseFragment<FragmentPrepListBinding>(FragmentPrepListBinding::inflate) {
     private lateinit var navController: NavController
 
-    private val viewModel = PrepViewModel.instance
+    private val viewModel = FactoryPrepViewModel.fetchPrepViewModel()
 
     private val args: PrepListFragmentArgs by navArgs()
 

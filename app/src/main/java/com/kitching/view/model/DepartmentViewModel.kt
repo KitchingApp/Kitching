@@ -14,10 +14,6 @@ import kotlinx.coroutines.launch
 
 class DepartmentViewModel(private val repository: OtherRepository = OtherRepository()) : ViewModel() {
 
-    companion object {
-        val instance by lazy { DepartmentViewModel() }
-    }
-
     private var _departments = MutableStateFlow<FirebaseResult<MutableList<DepartmentDTO>>>(FirebaseResult.Loading)
     val departments get() = _departments.asStateFlow()
 

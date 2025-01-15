@@ -2,7 +2,6 @@ package com.kitching.view.fragment.order
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -13,16 +12,14 @@ import com.kitching.common.BaseFragment
 import com.kitching.data.dto.OrderCategoryDTO
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentOrderBinding
-import com.kitching.view.model.OrderViewModel
-import com.kitching.view.model.factory.viewModelFactory
+import com.kitching.view.model.factory.FactoryOrderViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class OrderFragment : BaseFragment<FragmentOrderBinding>(FragmentOrderBinding::inflate){
     private lateinit var navController: NavController
-    private val viewModel by viewModels<OrderViewModel> {
-        viewModelFactory
-    }
+
+    private val viewModel = FactoryOrderViewModel.fetchOrderViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

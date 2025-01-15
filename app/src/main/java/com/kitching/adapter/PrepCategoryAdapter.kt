@@ -18,14 +18,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kitching.R
 import com.kitching.common.util.throttleFirst
 import com.kitching.data.dto.PrepCategoryDTO
-import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.ItemBigCategoryBinding
 import com.kitching.view.fragment.prep.PrepCategoryFragmentDirections
-import com.kitching.view.model.PrepViewModel
-import kotlinx.coroutines.flow.collectLatest
+import com.kitching.view.model.factory.FactoryPrepViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.appcompat.itemClicks
 import ru.ldralighieri.corbind.view.clicks
 
@@ -34,7 +31,7 @@ class PrepCategoryAdapter(
 ) : ListAdapter<PrepCategoryDTO, PrepCategoryAdapter.PrepCategoryViewHolder>(diffUtil),
     ViewModelProvider.Factory {
 
-    private val viewModel = PrepViewModel.instance
+    private val viewModel = FactoryPrepViewModel.fetchPrepViewModel()
 
     private var navController: NavController? = null
 

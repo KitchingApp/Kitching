@@ -19,13 +19,13 @@ import kotlinx.coroutines.launch
 import com.kitching.R
 import com.kitching.common.firebaseResultHandler
 import com.kitching.view.model.LoginViewModel
-import com.kitching.view.model.factory.viewModelFactory
+import com.kitching.view.model.factory.ViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlin.getValue
 
 class LoginMainFragment: BaseFragment<FragmentLoginMainBinding>(FragmentLoginMainBinding::inflate) {
     private val viewModel by viewModels<LoginViewModel> {
-        viewModelFactory
+        ViewModelFactory
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

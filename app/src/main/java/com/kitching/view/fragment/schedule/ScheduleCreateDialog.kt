@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -16,10 +17,10 @@ import com.kitching.common.util.throttleFirst
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.dto.DropDownMembersDTO
 import com.kitching.data.dto.ScheduleTimeChipsDTO
-import com.kitching.data.firebase.FirebaseResult
-import com.kitching.data.repository.ScheduleRepository
 import com.kitching.databinding.DialogCreateScheduleBinding
 import com.kitching.view.model.ScheduleViewModel
+import com.kitching.view.model.factory.FactoryScheduleViewModel
+import com.kitching.view.model.factory.ViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -31,17 +32,16 @@ import ru.ldralighieri.corbind.widget.itemClickEvents
 class ScheduleCreateDialog :
     BaseDialog<DialogCreateScheduleBinding>(DialogCreateScheduleBinding::inflate) {
 
-//    private val viewModel by viewModels<ScheduleViewModel> {
-//        viewModelFactory
-//    }
-
-    private val viewModel = ScheduleViewModel.instance
-
     private val args: ScheduleCreateDialogArgs by navArgs()
 
     private lateinit var teamId: String
     private lateinit var userId: String
     private lateinit var scheduleTimeId: String
+
+    //    private val viewModel = FactoryScheduleViewModel.fetchScheduleViewModel()
+    private val viewModel by viewModels<ScheduleViewModel> {
+        ViewModelFactory
+    }
 
     inner class DropDownAdapter(
         private val dataList: List<DropDownMembersDTO>
@@ -71,7 +71,7 @@ class ScheduleCreateDialog :
                 viewModel.getScheduleTimes(teamId)
 
                 launch {
-                    viewModel.members.collectLatest { members ->
+                    FactoryScheduleViewModel.fetchScheduleViewModel().members.collectLatest { members ->
                         firebaseResultHandler(members) { data ->
                             if (data.isNotEmpty()) {
                                 with(binding.autoCompleteTV) {
@@ -83,7 +83,7 @@ class ScheduleCreateDialog :
                 }
 
                 launch {
-                    viewModel.scheduleTimes.collectLatest { scheduleTimes ->
+                    FactoryScheduleViewModel.fetchScheduleViewModel().scheduleTimes.collectLatest { scheduleTimes ->
                         firebaseResultHandler(scheduleTimes) { data ->
                             if (data.isNotEmpty()) {
                                 createChips(data)
@@ -108,10 +108,12 @@ class ScheduleCreateDialog :
             with(confirmBtn) {
                 text = "배정"
                 clicks().throttleFirst().onEach {
-                    viewModel.createSchedule(teamId, args.dateString, userId, scheduleTimeId)
-                    viewModel.createScheduleResult.collectLatest {
+                    FactoryScheduleViewModel.fetchScheduleViewModel()
+                        .createSchedule(teamId, args.dateString, userId, scheduleTimeId)
+                    FactoryScheduleViewModel.fetchScheduleViewModel().createScheduleResult.collectLatest {
                         firebaseResultHandler(it) {
-                            viewModel.getSchedules(teamId, args.dateString)
+                            FactoryScheduleViewModel.fetchScheduleViewModel()
+                                .getSchedules(teamId, args.dateString)
                             dismiss()
                         }
                     }

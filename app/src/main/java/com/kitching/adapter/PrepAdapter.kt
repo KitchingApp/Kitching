@@ -14,24 +14,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kitching.R
-import com.kitching.common.util.throttleClicks
 import com.kitching.common.util.throttleFirst
 import com.kitching.data.dto.PrepDTO
-import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.ItemSmallCategoryBinding
-import com.kitching.view.fragment.prep.PrepCategoryFragmentDirections
 import com.kitching.view.fragment.prep.PrepListFragmentDirections
-import com.kitching.view.model.PrepViewModel
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import ru.ldralighieri.corbind.appcompat.itemClicks
 import ru.ldralighieri.corbind.view.clicks
 
 class PrepAdapter(private val lifecycleOwner: LifecycleOwner): ListAdapter<PrepDTO, PrepAdapter.PrepViewHolder>(diffUtil) {
-
-    private val viewModel = PrepViewModel.instance
 
     private var navController: NavController? = null
 

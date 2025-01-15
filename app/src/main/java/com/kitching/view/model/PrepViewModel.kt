@@ -15,10 +15,6 @@ import kotlinx.coroutines.launch
 
 class PrepViewModel(private val repository: PrepRepository = PrepRepository()) : ViewModel() {
 
-    companion object {
-        val instance = PrepViewModel()
-    }
-
     private val _prepCategory = MutableStateFlow<FirebaseResult<MutableList<PrepCategoryDTO>>>(FirebaseResult.Loading)
     val prepCategory get() = _prepCategory.asStateFlow()
 

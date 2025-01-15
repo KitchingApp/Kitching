@@ -15,7 +15,7 @@ import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentScheduleTimeBinding
 import com.kitching.view.model.ScheduleTimeViewModel
-import com.kitching.view.model.factory.viewModelFactory
+import com.kitching.view.model.factory.ViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

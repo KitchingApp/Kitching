@@ -14,7 +14,7 @@ import com.kitching.view.model.StaffLevelViewModel
 import com.kitching.view.model.TeamViewModel
 
 @Suppress("UNCHECKED_CAST")
-val viewModelFactory = object : ViewModelProvider.Factory {
+val ViewModelFactory = object : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
         with(modelClass) {
             when {
@@ -31,7 +31,7 @@ val viewModelFactory = object : ViewModelProvider.Factory {
                 isAssignableFrom(ScheduleTimeViewModel::class.java) ->
                     ScheduleTimeViewModel()
                 isAssignableFrom(ScheduleViewModel::class.java) ->
-                    ScheduleViewModel()
+                    FactoryScheduleViewModel.fetchScheduleViewModel()
                 isAssignableFrom(StaffLevelViewModel::class.java) ->
                     StaffLevelViewModel()
                 isAssignableFrom(TeamViewModel::class.java) ->

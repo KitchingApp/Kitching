@@ -10,14 +10,14 @@ import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.databinding.DialogConfirmBinding
-import com.kitching.view.model.DepartmentViewModel
+import com.kitching.view.model.factory.FactoryDepartmentViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class DepartmentDeleteDialog:
     BaseDialog<DialogConfirmBinding>(DialogConfirmBinding::inflate) {
 
-    private val viewModel = DepartmentViewModel.instance
+    private val viewModel = FactoryDepartmentViewModel.fetchDepartmentViewModel()
 
     private val args: DepartmentDeleteDialogArgs by navArgs()
 

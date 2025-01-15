@@ -21,6 +21,7 @@ import com.kitching.databinding.ItemBigCategoryBinding
 import com.kitching.view.fragment.other.scheduletime.ScheduleTimeFragmentDirections
 import com.kitching.view.fragment.prep.PrepCategoryFragmentDirections
 import com.kitching.view.model.ScheduleViewModel
+import com.kitching.view.model.factory.FactoryScheduleViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.ldralighieri.corbind.appcompat.itemClicks
@@ -30,7 +31,7 @@ class ScheduleTimeAdapter(
     private val lifecycleOwner: LifecycleOwner
 ) : ListAdapter<ScheduleTimeListDTO, ScheduleTimeAdapter.ScheduleTimeViewHolder>(diffUtil) {
 
-    private val viewModel = ScheduleViewModel.instance
+    private val viewModel = FactoryScheduleViewModel.fetchScheduleViewModel()
 
     private var navController: NavController? = null
 

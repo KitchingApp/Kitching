@@ -17,14 +17,14 @@ import com.kitching.common.firebaseResultHandler
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.dto.RecipeDetailDTO
 import com.kitching.view.model.RecipeViewModel
-import com.kitching.view.model.factory.viewModelFactory
+import com.kitching.view.model.factory.ViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class RecipeFragment : BaseFragment<FragmentRecipeBinding>(FragmentRecipeBinding::inflate){
     private lateinit var navController: NavController
     private val viewModel by viewModels<RecipeViewModel> {
-        viewModelFactory
+        ViewModelFactory
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
