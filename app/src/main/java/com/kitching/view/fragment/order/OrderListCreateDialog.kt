@@ -25,7 +25,7 @@ class OrderListCreateDialog: BaseDialog<DialogCreatePrepBinding>(DialogCreatePre
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            prepNameTIL.hint = "할 일 이름"
+            prepNameTIL.hint = "제품 이름"
 
             with(confirmButton) {
                 text = "생성"
