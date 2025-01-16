@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.kitching.common.BaseDialog
+import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.databinding.DialogCreatePrepBinding
 import com.kitching.view.model.OrderViewModel
@@ -43,11 +44,13 @@ class OrderListCreateDialog: BaseDialog<DialogCreatePrepBinding>(DialogCreatePre
     }
 
     private fun observeViewModel() {
-        viewModel.createOrder(args.categoryId, binding.prepNameTIL.editText?.text.toString())
+        viewModel.createOrder(args.categoryId, binding.prepNameTI.text.toString())
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.createOrderResult.collect {
-                viewModel.getOrderList(args.categoryId)
-                dismiss()
+                firebaseResultHandler(it) {
+                    viewModel.getOrderList(args.categoryId)
+                    dismiss()
+                }
             }
         }
     }
