@@ -36,4 +36,9 @@ class OrderRepository(private val dataSource: FireStoreDataSource = FireStoreDat
         return fetchFirebaseDataFlow(dataSource.deleteOrderCategory(categoryId))
     }
 
+    suspend fun updateOrderCategory(categoryId: String, categoryName: String, color: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.updateOrderCategory(categoryId, categoryName, color))
+
+    }
+
 }

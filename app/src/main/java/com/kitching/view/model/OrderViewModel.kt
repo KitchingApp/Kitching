@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 
 class OrderViewModel(private val repository: OrderRepository = OrderRepository()) : ViewModel() {
 
+    /** OrderCategory */
     private val _orderCategory = MutableStateFlow<FirebaseResult<MutableList<OrderCategoryDTO>>>(FirebaseResult.Loading)
     val orderCategory get() = _orderCategory.asStateFlow()
 
@@ -47,6 +48,15 @@ class OrderViewModel(private val repository: OrderRepository = OrderRepository()
     fun deleteOrderCategory(categoryId: String) {
         firebaseFlowHandler(_deleteOrderCategoryResult) {
             repository.deleteOrderCategory(categoryId)
+        }
+    }
+
+    private val _updateOrderCategoryResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val updateOrderCategoryResult get() = _updateOrderCategoryResult.asStateFlow()
+
+    fun updateOrderCategory(categoryId: String, categoryName: String, color: String) {
+        firebaseFlowHandler(_updateOrderCategoryResult) {
+            repository.updateOrderCategory(categoryId, categoryName, color)
         }
 
     }

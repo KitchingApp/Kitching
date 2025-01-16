@@ -263,6 +263,12 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
         }.isSuccess
     }
 
+    suspend fun updateOrderCategory(categoryId: String, categoryName: String, color: String): Boolean {
+        return runCatching {
+            db.collection(COLLECTION_ORDER_CATEGORY).document(categoryId).update("name", categoryName, "color", color).await()
+        }.isSuccess
+    }
+
     /** Recipe Page */
     suspend fun getRecipeList(teamId: String): MutableList<Recipe> {
         val recipeListSnapshot = db.collection(COLLECTION_RECIPE)
