@@ -8,6 +8,7 @@ import com.kitching.data.firebase.fetchFirebaseDataFlow
 import kotlinx.coroutines.flow.Flow
 
 class OrderRepository(private val dataSource: FireStoreDataSource = FireStoreDataSource()) {
+    /** OrderCategory */
     suspend fun getOrderCategory(teamId: String): Flow<FirebaseResult<MutableList<OrderCategoryDTO>>> {
         return fetchFirebaseDataFlow(
             fetcher = { dataSource.getOrderCategory(teamId) },
@@ -25,13 +26,6 @@ class OrderRepository(private val dataSource: FireStoreDataSource = FireStoreDat
         return fetchFirebaseDataFlow(dataSource.createOrderCategory(teamId, categoryName, color))
     }
 
-    suspend fun getOrderList(categoryId: String): Flow<FirebaseResult<MutableList<OrderDTO>>> {
-        return fetchFirebaseDataFlow(
-            fetcher = { dataSource.getOrderList(categoryId) },
-            mapper = { OrderDTO(it.id, it.name) }
-        )
-    }
-
     suspend fun deleteOrderCategory(categoryId: String): Flow<FirebaseResult<Boolean>> {
         return fetchFirebaseDataFlow(dataSource.deleteOrderCategory(categoryId))
     }
@@ -41,4 +35,16 @@ class OrderRepository(private val dataSource: FireStoreDataSource = FireStoreDat
 
     }
 
+    /** Order */
+
+    suspend fun getOrderList(categoryId: String): Flow<FirebaseResult<MutableList<OrderDTO>>> {
+        return fetchFirebaseDataFlow(
+            fetcher = { dataSource.getOrderList(categoryId) },
+            mapper = { OrderDTO(categoryId, it.id, it.name) }
+        )
+    }
+
+    suspend fun createOrder(categoryId: String, orderName: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.createOrder(categoryId, orderName))
+    }
 }
