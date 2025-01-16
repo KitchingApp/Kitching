@@ -10,8 +10,9 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.kitching.adapter.OrderCategoryAdapter
 import com.kitching.common.BaseFragment
+import com.kitching.common.firebaseResultHandler
+import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.dto.OrderCategoryDTO
-import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentOrderBinding
 import com.kitching.view.model.OrderViewModel
 import com.kitching.view.model.factory.viewModelFactory
@@ -32,19 +33,27 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(FragmentOrderBinding::i
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        observeViewModel()
+
+        setPlusActionBtn {
+            val action = OrderFragmentDirections.actionOrderFragmentToOrderCategoryCreateDialog()
+            navController.navigate(action)
+        }
+    }
+
+    private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
+            val teamId = PreferencesDataSource(requireContext()).getTeamId().toString()
+            viewModel.getOrderCategory(teamId)
+
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.orderCategory.collectLatest {
-                    when(it) {
-                        is FirebaseResult.Success -> notifyOrderCategory(it.data)
-                        is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                        is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                        is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
+                    firebaseResultHandler(it) { data ->
+                        notifyOrderCategory(data)
                     }
                 }
             }
         }
-        viewModel.getOrderCategory(teamId = "3uM01g5GSz8lC49JA6vq")
     }
 
     private fun notifyOrderCategory(orderCategory: List<OrderCategoryDTO>?) {
