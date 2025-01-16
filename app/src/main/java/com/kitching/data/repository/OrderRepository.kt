@@ -47,4 +47,8 @@ class OrderRepository(private val dataSource: FireStoreDataSource = FireStoreDat
     suspend fun createOrder(categoryId: String, orderName: String): Flow<FirebaseResult<Boolean>> {
         return fetchFirebaseDataFlow(dataSource.createOrder(categoryId, orderName))
     }
+
+    suspend fun deleteOrder(orderId: String): Flow<FirebaseResult<Boolean>> {
+        return fetchFirebaseDataFlow(dataSource.deleteOrder(orderId))
+    }
 }
