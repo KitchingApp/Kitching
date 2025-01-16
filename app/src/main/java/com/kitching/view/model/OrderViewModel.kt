@@ -79,4 +79,13 @@ class OrderViewModel(private val repository: OrderRepository = OrderRepository()
             repository.deleteOrder(orderId)
         }
     }
+
+    private val _updateOrderResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val updateOrderResult get() = _updateOrderResult.asStateFlow()
+
+    fun updateOrder(orderId: String, orderName: String) {
+        firebaseFlowHandler(_updateOrderResult) {
+            repository.updateOrder(orderId, orderName)
+        }
+    }
 }
