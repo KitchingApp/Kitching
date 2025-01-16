@@ -40,4 +40,14 @@ class OrderViewModel(private val repository: OrderRepository = OrderRepository()
             repository.getOrderList(categoryId)
         }
     }
+
+    private val _deleteOrderCategoryResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    val deleteOrderCategoryResult get() = _deleteOrderCategoryResult.asStateFlow()
+
+    fun deleteOrderCategory(categoryId: String) {
+        firebaseFlowHandler(_deleteOrderCategoryResult) {
+            repository.deleteOrderCategory(categoryId)
+        }
+
+    }
 }
