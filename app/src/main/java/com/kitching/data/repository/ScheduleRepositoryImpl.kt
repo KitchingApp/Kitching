@@ -29,7 +29,7 @@ class ScheduleRepositoryImpl(private val dataSource: ScheduleDataSource = Schedu
     override fun getSchedules(
         teamId: String,
         date: String
-    ): Flow<FirebaseResult<List<ScheduleDTO>>> = flow<FirebaseResult<List<ScheduleDTO>>> {
+    ): Flow<FirebaseResult<List<ScheduleDTO>>> = flow {
         emit(FirebaseResult.Loading)
         val scheduleInfos = dataSource.getScheduleInfos(teamId, date).getOrThrow().map {
             ScheduleDTO(

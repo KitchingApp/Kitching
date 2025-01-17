@@ -1,16 +1,15 @@
 package com.kitching.data.datasource
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.toObject
 import com.kitching.common.COLLECTION_DEPARTMENT
 import com.kitching.common.COLLECTION_SCHEDULE
 import com.kitching.common.COLLECTION_SCHEDULE_TIME
 import com.kitching.common.COLLECTION_USER
 import com.kitching.common.COLLECTION_USER_TEAM
 import com.kitching.domain.datasource.ScheduleDataSource
-import com.kitching.domain.datasource.ScheduleInfo
 import com.kitching.domain.entities.Department
 import com.kitching.domain.entities.Schedule
+import com.kitching.domain.entities.ScheduleInfo
 import com.kitching.domain.entities.ScheduleTime
 import com.kitching.domain.entities.User
 import com.kitching.domain.entities.UserTeam

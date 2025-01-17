@@ -1,16 +1,9 @@
 package com.kitching.domain.datasource
 
 import com.kitching.domain.entities.Department
-import com.kitching.domain.entities.Schedule
+import com.kitching.domain.entities.ScheduleInfo
 import com.kitching.domain.entities.ScheduleTime
 import com.kitching.domain.entities.User
-
-data class ScheduleInfo(
-    val schedule: Schedule,
-    val user: User,
-    val department: Department?,
-    val scheduleTime: ScheduleTime
-)
 
 interface ScheduleDataSource {
     suspend fun getDepartments(teamId: String): Result<List<Department>>
