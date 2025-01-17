@@ -16,8 +16,6 @@ import com.kitching.common.util.throttleFirst
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.data.dto.DropDownMembersDTO
 import com.kitching.data.dto.ScheduleTimeChipsDTO
-import com.kitching.data.firebase.FirebaseResult
-import com.kitching.data.repository.ScheduleRepository
 import com.kitching.databinding.DialogCreateScheduleBinding
 import com.kitching.view.model.ScheduleViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -109,7 +107,7 @@ class ScheduleCreateDialog :
                 text = "배정"
                 clicks().throttleFirst().onEach {
                     viewModel.createSchedule(teamId, args.dateString, userId, scheduleTimeId)
-                    viewModel.createScheduleResult.collectLatest {
+                    viewModel.scheduleResult.collectLatest {
                         firebaseResultHandler(it) {
                             viewModel.getSchedules(teamId, args.dateString)
                             dismiss()

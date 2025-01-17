@@ -32,7 +32,7 @@ class ScheduleRejectDialog:
                     viewLifecycleOwner.lifecycleScope.launch {
                         val teamId = PreferencesDataSource(KitchingApplication.getAppContext()).getTeamId() ?: ""
                         viewModel.deleteSchedule(args.scheduleId, true)
-                        viewModel.deleteScheduleResult.collect {
+                        viewModel.scheduleResult.collect {
                             firebaseResultHandler(it) {
                                 viewModel.getSchedules(teamId, args.dateString)
                                 dismiss()

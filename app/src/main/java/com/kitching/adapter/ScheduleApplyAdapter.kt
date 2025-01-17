@@ -71,7 +71,7 @@ class ScheduleApplyAdapter(
                     lifecycleOwner.lifecycleScope.launch {
                         teamId = PreferencesDataSource(KitchingApplication.getAppContext()).getTeamId() ?: ""
                         viewModel.applySchedule(schedule.scheduleId)
-                        viewModel.applyScheduleResult.collectLatest {
+                        viewModel.scheduleResult.collectLatest {
                             fragment.firebaseResultHandler(it) {
                                 viewModel.getSchedules(teamId, currentDate)
                             }
