@@ -34,7 +34,7 @@ class StaffLevelDeleteDialog:
                 throttleClicks(viewLifecycleOwner) {
                     viewModel.deleteStaffLevel(args.departmentId)
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.deleteStaffLevelResult.collectLatest {
+                        viewModel.staffLevelResult.collectLatest {
                             firebaseResultHandler(it) {
                                 viewModel.getStaffLevels(args.departmentId)
                                 dismiss()
