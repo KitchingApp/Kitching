@@ -1,4 +1,4 @@
-package com.kitching.data.datasource
+package com.kitching.domain.datasource
 
 import com.kitching.domain.entities.Prep
 import com.kitching.domain.entities.PrepCategory
