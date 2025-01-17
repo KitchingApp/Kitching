@@ -8,26 +8,27 @@ import com.kitching.data.dto.DropDownDepartmentsDTO
 import com.kitching.data.dto.DropDownMembersDTO
 import com.kitching.data.dto.ScheduleTimeChipsDTO
 import com.kitching.data.firebase.FirebaseResult
-import com.kitching.data.repository.ScheduleRepository
+import com.kitching.data.repository.ScheduleRepositoryImpl
+import com.kitching.domain.repository.ScheduleRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRepository()) :
+class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRepositoryImpl()) :
     ViewModel() {
 
     companion object {
         val instance = ScheduleViewModel()
     }
 
-    private val _departments =
+    private var _departments =
         MutableStateFlow<FirebaseResult<List<DropDownDepartmentsDTO>>>(FirebaseResult.DummyConstructor)
     val departments get() = _departments.asStateFlow()
 
     fun getDepartments(teamId: String) {
-        firebaseFlowHandler(_departments) {
-            repository.getDepartmentsForDropDown(teamId)
+        viewModelScope.launch {
+            repository.getDepartments(teamId).collectLatest { _departments.value = it }
         }
     }
 
@@ -41,9 +42,6 @@ class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRep
 
     fun getSchedules(teamId: String, dateString: String) {
         viewModelScope.launch {
-            _fixedSchedules.value = FirebaseResult.Loading
-            _appliedSchedules.value = FirebaseResult.Loading
-
             repository.getSchedules(teamId, dateString).collectLatest { it ->
                 when (it) {
                     is FirebaseResult.Success -> {
@@ -61,30 +59,40 @@ class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRep
         }
     }
 
-    private val _createScheduleResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.DummyConstructor)
-    val createScheduleResult get() = _createScheduleResult.asStateFlow()
+    private val _scheduleResult =
+        MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Success(true))
+    val scheduleResult get() = _scheduleResult.asStateFlow()
 
-    fun createSchedule(teamId: String, dateString: String, userId: String, scheduleTimeId: String, isFix: Boolean = true) {
-        firebaseFlowHandler(_createScheduleResult) {
+    fun createSchedule(
+        teamId: String,
+        dateString: String,
+        userId: String,
+        scheduleTimeId: String,
+        isFix: Boolean = true
+    ) {
+        viewModelScope.launch {
             repository.createSchedule(teamId, dateString, userId, scheduleTimeId, isFix)
+                .collectLatest { _scheduleResult.value = it }
         }
     }
 
-    private val _applyScheduleResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.DummyConstructor)
-    val applyScheduleResult get() = _applyScheduleResult.asStateFlow()
+//    private val _applyScheduleResult =
+//        MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.DummyConstructor)
+//    val applyScheduleResult get() = _applyScheduleResult.asStateFlow()
 
     fun applySchedule(scheduleId: String) {
-        firebaseFlowHandler(_applyScheduleResult) {
-            repository.applySchedule(scheduleId)
+        viewModelScope.launch {
+            repository.applySchedule(scheduleId).collectLatest { _scheduleResult.value = it }
         }
     }
 
-    private val _deleteScheduleResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.DummyConstructor)
-    val deleteScheduleResult get() = _deleteScheduleResult.asStateFlow()
+//    private val _deleteScheduleResult =
+//        MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.DummyConstructor)
+//    val deleteScheduleResult get() = _deleteScheduleResult.asStateFlow()
 
     fun deleteSchedule(scheduleId: String, isReject: Boolean = false) {
-        firebaseFlowHandler(_deleteScheduleResult) {
-            repository.deleteSchedule(scheduleId)
+        viewModelScope.launch {
+            repository.deleteSchedule(scheduleId).collectLatest { _scheduleResult.value = it }
         }
     }
 
@@ -93,8 +101,8 @@ class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRep
     val members get() = _members.asStateFlow()
 
     fun getMembers(teamId: String) {
-        firebaseFlowHandler(_members) {
-            repository.getMembers(teamId)
+        viewModelScope.launch {
+            repository.getMembers(teamId).collectLatest { _members.value = it }
         }
     }
 
@@ -103,8 +111,8 @@ class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRep
     val scheduleTimes get() = _scheduleTimes.asStateFlow()
 
     fun getScheduleTimes(teamId: String) {
-        firebaseFlowHandler(_scheduleTimes) {
-            repository.getScheduleTimes(teamId)
+        viewModelScope.launch {
+            repository.getScheduleTimes(teamId).collectLatest { _scheduleTimes.value = it }
         }
     }
 }
