@@ -46,7 +46,7 @@ class OrderListCreateDialog: BaseDialog<DialogCreatePrepBinding>(DialogCreatePre
     private fun observeViewModel() {
         viewModel.createOrder(args.categoryId, binding.prepNameTI.text.toString())
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.createOrderResult.collect {
+            viewModel.orderResult.collect {
                 firebaseResultHandler(it) {
                     viewModel.getOrderList(args.categoryId)
                     dismiss()

@@ -48,7 +48,7 @@ class OrderListUpdateDialog: BaseDialog<DialogCreatePrepBinding>(DialogCreatePre
     private fun observeViewModel() {
         viewModel.updateOrder(args.orderId, binding.prepNameTI.text.toString())
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.updateOrderResult.collectLatest {
+            viewModel.orderResult.collectLatest {
                 firebaseResultHandler(it) {
                     viewModel.getOrderList(args.categoryId)
                     dismiss()

@@ -49,7 +49,7 @@ class OrderListDeleteDialog: BaseDialog<DialogConfirmBinding>(DialogConfirmBindi
     private fun observeViewModel() {
         viewModel.deleteOrder(args.orderId)
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.deleteOrderResult.collectLatest {
+            viewModel.orderResult.collectLatest {
                 firebaseResultHandler(it) {
                     viewModel.getOrderList(args.categoryId)
                     dismiss()

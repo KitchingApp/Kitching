@@ -49,7 +49,7 @@ class OrderCategoryDeleteDialog: BaseDialog<DialogConfirmBinding>(DialogConfirmB
         viewLifecycleOwner.lifecycleScope.launch {
             val teamId = PreferencesDataSource(requireContext()).getTeamId().toString()
             viewModel.deleteOrderCategory(args.categoryId)
-            viewModel.deleteOrderCategoryResult.collectLatest {
+            viewModel.orderCategoryResult.collectLatest {
                 firebaseResultHandler(it) {
                     viewModel.getOrderCategory(teamId)
                     dismiss()
