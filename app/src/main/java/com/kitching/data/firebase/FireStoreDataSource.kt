@@ -16,7 +16,6 @@ import com.kitching.common.COLLECTION_STAFF_LEVEL
 import com.kitching.common.COLLECTION_TEAM
 import com.kitching.common.COLLECTION_USER
 import com.kitching.common.COLLECTION_USER_TEAM
-import com.kitching.common.util.dateFormatter
 import com.kitching.domain.entities.Order
 import com.kitching.domain.entities.OrderCategory
 import com.kitching.domain.entities.Department
@@ -233,12 +232,65 @@ class FireStoreDataSource(private val db: FirebaseFirestore = FirebaseFirestore.
         else orderCategory.toObjects(OrderCategory::class.java) as MutableList<OrderCategory>
     }
 
+    suspend fun createOrderCategory(teamId: String, categoryName: String, color: String): Boolean {
+        val orderCategoryWithOutId = OrderCategory(
+            id = "",
+            teamId = teamId,
+            name = categoryName,
+            color = color
+        )
+
+        val result = runCatching {
+            val document = db.collection(COLLECTION_ORDER_CATEGORY).add(orderCategoryWithOutId).await()
+
+            db.collection(COLLECTION_ORDER_CATEGORY).document(document.id).update("id", document.id).await()
+        }
+
+        return result.isSuccess
+    }
+
+    suspend fun deleteOrderCategory(categoryId: String): Boolean {
+        return runCatching {
+            db.collection(COLLECTION_ORDER_CATEGORY).document(categoryId).delete().await()
+        }.isSuccess
+    }
+
+    suspend fun updateOrderCategory(categoryId: String, categoryName: String, color: String): Boolean {
+        return runCatching {
+            db.collection(COLLECTION_ORDER_CATEGORY).document(categoryId).update("name", categoryName, "color", color).await()
+        }.isSuccess
+    }
+
     suspend fun getOrderList(categoryId: String): MutableList<Order> {
         val orderList =
             db.collection(COLLECTION_ORDER).whereEqualTo("categoryId", categoryId).get().await()
         return if (orderList.isEmpty) mutableListOf()
         else orderList.toObjects(Order::class.java) as MutableList<Order>
 
+    }
+
+    suspend fun createOrder(categoryId: String, name: String): Boolean {
+        val orderWithOutId = Order(
+            categoryId = categoryId,
+            id = "",
+            name = name
+        )
+        return runCatching {
+            val document = db.collection(COLLECTION_ORDER).add(orderWithOutId).await()
+            db.collection(COLLECTION_ORDER).document(document.id).update("id", document.id).await()
+        }.isSuccess
+    }
+
+    suspend fun updateOrder(orderId: String, name: String): Boolean {
+        return runCatching {
+            db.collection(COLLECTION_ORDER).document(orderId).update("name", name).await()
+        }.isSuccess
+    }
+
+    suspend fun deleteOrder(orderId: String): Boolean {
+        return runCatching {
+            db.collection(COLLECTION_ORDER).document(orderId).delete().await()
+        }.isSuccess
     }
 
     /** Recipe Page */

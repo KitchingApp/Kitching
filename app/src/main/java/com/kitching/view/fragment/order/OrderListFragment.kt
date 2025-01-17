@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.kitching.adapter.OrderListAdapter
 import com.kitching.common.BaseFragment
+import com.kitching.common.firebaseResultHandler
 import com.kitching.data.dto.OrderDTO
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.databinding.FragmentOrderlistBinding
@@ -37,24 +38,27 @@ class OrderListFragment: BaseFragment<FragmentOrderlistBinding>(FragmentOrderlis
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.getOrderList(args.orderCategoryId)
+
                 viewModel.orderList.collectLatest {
-                    when(it) {
-                        is FirebaseResult.Success -> notifyOrderList(it.data)
-                        is FirebaseResult.Loading -> {} // TODO("로딩 처리)
-                        is FirebaseResult.Failure -> {} // TODO("예외 처리")
-                        is FirebaseResult.DummyConstructor -> {} // TODO("더미 생성")
+                    firebaseResultHandler(it) { data ->
+                        notifyOrderList(data)
                     }
                 }
             }
         }
-        viewModel.getOrderList(categoryId = args.orderCategoryId)
+
+        setPlusActionBtn {
+            val action = OrderListFragmentDirections.actionOrderListFragmentToOrderCreateDialog(args.orderCategoryId)
+            navController.navigate(action)
+        }
     }
 
     private fun notifyOrderList(orderList: List<OrderDTO>) {
         with(binding.orderListRV) {
             setRvLayout(this)
 
-            val orderListAdapter = OrderListAdapter(viewLifecycleOwner)
+            val orderListAdapter = OrderListAdapter(viewLifecycleOwner, navController)
             orderListAdapter.submitList(orderList)
             this.adapter = orderListAdapter
         }
