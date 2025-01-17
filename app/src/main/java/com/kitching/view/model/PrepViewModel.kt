@@ -1,19 +1,15 @@
 package com.kitching.view.model
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.kitching.common.firebaseFlowHandler
 import com.kitching.data.dto.PrepCategoryDTO
 import com.kitching.data.dto.PrepDTO
 import com.kitching.data.firebase.FirebaseResult
-import com.kitching.data.repository.PrepRepository
-import kotlinx.coroutines.flow.Flow
+import com.kitching.data.repository.PrepRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
-class PrepViewModel(private val repository: PrepRepository = PrepRepository()) : ViewModel() {
+class PrepViewModel(private val repository: PrepRepositoryImpl = PrepRepositoryImpl()) : ViewModel() {
 
     companion object {
         val instance = PrepViewModel()

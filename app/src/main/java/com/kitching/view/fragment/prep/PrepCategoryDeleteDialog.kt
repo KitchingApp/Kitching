@@ -33,7 +33,7 @@ class PrepCategoryDeleteDialog:
                     viewLifecycleOwner.lifecycleScope.launch {
                         val teamId = PreferencesDataSource(KitchingApplication.getAppContext()).getTeamId() ?: ""
                         viewModel.deletePrepCategory(args.categoryId)
-                        viewModel.createPrepCategoryResult.collectLatest {
+                        viewModel.deletePrepCategoryResult.collectLatest {
                             firebaseResultHandler(it) {
                                 viewModel.getPrepCategory(teamId)
                                 dismiss()

@@ -5,20 +5,20 @@ import com.kitching.domain.entities.PrepCategory
 
 interface PrepDataSource {
     /** PrepCategory */
-    suspend fun prepCategoryCreate(teamId: String, categoryName: String, color: String): Boolean
+    suspend fun createPrepCategory(teamId: String, categoryName: String, color: String): Boolean
 
-    suspend fun prepCategoryRead(teamId: String): Result<List<PrepCategory>>
+    suspend fun getPrepCategory(teamId: String): List<PrepCategory>
 
-    suspend fun prepCategoryUpdate(categoryId: String, categoryName: String, color: String): Boolean
+    suspend fun updatePrepCategory(categoryId: String, categoryName: String, color: String): Boolean
 
-    suspend fun prepCategoryDelete(prepCategoryId: String): Boolean
+    suspend fun deletePrepCategory(prepCategoryId: String): Boolean
 
     /** PrepList */
-    suspend fun prepListCreate(categoryId: String, name: String): Boolean
+    suspend fun createPrepList(categoryId: String, name: String): Boolean
 
-    suspend fun prepListRead(categoryId: String): Result<List<Prep>>
+    suspend fun getPrepList(categoryId: String): List<Prep>
 
-    suspend fun prepListUpdate(prepId: String, name: String): Boolean
+    suspend fun updatePrepList(prepId: String, name: String): Boolean
 
-    suspend fun prepListDelete(prepId: String): Boolean
+    suspend fun deletePrepList(prepId: String): Boolean
 }

@@ -32,7 +32,7 @@ class PrepListFragment : BaseFragment<FragmentPrepListBinding>(FragmentPrepListB
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val prepAdapter = PrepAdapter(viewLifecycleOwner)
+        val prepAdapter = PrepAdapter(viewLifecycleOwner, navController)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

@@ -3,16 +3,16 @@ package com.kitching.data.datasource
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kitching.common.COLLECTION_PREP
 import com.kitching.common.COLLECTION_PREP_CATEGORY
+import com.kitching.domain.datasource.PrepDataSource
 import com.kitching.domain.entities.Prep
 import com.kitching.domain.entities.PrepCategory
 import kotlinx.coroutines.tasks.await
 
-class PrepDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) :
-    PrepDataSource {
+class PrepDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) : PrepDataSource {
 
     /** PrepCategory */
 
-    override suspend fun prepCategoryCreate(
+    override suspend fun createPrepCategory(
         teamId: String,
         categoryName: String,
         color: String,
@@ -34,17 +34,19 @@ class PrepDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.g
         return result.isSuccess
     }
 
-    override suspend fun prepCategoryRead(teamId: String): Result<List<PrepCategory>> {
-        return runCatching {
-            val prepCategory =
-                db.collection(COLLECTION_PREP_CATEGORY).whereEqualTo("teamId", teamId).get().await()
+    override suspend fun getPrepCategory(teamId: String): List<PrepCategory> {
+        val result = runCatching {
+            db.collection(COLLECTION_PREP_CATEGORY).whereEqualTo("teamId", teamId).get().await()
+        }
 
-            if (prepCategory.isEmpty) mutableListOf()
-            else prepCategory.toObjects(PrepCategory::class.java) as MutableList<PrepCategory>
+        return if (result.isSuccess) {
+            result.getOrNull()?.toObjects(PrepCategory::class.java) as MutableList<PrepCategory>
+        } else {
+            mutableListOf()
         }
     }
 
-    override suspend fun prepCategoryUpdate(
+    override suspend fun updatePrepCategory(
         categoryId: String,
         categoryName: String,
         color: String,
@@ -55,7 +57,7 @@ class PrepDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.g
         }.isSuccess
     }
 
-    override suspend fun prepCategoryDelete(prepCategoryId: String): Boolean {
+    override suspend fun deletePrepCategory(prepCategoryId: String): Boolean {
         return runCatching {
             db.collection(COLLECTION_PREP_CATEGORY).document(prepCategoryId).delete().await()
         }.isSuccess
@@ -63,7 +65,7 @@ class PrepDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.g
 
     /** PrepList */
 
-    override suspend fun prepListCreate(categoryId: String, name: String): Boolean {
+    override suspend fun createPrepList(categoryId: String, name: String): Boolean {
         return runCatching {
             val prepWithOutId = Prep(
                 categoryId = categoryId,
@@ -78,23 +80,24 @@ class PrepDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.g
         }.isSuccess
     }
 
-    override suspend fun prepListRead(categoryId: String): Result<List<Prep>> {
-        return runCatching {
-            val prepList =
-                db.collection(COLLECTION_PREP).whereEqualTo("categoryId", categoryId).get().await()
-
-            if (prepList.isEmpty) mutableListOf()
-            else prepList.toObjects(Prep::class.java) as MutableList<Prep>
+    override suspend fun getPrepList(categoryId: String): List<Prep> {
+        val result = runCatching {
+            db.collection(COLLECTION_PREP).whereEqualTo("categoryId", categoryId).get().await()
+        }
+        return if (result.isSuccess) {
+            result.getOrNull()?.toObjects(Prep::class.java) as MutableList<Prep>
+        } else {
+            mutableListOf()
         }
     }
 
-    override suspend fun prepListUpdate(prepId: String, name: String): Boolean {
+    override suspend fun updatePrepList(prepId: String, name: String): Boolean {
         return runCatching {
             db.collection(COLLECTION_PREP).document(prepId).update("name", name).await()
         }.isSuccess
     }
 
-    override suspend fun prepListDelete(prepId: String): Boolean {
+    override suspend fun deletePrepList(prepId: String): Boolean {
         return runCatching {
             db.collection(COLLECTION_PREP).document(prepId).delete().await()
         }.isSuccess
