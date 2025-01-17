@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
 
     alias(libs.plugins.google.gms.google.services)
-    id("androidx.navigation.safeargs.kotlin")
+    alias(libs.plugins.navigation.safeargs)
 }
 
 val localProperties = Properties()
