@@ -4,7 +4,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.ListAdapter
 import com.kitching.common.util.ProgressDialog
 import com.kitching.data.firebase.FirebaseResult
 import kotlinx.coroutines.flow.Flow
@@ -38,7 +37,7 @@ fun <T>Fragment.firebaseResultHandler(
             commonToast("오류로 인해 데이터를 가져오지 못했습니다. : ${firebaseResult.throwable}")
         }
         else -> {
-            ProgressDialog.show(requireContext())
+            ProgressDialog.show(requireActivity())
         }
     }
 }
@@ -57,7 +56,7 @@ fun <T>DialogFragment.firebaseResultHandler(
             commonToast("오류로 인해 데이터를 가져오지 못했습니다. : ${firebaseResult.throwable}")
         }
         else -> {
-            ProgressDialog.show(requireContext())
+            ProgressDialog.show(requireActivity())
         }
     }
 }
