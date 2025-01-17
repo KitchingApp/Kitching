@@ -66,3 +66,8 @@ data class Notice(
     val title: String = "",
     val content: String = ""
 )
+
+data class NoticeInfo(
+    val notice: Notice,
+    val user: User
+)
