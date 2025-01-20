@@ -38,7 +38,7 @@ class StaffLevelUpdateDialog: BaseDialog<DialogCreatePrepBinding>(DialogCreatePr
                 throttleClicks(viewLifecycleOwner) {
                     viewModel.updateStaffLevel(args.name, prepNameTI.text.toString())
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.updateStaffLevelResult.collectLatest {
+                        viewModel.staffLevelResult.collectLatest {
                             firebaseResultHandler(it) {
                                 viewModel.getStaffLevels(args.departmentId)
                                 dismiss()

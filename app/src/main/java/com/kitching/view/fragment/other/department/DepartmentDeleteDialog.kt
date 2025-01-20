@@ -33,7 +33,7 @@ class DepartmentDeleteDialog:
                     viewLifecycleOwner.lifecycleScope.launch {
                         val teamId = PreferencesDataSource(KitchingApplication.getAppContext()).getTeamId() ?: ""
                         viewModel.deleteDepartment(args.departmentId)
-                        viewModel.deleteDepartmentResult.collectLatest {
+                        viewModel.departmentResult.collectLatest {
                             firebaseResultHandler(it) {
                                 viewModel.getDepartments(teamId)
                                 dismiss()

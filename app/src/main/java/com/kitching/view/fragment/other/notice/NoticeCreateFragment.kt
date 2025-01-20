@@ -52,7 +52,7 @@ class NoticeCreateFragment : BaseFragment<FragmentNoticeCreateBinding>(FragmentN
                     viewModel.createNotice(userId, teamId, title, content)
 
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.createNoticeResult.collectLatest {
+                        viewModel.noticeResult.collectLatest {
                             firebaseResultHandler(it) {
                                 viewModel.getNotices(teamId)
                                 findNavController().popBackStack()

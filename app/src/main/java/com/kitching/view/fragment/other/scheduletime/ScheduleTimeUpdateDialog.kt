@@ -13,13 +13,10 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.kitching.R
 import com.kitching.common.BaseDialog
-import com.kitching.common.ColorInputBaseDialog
 import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.databinding.DialogCreateScheduleTimeBinding
-import com.kitching.view.model.DepartmentViewModel
-import com.kitching.view.model.PrepViewModel
 import com.kitching.view.model.ScheduleTimeViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
@@ -67,7 +64,7 @@ class ScheduleTimeUpdateDialog(): BaseDialog<DialogCreateScheduleTimeBinding>(
                 throttleClicks(viewLifecycleOwner) {
                     viewModel.updateScheduleTime(args.scheduleTimeId, getTextInput(), getCheckedColor(), "$startTimeHour:$startTimeMinute", "$endTimeHour:$endTimeMinute")
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.updateScheduleTimeResult.collectLatest {
+                        viewModel.scheduleTimeResult.collectLatest {
                             firebaseResultHandler(it) {
                                 viewModel.getScheduleTimes(teamId)
                                 dismiss()

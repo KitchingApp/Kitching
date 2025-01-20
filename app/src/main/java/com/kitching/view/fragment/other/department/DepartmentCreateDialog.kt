@@ -37,7 +37,7 @@ class DepartmentCreateDialog(): ColorInputBaseDialog() {
                 throttleClicks(viewLifecycleOwner) {
                     viewModel.createDepartment(teamId, getTextInput(), getCheckedColor())
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.createDepartmentResult.collectLatest {
+                        viewModel.departmentResult.collectLatest {
                             firebaseResultHandler(it) {
                                 viewModel.getDepartments(teamId)
                                 dismiss()

@@ -5,7 +5,6 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.kitching.common.ColorInputBaseDialog
-import com.kitching.common.commonToast
 import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
 import com.kitching.data.datasource.PreferencesDataSource
@@ -65,7 +64,7 @@ class OrderCategoryCreateDialog : ColorInputBaseDialog(){
         viewModel.createOrderCategory(teamId, getTextInput(), getCheckedColor())
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.createOrderCategoryResult.collectLatest {
+            viewModel.orderCategoryResult.collectLatest {
                 firebaseResultHandler(it) {
                     viewModel.getOrderCategory(teamId)
                     dismiss()
