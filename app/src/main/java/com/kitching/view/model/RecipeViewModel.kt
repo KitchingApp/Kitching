@@ -5,13 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kitching.data.dto.RecipeDetailDTO
 import com.kitching.data.firebase.FirebaseResult
-import com.kitching.data.repository.RecipeRepository
+import com.kitching.data.repository.RecipeRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class RecipeViewModel(private val repository: RecipeRepository = RecipeRepository()) : ViewModel() {
+class RecipeViewModel(private val repository: RecipeRepositoryImpl = RecipeRepositoryImpl()) : ViewModel() {
 
     private val _recipeList = MutableStateFlow<FirebaseResult<MutableList<RecipeDetailDTO>>>(FirebaseResult.Loading)
     val recipeList get() = _recipeList.asStateFlow()
