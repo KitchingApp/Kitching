@@ -3,13 +3,8 @@ package com.kitching.view.fragment.other.scheduletime
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TimePicker
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,14 +12,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.kitching.R
 import com.kitching.common.BaseDialog
-import com.kitching.common.ColorInputBaseDialog
 import com.kitching.common.firebaseResultHandler
 import com.kitching.common.util.throttleClicks
-import com.kitching.common.util.timeFormatter
 import com.kitching.data.datasource.PreferencesDataSource
 import com.kitching.databinding.DialogCreateScheduleTimeBinding
 import com.kitching.view.model.ScheduleTimeViewModel
-import com.kitching.view.model.ScheduleViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -59,7 +51,7 @@ class ScheduleTimeCreateDialog(): BaseDialog<DialogCreateScheduleTimeBinding>(Di
                 throttleClicks(viewLifecycleOwner) {
                     viewModel.createScheduleTime(teamId, getTextInput(), getCheckedColor(), "$startTimeHour:$startTimeMinute", "$endTimeHour:$endTimeMinute")
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.createScheduleTimeResult.collectLatest {
+                        viewModel.scheduleTimeResult.collectLatest {
                             firebaseResultHandler(it) {
                                 viewModel.getScheduleTimes(teamId)
                                 dismiss()
