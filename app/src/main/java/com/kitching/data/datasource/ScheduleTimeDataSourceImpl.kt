@@ -8,6 +8,12 @@ import kotlinx.coroutines.tasks.await
 
 class ScheduleTimeDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()):
     ScheduleTimeDataSource {
+    override suspend fun getScheduleTime(scheduleTimeId: String): Result<ScheduleTime> {
+        return runCatching {
+            db.collection(COLLECTION_SCHEDULE_TIME).whereEqualTo("id", scheduleTimeId).get().await().toObjects(ScheduleTime::class.java).first()
+        }
+    }
+
     override suspend fun getScheduleTimes(teamId: String): Result<List<ScheduleTime>> {
         return runCatching {
             db.collection(COLLECTION_SCHEDULE_TIME).whereEqualTo("teamId", teamId).get().await().toObjects(ScheduleTime::class.java)
