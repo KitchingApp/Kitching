@@ -2,14 +2,6 @@ package com.kitching.domain.entities
 
 data class Team(val id: String = "", val inviteCode: String = "", val ownerId: String = "", val teamName: String = "")
 
-/** schedule, department, scheduleTime을 join하기 위한 클래스 */
-data class ScheduleInfo(
-    val schedule: Schedule,
-    val user: User,
-    val department: Department?,
-    val scheduleTime: ScheduleTime
-)
-
 data class Schedule(
     val id: String = "",
     val date: String = "",
@@ -65,9 +57,4 @@ data class Notice(
     val teamId: String = "",
     val title: String = "",
     val content: String = ""
-)
-
-data class NoticeInfo(
-    val notice: Notice,
-    val user: User
 )
