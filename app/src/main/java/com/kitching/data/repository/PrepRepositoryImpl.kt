@@ -1,62 +1,52 @@
 package com.kitching.data.repository
 
 import com.kitching.data.datasource.PrepDataSourceImpl
-import com.kitching.data.dto.PrepCategoryDTO
 import com.kitching.data.dto.PrepDTO
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.data.firebase.fetchFirebaseDataFlow
 import com.kitching.domain.repository.PrepRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 
-class PrepRepositoryImpl(private val dataSource: PrepDataSourceImpl = PrepDataSourceImpl()): PrepRepository {
-    /** PrepCategory */
-    override suspend fun getPrepCategory(teamId: String): Flow<FirebaseResult<MutableList<PrepCategoryDTO>>> {
-        return fetchFirebaseDataFlow(
-            fetcher = { dataSource.getPrepCategory(teamId) },
-            mapper = {
-                PrepCategoryDTO(
-                    categoryId = it.id,
-                    categoryName = it.name,
-                    color = it.color
-                )
-            }
-        )
+class PrepRepositoryImpl(
+    private val prepDataSource: PrepDataSourceImpl = PrepDataSourceImpl()
+): PrepRepository {
+    override fun getPrepList(categoryId: String): Flow<FirebaseResult<List<PrepDTO>>> = flow {
+        emit(FirebaseResult.Loading)
+        val prepList = prepDataSource.getPrepList(categoryId).getOrThrow().map {
+            PrepDTO(
+                categoryId = it.categoryId,
+                prepId = it.id,
+                prepName = it.name
+            )
+        }
+        emit(FirebaseResult.Success(prepList))
+    }.catch {
+        emit(FirebaseResult.Failure(it))
     }
 
-    override suspend fun createPrepCategory(teamId: String, categoryName: String, color: String): Flow<FirebaseResult<Boolean>> {
-        return fetchFirebaseDataFlow(dataSource.createPrepCategory(teamId, categoryName, color))
+    override fun createPrep(categoryId: String, name: String): Flow<FirebaseResult<Boolean>> = flow {
+        emit(FirebaseResult.Loading)
+        val result = prepDataSource.createPrepList(categoryId, name)
+        emit(FirebaseResult.Success(result))
+    }.catch {
+        emit(FirebaseResult.Failure(it))
     }
 
-    override suspend fun updatePrepCategory(categoryId: String, categoryName: String, color: String): Flow<FirebaseResult<Boolean>> {
-        return fetchFirebaseDataFlow(dataSource.updatePrepCategory(categoryId, categoryName, color))
+    override fun updatePrep(prepId: String, name: String): Flow<FirebaseResult<Boolean>> = flow {
+        emit(FirebaseResult.Loading)
+        val result = prepDataSource.updatePrepList(prepId, name)
+        emit(FirebaseResult.Success(result))
+    }.catch {
+        emit(FirebaseResult.Failure(it))
     }
 
-    override suspend fun deletePrepCategory(scheduleId: String): Flow<FirebaseResult<Boolean>> {
-        return fetchFirebaseDataFlow(dataSource.deletePrepCategory(scheduleId))
-    }
-
-    /** PrepList */
-    override suspend fun getPrepList(categoryId: String): Flow<FirebaseResult<MutableList<PrepDTO>>> {
-        return fetchFirebaseDataFlow(
-            fetcher = { dataSource.getPrepList(categoryId) },
-            mapper = {
-                PrepDTO(
-                    it.categoryId,
-                    it.id,
-                    it.name
-                )
-            })
-    }
-
-    override suspend fun createPrep(categoryId: String, name: String): Flow<FirebaseResult<Boolean>> {
-        return fetchFirebaseDataFlow(dataSource.createPrepList(categoryId, name))
-    }
-
-    override suspend fun updatePrep(prepId: String, name: String): Flow<FirebaseResult<Boolean>> {
-        return fetchFirebaseDataFlow(dataSource.updatePrepList(prepId, name))
-    }
-
-    override suspend fun deletePrep(prepId: String): Flow<FirebaseResult<Boolean>> {
-        return fetchFirebaseDataFlow(dataSource.deletePrepList(prepId))
+    override fun deletePrep(prepId: String): Flow<FirebaseResult<Boolean>> = flow {
+        emit(FirebaseResult.Loading)
+        val result = prepDataSource.deletePrepList(prepId)
+        emit(FirebaseResult.Success(result))
+    }.catch {
+        emit(FirebaseResult.Failure(it))
     }
 }
