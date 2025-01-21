@@ -1,18 +1,9 @@
 package com.kitching.domain.datasource
 
-import com.kitching.domain.entities.Department
-import com.kitching.domain.entities.ScheduleInfo
-import com.kitching.domain.entities.ScheduleTime
-import com.kitching.domain.entities.User
+import com.kitching.domain.entities.Schedule
 
 interface ScheduleDataSource {
-    suspend fun getDepartments(teamId: String): Result<List<Department>>
-
-    suspend fun getScheduleInfos(teamId: String, date: String): Result<List<ScheduleInfo>>
-
-    suspend fun getMembers(teamId: String): Result<List<User>>
-
-    suspend fun getScheduleTimes(teamId: String): Result<List<ScheduleTime>>
+    suspend fun getSchedules(teamId: String, dateString: String): Result<List<Schedule>>
 
     suspend fun createSchedule(teamId: String, dateString: String, userId: String, scheduleTimeId: String, isFix: Boolean = true): Boolean
 

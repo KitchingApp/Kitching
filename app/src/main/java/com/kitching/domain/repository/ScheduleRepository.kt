@@ -8,13 +8,7 @@ import com.kitching.data.firebase.FirebaseResult
 import kotlinx.coroutines.flow.Flow
 
 interface ScheduleRepository {
-    fun getDepartments(teamId: String): Flow<FirebaseResult<List<DropDownDepartmentsDTO>>>
-
     fun getSchedules(teamId: String, date: String): Flow<FirebaseResult<List<ScheduleDTO>>>
-
-    fun getMembers(teamId: String): Flow<FirebaseResult<List<DropDownMembersDTO>>>
-
-    fun getScheduleTimes(teamId: String): Flow<FirebaseResult<List<ScheduleTimeChipsDTO>>>
 
     fun createSchedule(
         teamId: String,
