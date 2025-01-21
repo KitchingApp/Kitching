@@ -10,7 +10,6 @@ import com.kitching.view.model.PrepViewModel
 import com.kitching.view.model.RecipeViewModel
 import com.kitching.view.model.ScheduleTimeViewModel
 import com.kitching.view.model.ScheduleViewModel
-import com.kitching.view.model.StaffLevelViewModel
 import com.kitching.view.model.TeamViewModel
 
 @Suppress("UNCHECKED_CAST")
@@ -32,8 +31,6 @@ val viewModelFactory = object : ViewModelProvider.Factory {
                     ScheduleTimeViewModel()
                 isAssignableFrom(ScheduleViewModel::class.java) ->
                     ScheduleViewModel()
-                isAssignableFrom(StaffLevelViewModel::class.java) ->
-                    StaffLevelViewModel()
                 isAssignableFrom(TeamViewModel::class.java) ->
                     TeamViewModel()
                 isAssignableFrom(LoginViewModel::class.java) ->

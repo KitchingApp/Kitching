@@ -2,20 +2,30 @@ package com.kitching.view.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kitching.common.firebaseFlowHandler
 import com.kitching.data.dto.ScheduleDTO
 import com.kitching.data.dto.DropDownDepartmentsDTO
 import com.kitching.data.dto.DropDownMembersDTO
 import com.kitching.data.dto.ScheduleTimeChipsDTO
 import com.kitching.data.firebase.FirebaseResult
+import com.kitching.data.repository.DepartmentRepositoryImpl
 import com.kitching.data.repository.ScheduleRepositoryImpl
+import com.kitching.data.repository.ScheduleTimeRepositoryImpl
+import com.kitching.data.repository.UserTeamRepositoryImpl
+import com.kitching.domain.repository.DepartmentRepository
 import com.kitching.domain.repository.ScheduleRepository
+import com.kitching.domain.repository.ScheduleTimeRepository
+import com.kitching.domain.repository.UserTeamRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRepositoryImpl()) :
+class ScheduleViewModel(
+    private val departmentRepository: DepartmentRepository = DepartmentRepositoryImpl(),
+    private val scheduleTimeRepository: ScheduleTimeRepository = ScheduleTimeRepositoryImpl(),
+    private val userTeamRepository: UserTeamRepository = UserTeamRepositoryImpl(),
+    private val scheduleRepository: ScheduleRepository = ScheduleRepositoryImpl()
+) :
     ViewModel() {
 
     companion object {
@@ -28,7 +38,7 @@ class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRep
 
     fun getDepartments(teamId: String) {
         viewModelScope.launch {
-            repository.getDepartments(teamId).collectLatest { _departments.value = it }
+            departmentRepository.getDepartmentsForDropdown(teamId).collectLatest { _departments.value = it }
         }
     }
 
@@ -42,7 +52,7 @@ class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRep
 
     fun getSchedules(teamId: String, dateString: String) {
         viewModelScope.launch {
-            repository.getSchedules(teamId, dateString).collectLatest { it ->
+            scheduleRepository.getSchedules(teamId, dateString).collectLatest { it ->
                 when (it) {
                     is FirebaseResult.Success -> {
                         _fixedSchedules.value = FirebaseResult.Success(it.data.filter { it.isFix })
@@ -71,28 +81,20 @@ class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRep
         isFix: Boolean = true
     ) {
         viewModelScope.launch {
-            repository.createSchedule(teamId, dateString, userId, scheduleTimeId, isFix)
+            scheduleRepository.createSchedule(teamId, dateString, userId, scheduleTimeId, isFix)
                 .collectLatest { _scheduleResult.value = it }
         }
     }
 
-//    private val _applyScheduleResult =
-//        MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.DummyConstructor)
-//    val applyScheduleResult get() = _applyScheduleResult.asStateFlow()
-
     fun applySchedule(scheduleId: String) {
         viewModelScope.launch {
-            repository.applySchedule(scheduleId).collectLatest { _scheduleResult.value = it }
+            scheduleRepository.applySchedule(scheduleId).collectLatest { _scheduleResult.value = it }
         }
     }
 
-//    private val _deleteScheduleResult =
-//        MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.DummyConstructor)
-//    val deleteScheduleResult get() = _deleteScheduleResult.asStateFlow()
-
     fun deleteSchedule(scheduleId: String, isReject: Boolean = false) {
         viewModelScope.launch {
-            repository.deleteSchedule(scheduleId).collectLatest { _scheduleResult.value = it }
+            scheduleRepository.deleteSchedule(scheduleId).collectLatest { _scheduleResult.value = it }
         }
     }
 
@@ -102,7 +104,7 @@ class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRep
 
     fun getMembers(teamId: String) {
         viewModelScope.launch {
-            repository.getMembers(teamId).collectLatest { _members.value = it }
+            userTeamRepository.getAllMembersForSchedule(teamId).collectLatest { _members.value = it }
         }
     }
 
@@ -112,7 +114,7 @@ class ScheduleViewModel(private val repository: ScheduleRepository = ScheduleRep
 
     fun getScheduleTimes(teamId: String) {
         viewModelScope.launch {
-            repository.getScheduleTimes(teamId).collectLatest { _scheduleTimes.value = it }
+            scheduleTimeRepository.getScheduleTimesForChips(teamId).collectLatest { _scheduleTimes.value = it }
         }
     }
 }

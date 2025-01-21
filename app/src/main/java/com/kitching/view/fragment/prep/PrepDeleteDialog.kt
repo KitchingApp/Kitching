@@ -33,7 +33,7 @@ class PrepDeleteDialog:
                 throttleClicks(viewLifecycleOwner) {
                     viewModel.deletePrep(args.prepId)
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.deletePrepResult.collectLatest {
+                        viewModel.prepResult.collectLatest {
                             firebaseResultHandler(it) {
                                 viewModel.getPrepList(args.categoryId)
                                 dismiss()

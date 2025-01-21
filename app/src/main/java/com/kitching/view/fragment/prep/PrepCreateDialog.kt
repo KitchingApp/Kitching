@@ -34,7 +34,7 @@ class PrepCreateDialog: BaseDialog<DialogCreatePrepBinding>(DialogCreatePrepBind
                 throttleClicks(viewLifecycleOwner) {
                     viewModel.createPrep(args.categoryId, prepNameTI.text.toString())
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.createPrepResult.collectLatest {
+                        viewModel.prepResult.collectLatest {
                             firebaseResultHandler(it) {
                                 viewModel.getPrepList(args.categoryId)
                                 dismiss()

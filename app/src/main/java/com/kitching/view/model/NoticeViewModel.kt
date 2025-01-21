@@ -38,9 +38,6 @@ class NoticeViewModel(private val repository: NoticeRepository = NoticeRepositor
         }
     }
 
-//    private val _updateNoticeResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
-//    val updateNoticeResult get() = _updateNoticeResult.asStateFlow()
-
     fun updateNotice(noticeId: String, title: String, content: String) {
         viewModelScope.launch {
             repository.updateNotice(noticeId, title, content).collectLatest {
@@ -48,9 +45,6 @@ class NoticeViewModel(private val repository: NoticeRepository = NoticeRepositor
             }
         }
     }
-
-//    private val _deleteNoticeResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
-//    val deleteNoticeResult get() = _deleteNoticeResult.asStateFlow()
 
     fun deleteNotice(noticeId: String) {
         viewModelScope.launch {

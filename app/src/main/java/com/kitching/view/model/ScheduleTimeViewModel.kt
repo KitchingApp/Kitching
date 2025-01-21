@@ -39,9 +39,6 @@ class ScheduleTimeViewModel(private val repository: ScheduleTimeRepository = Sch
         }
     }
 
-//    private var _updateScheduleTimeResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
-//    val updateScheduleTimeResult get() = _updateScheduleTimeResult.asStateFlow()
-
     fun updateScheduleTime(scheduleTimeId: String, name: String, color: String, startTime: String, endTime: String) {
         viewModelScope.launch {
             repository.updateScheduleTime(scheduleTimeId, name, color, startTime, endTime).collectLatest {
@@ -49,9 +46,6 @@ class ScheduleTimeViewModel(private val repository: ScheduleTimeRepository = Sch
             }
         }
     }
-
-//    private var _deleteScheduleTimeResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
-//    val deleteScheduleTimeResult get() = _deleteScheduleTimeResult.asStateFlow()
 
     fun deleteScheduleTime(scheduleTimeId: String) {
         viewModelScope.launch {

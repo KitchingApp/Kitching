@@ -5,12 +5,19 @@ import androidx.lifecycle.viewModelScope
 import com.kitching.data.dto.OrderCategoryDTO
 import com.kitching.data.dto.OrderDTO
 import com.kitching.data.firebase.FirebaseResult
+import com.kitching.data.repository.OrderCategoryRepositoryImpl
 import com.kitching.data.repository.OrderRepositoryImpl
+import com.kitching.domain.repository.OrderCategoryRepository
+import com.kitching.domain.repository.OrderRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class OrderViewModel(private val repository: OrderRepositoryImpl = OrderRepositoryImpl()) : ViewModel() {
+class OrderViewModel(
+    private val orderCategoryRepository: OrderCategoryRepository = OrderCategoryRepositoryImpl(),
+    private val orderRepository: OrderRepository = OrderRepositoryImpl()
+) : ViewModel() {
 
     /** OrderCategory */
     private val _orderCategory = MutableStateFlow<FirebaseResult<List<OrderCategoryDTO>>>(FirebaseResult.Loading)
@@ -18,7 +25,7 @@ class OrderViewModel(private val repository: OrderRepositoryImpl = OrderReposito
 
     fun getOrderCategory(teamId: String) {
         viewModelScope.launch {
-            repository.getOrderCategory(teamId).collect {
+            orderCategoryRepository.getOrderCategory(teamId).collectLatest {
                 _orderCategory.value = it
             }
         }
@@ -29,41 +36,34 @@ class OrderViewModel(private val repository: OrderRepositoryImpl = OrderReposito
 
     fun createOrderCategory(teamId: String, categoryName: String, color: String) {
         viewModelScope.launch {
-            repository.createOrderCategory(teamId, categoryName, color).collect {
+            orderCategoryRepository.createOrderCategory(teamId, categoryName, color).collectLatest {
                 _orderCategoryResult.value = it
             }
         }
     }
-
-//    private val _deleteOrderCategoryResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
-//    val deleteOrderCategoryResult get() = _deleteOrderCategoryResult.asStateFlow()
 
     fun deleteOrderCategory(categoryId: String) {
         viewModelScope.launch {
-            repository.deleteOrderCategory(categoryId).collect {
+            orderCategoryRepository.deleteOrderCategory(categoryId).collectLatest {
                 _orderCategoryResult.value = it
             }
         }
     }
-
-//    private val _updateOrderCategoryResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
-//    val updateOrderCategoryResult get() = _updateOrderCategoryResult.asStateFlow()
 
     fun updateOrderCategory(categoryId: String, categoryName: String, color: String) {
         viewModelScope.launch {
-            repository.updateOrderCategory(categoryId, categoryName, color).collect {
+            orderCategoryRepository.updateOrderCategory(categoryId, categoryName, color).collectLatest {
                 _orderCategoryResult.value = it
             }
         }
     }
 
-    /** Order */
     private val _orderList = MutableStateFlow<FirebaseResult<List<OrderDTO>>>(FirebaseResult.Loading)
     val orderList get() = _orderList.asStateFlow()
 
     fun getOrderList(categoryId: String) {
         viewModelScope.launch {
-            repository.getOrderList(categoryId).collect {
+            orderRepository.getOrderList(categoryId).collectLatest {
                 _orderList.value = it
             }
         }
@@ -74,29 +74,23 @@ class OrderViewModel(private val repository: OrderRepositoryImpl = OrderReposito
 
     fun createOrder(categoryId: String, orderName: String) {
         viewModelScope.launch {
-            repository.createOrder(categoryId, orderName).collect {
+            orderRepository.createOrder(categoryId, orderName).collectLatest {
                 _orderResult.value = it
             }
         }
     }
-
-//    private val _deleteOrderResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
-//    val deleteOrderResult get() = _deleteOrderResult.asStateFlow()
 
     fun deleteOrder(orderId: String) {
         viewModelScope.launch {
-            repository.deleteOrder(orderId).collect {
+            orderRepository.deleteOrder(orderId).collectLatest {
                 _orderResult.value = it
             }
         }
     }
 
-//    private val _updateOrderResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
-//    val updateOrderResult get() = _updateOrderResult.asStateFlow()
-
     fun updateOrder(orderId: String, orderName: String) {
         viewModelScope.launch {
-            repository.updateOrder(orderId, orderName).collect {
+            orderRepository.updateOrder(orderId, orderName).collectLatest {
                 _orderResult.value = it
             }
         }

@@ -2,19 +2,22 @@ package com.kitching.view.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kitching.common.firebaseFlowHandler
 import com.kitching.data.dto.DepartmentDTO
 import com.kitching.data.dto.StaffLevelDTO
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.data.repository.DepartmentRepositoryImpl
-import com.kitching.data.repository.OtherRepository
+import com.kitching.data.repository.StaffLevelRepositoryImpl
 import com.kitching.domain.repository.DepartmentRepository
+import com.kitching.domain.repository.StaffLevelRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class DepartmentViewModel(private val repository: DepartmentRepository = DepartmentRepositoryImpl()) : ViewModel() {
+class DepartmentViewModel(
+    private val departmentRepository: DepartmentRepository = DepartmentRepositoryImpl(),
+    private val staffLevelRepository: StaffLevelRepository = StaffLevelRepositoryImpl()
+) : ViewModel() {
 
     companion object {
         val instance by lazy { DepartmentViewModel() }
@@ -25,7 +28,7 @@ class DepartmentViewModel(private val repository: DepartmentRepository = Departm
 
     fun getDepartments(teamId: String) {
         viewModelScope.launch {
-            repository.getDepartments(teamId).collectLatest {
+            departmentRepository.getDepartments(teamId).collectLatest {
                 _departments.value = it
             }
         }
@@ -36,29 +39,23 @@ class DepartmentViewModel(private val repository: DepartmentRepository = Departm
 
     fun createDepartment(teamId: String, name: String, color: String) {
         viewModelScope.launch {
-            repository.createDepartment(teamId, name, color).collectLatest {
+            departmentRepository.createDepartment(teamId, name, color).collectLatest {
                 _departmentResult.value = it
             }
         }
     }
-
-//    private var _updateDepartmentResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
-//    val updateDepartmentResult get() = _updateDepartmentResult.asStateFlow()
 
     fun updateDepartment(departmentId: String, name: String, color: String) {
         viewModelScope.launch {
-            repository.updateDepartment(departmentId, name, color).collectLatest {
+            departmentRepository.updateDepartment(departmentId, name, color).collectLatest {
                 _departmentResult.value = it
             }
         }
     }
 
-//    private var _deleteDepartmentResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
-//    val deleteDepartmentResult get() = _deleteDepartmentResult.asStateFlow()
-
     fun deleteDepartment(departmentId: String) {
         viewModelScope.launch {
-            repository.deleteDepartment(departmentId).collectLatest {
+            departmentRepository.deleteDepartment(departmentId).collectLatest {
                 _departmentResult.value = it
             }
         }
@@ -69,7 +66,7 @@ class DepartmentViewModel(private val repository: DepartmentRepository = Departm
 
     fun getStaffLevels(departmentId: String) {
         viewModelScope.launch {
-            repository.getStaffLevels(departmentId).collectLatest {
+            staffLevelRepository.getStaffLevels(departmentId).collectLatest {
                 _staffLevels.value = it
             }
         }
@@ -80,29 +77,23 @@ class DepartmentViewModel(private val repository: DepartmentRepository = Departm
 
     fun createStaffLevel(departmentId: String, name: String) {
         viewModelScope.launch {
-            repository.createStaffLevel(departmentId, name).collectLatest {
+            staffLevelRepository.createStaffLevel(departmentId, name).collectLatest {
                 _staffLevelResult.value = it
             }
         }
     }
-
-//    private var _updateStaffLevelResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
-//    val updateStaffLevelResult get() = _updateStaffLevelResult.asStateFlow()
 
     fun updateStaffLevel(staffLevelId: String, name: String) {
         viewModelScope.launch {
-            repository.updateStaffLevel(staffLevelId, name).collectLatest {
+            staffLevelRepository.updateStaffLevel(staffLevelId, name).collectLatest {
                 _staffLevelResult.value = it
             }
         }
     }
 
-//    private var _deleteStaffLevelResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
-//    val deleteStaffLevelResult get() = _deleteStaffLevelResult.asStateFlow()
-
     fun deleteStaffLevel(staffLevelId: String) {
         viewModelScope.launch {
-            repository.deleteStaffLevel(staffLevelId).collectLatest {
+            staffLevelRepository.deleteStaffLevel(staffLevelId).collectLatest {
                 _staffLevelResult.value = it
             }
         }
