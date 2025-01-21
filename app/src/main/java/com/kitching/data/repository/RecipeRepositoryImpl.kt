@@ -6,13 +6,14 @@ import com.kitching.data.dto.RecipeDetailDTO
 import com.kitching.data.firebase.FireStoreDataSource
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.data.firebase.fetchFirebaseDataFlow
+import com.kitching.domain.repository.RecipeRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
-class RecipeRepository(private val dataSource: FireStoreDataSource = FireStoreDataSource()) {
-    suspend fun getRecipeList(teamId: String): Flow<FirebaseResult<MutableList<RecipeDetailDTO>>> = flow{
+class RecipeRepositoryImpl(private val dataSource: FireStoreDataSource = FireStoreDataSource()): RecipeRepository {
+    override suspend fun getRecipeList(teamId: String): Flow<FirebaseResult<MutableList<RecipeDetailDTO>>> = flow{
         emit(FirebaseResult.Loading)
-        runCatching {
             val recipeDTOList = mutableListOf<RecipeDetailDTO>()
             dataSource.getRecipeList(teamId).forEach {
                 val ingredientDTOList = mutableListOf<IngredientDTO>()
@@ -35,26 +36,41 @@ class RecipeRepository(private val dataSource: FireStoreDataSource = FireStoreDa
                 )
                 recipeDTOList.add(recipeDTO)
             }
-            recipeDTOList
-        }
-            .onSuccess { emit(FirebaseResult.Success(it)) }
-            .onFailure { emit(FirebaseResult.Failure(it)) }
-    }
+            emit(FirebaseResult.Success(recipeDTOList))
+    }.catch { emit(FirebaseResult.Failure(it)) }
 
-    suspend fun uploadImage(imageUri: Uri, imageName: String): Flow<FirebaseResult<String>> {
-        return fetchFirebaseDataFlow { dataSource.uploadImageToStorage(imageUri, imageName) }
-    }
+    override suspend fun uploadImage(
+        imageUri: Uri,
+        imageName: String,
+    ): Flow<FirebaseResult<String>> = flow {
+        emit(FirebaseResult.Loading)
 
-    suspend fun saveRecipe(
+        val result = dataSource.uploadImageToStorage(imageUri, imageName)
+
+        emit(FirebaseResult.Success(result))
+    }.catch { emit(FirebaseResult.Failure(it)) }
+
+    override suspend fun saveRecipe(
         name: String,
         picture: String,
         steps: List<String>,
-        teamId: String
-    ): Flow<FirebaseResult<String>> {
-        return fetchFirebaseDataFlow { dataSource.saveRecipe(name, picture, steps, teamId) }
-    }
+        teamId: String,
+    ): Flow<FirebaseResult<String>> = flow {
+        emit(FirebaseResult.Loading)
 
-    suspend fun saveIngredients(recipeId: String, ingredients: List<Map<String, String>>): Flow<FirebaseResult<Boolean>> {
-        return fetchFirebaseDataFlow(dataSource.saveIngredients(recipeId, ingredients))
-    }
+        val result = dataSource.saveRecipe(name, picture, steps, teamId)
+
+        emit(FirebaseResult.Success(result))
+    }.catch { emit(FirebaseResult.Failure(it)) }
+
+    override suspend fun saveIngredients(
+        recipeId: String,
+        ingredients: List<Map<String, String>>,
+    ): Flow<FirebaseResult<Boolean>> = flow {
+        emit(FirebaseResult.Loading)
+
+        val result = dataSource.saveIngredients(recipeId, ingredients)
+
+        emit(FirebaseResult.Success(result))
+    }.catch { emit(FirebaseResult.Failure(it)) }
 }

@@ -46,7 +46,7 @@ class NoticeUpdateFragment : BaseFragment<FragmentNoticeCreateBinding>(FragmentN
                         }
 
                         launch {
-                            viewModel.updateNoticeResult.collectLatest {
+                            viewModel.noticeResult.collectLatest {
                                 firebaseResultHandler(it) {
                                     findNavController().navigate(NoticeUpdateFragmentDirections.actionNoticeUpdateFragmentToNoticeFragment())
                                 }

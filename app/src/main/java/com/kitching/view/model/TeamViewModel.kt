@@ -4,13 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kitching.data.dto.TeamDTO
 import com.kitching.data.firebase.FirebaseResult
-import com.kitching.data.repository.TeamRepository
+import com.kitching.data.repository.TeamRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class TeamViewModel(private val repository: TeamRepository = TeamRepository()) : ViewModel() {
+class TeamViewModel(private val repository: TeamRepositoryImpl = TeamRepositoryImpl()) : ViewModel() {
     private val _teams = MutableStateFlow<FirebaseResult<List<TeamDTO>>>(FirebaseResult.Loading)
     val teams get() = _teams.asStateFlow()
 

@@ -5,48 +5,52 @@ import androidx.lifecycle.viewModelScope
 import com.kitching.common.firebaseFlowHandler
 import com.kitching.data.dto.NoticeDTO
 import com.kitching.data.firebase.FirebaseResult
+import com.kitching.data.repository.NoticeRepositoryImpl
 import com.kitching.data.repository.OtherRepository
+import com.kitching.domain.repository.NoticeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class NoticeViewModel(private val repository: OtherRepository = OtherRepository()) : ViewModel() {
+class NoticeViewModel(private val repository: NoticeRepository = NoticeRepositoryImpl()) : ViewModel() {
 
-    private val _notices = MutableStateFlow<FirebaseResult<MutableList<NoticeDTO>>>(FirebaseResult.Loading)
+    private val _notices = MutableStateFlow<FirebaseResult<List<NoticeDTO>>>(FirebaseResult.Loading)
     val notices get() = _notices.asStateFlow()
 
     fun getNotices(teamId: String) {
-        firebaseFlowHandler(_notices) {
-            repository.getNotices(teamId)
+        viewModelScope.launch {
+            repository.getNotices(teamId).collectLatest {
+                _notices.value = it
+            }
         }
     }
 
-    private val _createNoticeResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
-    val createNoticeResult get() = _createNoticeResult.asStateFlow()
+    private val _noticeResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Success(true))
+    val noticeResult get() = _noticeResult.asStateFlow()
 
     fun createNotice(userId: String, teamId: String, title: String, content: String) {
-        firebaseFlowHandler(_createNoticeResult) {
-            repository.createNotice(userId, teamId, title, content)
+        viewModelScope.launch {
+            repository.createNotice(userId, teamId, title, content).collectLatest {
+                _noticeResult.value = it
+            }
         }
     }
-
-    private val _updateNoticeResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
-    val updateNoticeResult get() = _updateNoticeResult.asStateFlow()
 
     fun updateNotice(noticeId: String, title: String, content: String) {
-        firebaseFlowHandler(_updateNoticeResult) {
-            repository.updateNotice(noticeId, title, content)
+        viewModelScope.launch {
+            repository.updateNotice(noticeId, title, content).collectLatest {
+                _noticeResult.value = it
+            }
         }
     }
 
-    private val _deleteNoticeResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
-    val deleteNoticeResult get() = _deleteNoticeResult.asStateFlow()
-
     fun deleteNotice(noticeId: String) {
-        firebaseFlowHandler(_deleteNoticeResult) {
-            repository.deleteNotice(noticeId)
+        viewModelScope.launch {
+            repository.deleteNotice(noticeId).collectLatest {
+                _noticeResult.value = it
+            }
         }
     }
 }

@@ -38,7 +38,7 @@ class NoticeDeleteDialog:
                     viewLifecycleOwner.lifecycleScope.launch {
                         val teamId = PreferencesDataSource(KitchingApplication.getAppContext()).getTeamId() ?: ""
                         viewModel.deleteNotice(args.noticeId)
-                        viewModel.deleteNoticeResult.collectLatest {
+                        viewModel.noticeResult.collectLatest {
                             firebaseResultHandler(it) {
                                 viewModel.getNotices(teamId)
                                 findNavController().navigate(NoticeDeleteDialogDirections.actionNoticeDeleteDialogToNoticeFragment())

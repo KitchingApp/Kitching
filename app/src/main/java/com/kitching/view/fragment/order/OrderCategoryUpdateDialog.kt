@@ -54,7 +54,7 @@ class OrderCategoryUpdateDialog: ColorInputBaseDialog() {
             val teamId = PreferencesDataSource(requireContext()).getTeamId().toString()
 
             viewModel.updateOrderCategory(args.categoryId, getTextInput(), getCheckedColor())
-            viewModel.updateOrderCategoryResult.collectLatest {
+            viewModel.orderCategoryResult.collectLatest {
                 firebaseResultHandler(it) {
                     viewModel.getOrderCategory(teamId)
                     dismiss()
