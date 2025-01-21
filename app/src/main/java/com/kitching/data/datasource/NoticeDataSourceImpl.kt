@@ -5,23 +5,16 @@ import com.kitching.common.COLLECTION_NOTICE
 import com.kitching.common.COLLECTION_USER
 import com.kitching.domain.datasource.NoticeDataSource
 import com.kitching.domain.entities.Notice
-import com.kitching.domain.entities.NoticeInfo
-import com.kitching.domain.entities.User
 import kotlinx.coroutines.tasks.await
 
 class NoticeDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) : NoticeDataSource {
-    override suspend fun getNoticeInfos(teamId: String): Result<List<NoticeInfo>> {
+    override suspend fun getNotices(teamId: String): Result<List<Notice>> {
         return runCatching {
             db.collection(COLLECTION_NOTICE)
                 .whereEqualTo("teamId", teamId)
                 .get()
                 .await()
-                .toObjects(Notice::class.java).map {
-                    NoticeInfo(
-                        notice = it,
-                        user = db.collection(COLLECTION_USER).document(it.writerId).get().await().toObject(User::class.java)!!
-                    )
-                }
+                .toObjects(Notice::class.java)
         }
     }
 

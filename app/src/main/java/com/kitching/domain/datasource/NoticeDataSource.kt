@@ -1,9 +1,9 @@
 package com.kitching.domain.datasource
 
-import com.kitching.domain.entities.NoticeInfo
+import com.kitching.domain.entities.Notice
 
 interface NoticeDataSource {
-    suspend fun getNoticeInfos(teamId: String): Result<List<NoticeInfo>>
+    suspend fun getNotices(teamId: String): Result<List<Notice>>
 
     suspend fun createNotice(userId: String, teamId: String, title: String, content: String): Boolean
 

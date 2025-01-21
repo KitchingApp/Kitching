@@ -2,19 +2,24 @@ package com.kitching.data.repository
 
 import com.kitching.common.util.dateFormatter
 import com.kitching.data.datasource.NoticeDataSourceImpl
+import com.kitching.data.datasource.NoticeInfoDataSourceImpl
 import com.kitching.data.dto.NoticeDTO
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.domain.datasource.NoticeDataSource
+import com.kitching.domain.datasource.NoticeInfoDataSource
 import com.kitching.domain.repository.NoticeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import java.time.LocalDate
 
-class NoticeRepositoryImpl(private val dataSource: NoticeDataSource = NoticeDataSourceImpl()) : NoticeRepository {
+class NoticeRepositoryImpl(
+    private val noticeDataSource: NoticeDataSource = NoticeDataSourceImpl(),
+    private val noticeInfoDataSource: NoticeInfoDataSource = NoticeInfoDataSourceImpl()
+) : NoticeRepository {
     override fun getNotices(teamId: String): Flow<FirebaseResult<List<NoticeDTO>>> = flow {
         emit(FirebaseResult.Loading)
-        val notices = dataSource.getNoticeInfos(teamId).getOrThrow().map {
+        val notices = noticeInfoDataSource.getNoticeInfos(teamId).getOrThrow().map {
             NoticeDTO(
                 noticeId = it.notice.id,
                 title = it.notice.title,
@@ -34,7 +39,7 @@ class NoticeRepositoryImpl(private val dataSource: NoticeDataSource = NoticeData
         content: String
     ): Flow<FirebaseResult<Boolean>> = flow {
         emit(FirebaseResult.Loading)
-        val result = dataSource.createNotice(userId, teamId, title, content)
+        val result = noticeDataSource.createNotice(userId, teamId, title, content)
         emit(FirebaseResult.Success(result))
     }.catch {
         emit(FirebaseResult.Failure(it))
@@ -46,7 +51,7 @@ class NoticeRepositoryImpl(private val dataSource: NoticeDataSource = NoticeData
         content: String
     ): Flow<FirebaseResult<Boolean>> = flow {
         emit(FirebaseResult.Loading)
-        val result = dataSource.updateNotice(noticeId, title, content)
+        val result = noticeDataSource.updateNotice(noticeId, title, content)
         emit(FirebaseResult.Success(result))
     }.catch {
         emit(FirebaseResult.Failure(it))
@@ -54,7 +59,7 @@ class NoticeRepositoryImpl(private val dataSource: NoticeDataSource = NoticeData
 
     override fun deleteNotice(noticeId: String): Flow<FirebaseResult<Boolean>> = flow {
         emit(FirebaseResult.Loading)
-        val result = dataSource.deleteNotice(noticeId)
+        val result = noticeDataSource.deleteNotice(noticeId)
         emit(FirebaseResult.Success(result))
     }.catch {
         emit(FirebaseResult.Failure(it))
