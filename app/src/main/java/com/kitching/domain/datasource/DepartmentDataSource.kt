@@ -3,9 +3,9 @@ package com.kitching.domain.datasource
 import com.kitching.domain.entities.Department
 
 interface DepartmentDataSource {
-    suspend fun getDepartment(departmentId: String): Result<Department>
+    suspend fun getDepartment(departmentId: String): Department?
 
-    suspend fun getDepartments(teamId: String): Result<List<Department>>
+    suspend fun getDepartments(teamId: String): List<Department>
 
     suspend fun createDepartment(teamId: String, name: String, color: String): Boolean
 
