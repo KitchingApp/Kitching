@@ -7,12 +7,8 @@ import com.kitching.domain.entities.OrderCategory
 import kotlinx.coroutines.tasks.await
 
 class OrderCategoryDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()): OrderCategoryDataSource {
-    override suspend fun getOrderCategory(teamId: String): Result<List<OrderCategory>> {
-        return runCatching {
-            val orderCategories = db.collection(COLLECTION_ORDER_CATEGORY).whereEqualTo("teamId", teamId).get().await()
-
-            orderCategories.toObjects(OrderCategory::class.java)
-        }
+    override suspend fun getOrderCategories(teamId: String): List<OrderCategory> {
+            return db.collection(COLLECTION_ORDER_CATEGORY).whereEqualTo("teamId", teamId).get().await().toObjects(OrderCategory::class.java)
     }
 
     override suspend fun createOrderCategory(teamId: String, categoryName: String, color: String): Boolean {

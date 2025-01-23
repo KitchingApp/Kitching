@@ -15,22 +15,28 @@ import kotlinx.coroutines.flow.flow
 
 class PrepCategoryRepositoryImpl(
     private val prepCategoryDataSource: PrepCategoryDataSource = PrepCategoryDataSourceImpl(),
-): PrepCategoryRepository {
-    override suspend fun getPrepCategory(teamId: String): Flow<FirebaseResult<List<PrepCategoryDTO>>> = flow {
-        emit(FirebaseResult.Loading)
-        val prepCategories = prepCategoryDataSource.getPrepCategory(teamId).getOrThrow().map {
-            PrepCategoryDTO(
-                categoryId = it.id,
-                categoryName = it.name,
-                color = it.color
-            )
+) : PrepCategoryRepository {
+    override suspend fun getPrepCategory(teamId: String): Flow<FirebaseResult<List<PrepCategoryDTO>>> =
+        flow {
+            emit(FirebaseResult.Loading)
+            val prepCategories = prepCategoryDataSource.getPrepCategory(teamId)
+            if (prepCategories.isEmpty()) emit(FirebaseResult.Success(emptyList()))
+            else emit(FirebaseResult.Success(prepCategories.map {
+                PrepCategoryDTO(
+                    categoryId = it.id,
+                    categoryName = it.name,
+                    color = it.color
+                )
+            }))
+        }.catch {
+            emit(FirebaseResult.Failure(it))
         }
-        emit(FirebaseResult.Success(prepCategories))
-    }.catch {
-        emit(FirebaseResult.Failure(it))
-    }
 
-    override suspend fun createPrepCategory(teamId: String, categoryName: String, color: String): Flow<FirebaseResult<Boolean>> = flow {
+    override suspend fun createPrepCategory(
+        teamId: String,
+        categoryName: String,
+        color: String
+    ): Flow<FirebaseResult<Boolean>> = flow {
         emit(FirebaseResult.Loading)
         val result = prepCategoryDataSource.createPrepCategory(teamId, categoryName, color)
         emit(FirebaseResult.Success(result))
@@ -38,7 +44,11 @@ class PrepCategoryRepositoryImpl(
         emit(FirebaseResult.Failure(it))
     }
 
-    override suspend fun updatePrepCategory(categoryId: String, categoryName: String, color: String): Flow<FirebaseResult<Boolean>> = flow {
+    override suspend fun updatePrepCategory(
+        categoryId: String,
+        categoryName: String,
+        color: String
+    ): Flow<FirebaseResult<Boolean>> = flow {
         emit(FirebaseResult.Loading)
         val result = prepCategoryDataSource.updatePrepCategory(categoryId, categoryName, color)
         emit(FirebaseResult.Success(result))
@@ -46,11 +56,12 @@ class PrepCategoryRepositoryImpl(
         emit(FirebaseResult.Failure(it))
     }
 
-    override suspend fun deletePrepCategory(scheduleId: String): Flow<FirebaseResult<Boolean>> = flow {
-        emit(FirebaseResult.Loading)
-        val result = prepCategoryDataSource.deletePrepCategory(scheduleId)
-        emit(FirebaseResult.Success(result))
-    }.catch {
-        emit(FirebaseResult.Failure(it))
-    }
+    override suspend fun deletePrepCategory(scheduleId: String): Flow<FirebaseResult<Boolean>> =
+        flow {
+            emit(FirebaseResult.Loading)
+            val result = prepCategoryDataSource.deletePrepCategory(scheduleId)
+            emit(FirebaseResult.Success(result))
+        }.catch {
+            emit(FirebaseResult.Failure(it))
+        }
 }

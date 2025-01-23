@@ -23,7 +23,7 @@ class DepartmentViewModel(
         val instance by lazy { DepartmentViewModel() }
     }
 
-    private var _departments = MutableStateFlow<FirebaseResult<List<DepartmentDTO>>>(FirebaseResult.Loading)
+    private var _departments = MutableStateFlow<FirebaseResult<List<DepartmentDTO>>>(FirebaseResult.DummyConstructor)
     val departments get() = _departments.asStateFlow()
 
     fun getDepartments(teamId: String) {
@@ -34,7 +34,7 @@ class DepartmentViewModel(
         }
     }
 
-    private var _departmentResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    private var _departmentResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.DummyConstructor)
     val departmentResult get() = _departmentResult.asStateFlow()
 
     fun createDepartment(teamId: String, name: String, color: String) {
@@ -61,7 +61,7 @@ class DepartmentViewModel(
         }
     }
 
-    private var _staffLevels = MutableStateFlow<FirebaseResult<List<StaffLevelDTO>>>(FirebaseResult.Loading)
+    private var _staffLevels = MutableStateFlow<FirebaseResult<List<StaffLevelDTO>>>(FirebaseResult.DummyConstructor)
     val staffLevels get() = _staffLevels.asStateFlow()
 
     fun getStaffLevels(departmentId: String) {
@@ -72,7 +72,7 @@ class DepartmentViewModel(
         }
     }
 
-    private var _staffLevelResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.Loading)
+    private var _staffLevelResult = MutableStateFlow<FirebaseResult<Boolean>>(FirebaseResult.DummyConstructor)
     val staffLevelResult get() = _staffLevelResult.asStateFlow()
 
     fun createStaffLevel(departmentId: String, name: String) {

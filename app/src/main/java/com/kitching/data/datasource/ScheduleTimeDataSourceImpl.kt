@@ -6,18 +6,15 @@ import com.kitching.domain.datasource.ScheduleTimeDataSource
 import com.kitching.domain.entities.ScheduleTime
 import kotlinx.coroutines.tasks.await
 
-class ScheduleTimeDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()):
+class ScheduleTimeDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) :
     ScheduleTimeDataSource {
-    override suspend fun getScheduleTime(scheduleTimeId: String): Result<ScheduleTime> {
-        return runCatching {
-            db.collection(COLLECTION_SCHEDULE_TIME).whereEqualTo("id", scheduleTimeId).get().await().toObjects(ScheduleTime::class.java).first()
-        }
+    override suspend fun getScheduleTime(scheduleTimeId: String): ScheduleTime? {
+       return db.collection(COLLECTION_SCHEDULE_TIME).document(scheduleTimeId).get().await().toObject(ScheduleTime::class.java)
     }
 
-    override suspend fun getScheduleTimes(teamId: String): Result<List<ScheduleTime>> {
-        return runCatching {
-            db.collection(COLLECTION_SCHEDULE_TIME).whereEqualTo("teamId", teamId).get().await().toObjects(ScheduleTime::class.java)
-        }
+    override suspend fun getScheduleTimes(teamId: String): List<ScheduleTime> {
+        return db.collection(COLLECTION_SCHEDULE_TIME).whereEqualTo("teamId", teamId).get().await()
+            .toObjects(ScheduleTime::class.java)
     }
 
     override suspend fun createScheduleTime(
@@ -49,7 +46,9 @@ class ScheduleTimeDataSourceImpl(private val db: FirebaseFirestore = FirebaseFir
         color: String
     ): Boolean {
         return runCatching {
-            db.collection(COLLECTION_SCHEDULE_TIME).document(scheduleTimeId).update("name", name, "startTime", startTime, "endTime", endTime, "color", color).await()
+            db.collection(COLLECTION_SCHEDULE_TIME).document(scheduleTimeId)
+                .update("name", name, "startTime", startTime, "endTime", endTime, "color", color)
+                .await()
         }.isSuccess
     }
 

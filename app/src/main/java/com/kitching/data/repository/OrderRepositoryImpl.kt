@@ -11,28 +11,30 @@ import kotlinx.coroutines.flow.flow
 
 class OrderRepositoryImpl(
     private val orderDataSource: OrderDataSource = OrderDataSourceImpl()
-): OrderRepository {
+) : OrderRepository {
     override fun getOrderList(categoryId: String): Flow<FirebaseResult<List<OrderDTO>>> = flow {
         emit(FirebaseResult.Loading)
-        val orderList = orderDataSource.getOrderList(categoryId).getOrThrow().map {
+        val orderList = orderDataSource.getOrderList(categoryId)
+        if (orderList.isEmpty()) emit(FirebaseResult.Success(emptyList()))
+        else emit(FirebaseResult.Success(orderList.map {
             OrderDTO(
                 categoryId = it.categoryId,
                 orderId = it.id,
                 orderName = it.name
             )
-        }
-        emit(FirebaseResult.Success(orderList))
+        }))
     }.catch {
         emit(FirebaseResult.Failure(it))
     }
 
-    override fun createOrder(categoryId: String, orderName: String): Flow<FirebaseResult<Boolean>> = flow {
-        emit(FirebaseResult.Loading)
-        val result = orderDataSource.createOrder(categoryId, orderName)
-        emit(FirebaseResult.Success(result))
-    }.catch {
-        emit(FirebaseResult.Failure(it))
-    }
+    override fun createOrder(categoryId: String, orderName: String): Flow<FirebaseResult<Boolean>> =
+        flow {
+            emit(FirebaseResult.Loading)
+            val result = orderDataSource.createOrder(categoryId, orderName)
+            emit(FirebaseResult.Success(result))
+        }.catch {
+            emit(FirebaseResult.Failure(it))
+        }
 
     override fun deleteOrder(orderId: String): Flow<FirebaseResult<Boolean>> = flow {
         emit(FirebaseResult.Loading)
@@ -42,11 +44,12 @@ class OrderRepositoryImpl(
         emit(FirebaseResult.Failure(it))
     }
 
-    override fun updateOrder(orderId: String, orderName: String): Flow<FirebaseResult<Boolean>> = flow {
-        emit(FirebaseResult.Loading)
-        val result = orderDataSource.updateOrder(orderId, orderName)
-        emit(FirebaseResult.Success(result))
-    }.catch {
-        emit(FirebaseResult.Failure(it))
-    }
+    override fun updateOrder(orderId: String, orderName: String): Flow<FirebaseResult<Boolean>> =
+        flow {
+            emit(FirebaseResult.Loading)
+            val result = orderDataSource.updateOrder(orderId, orderName)
+            emit(FirebaseResult.Success(result))
+        }.catch {
+            emit(FirebaseResult.Failure(it))
+        }
 }

@@ -17,13 +17,14 @@ class LoginRepositoryImpl(
 ): LoginRepository {
     override fun getTeamList(userId: String): Flow<FirebaseResult<List<TeamDTO>>> = flow {
         emit(FirebaseResult.Loading)
-        val teamList = teamUserTeamJoinDataSource.getTeams(userId).getOrThrow().map {
-            TeamDTO(
-                teamId = it.id,
-                teamName = it.teamName
-            )
-        }
-        emit(FirebaseResult.Success(teamList))
+        val teamList = teamUserTeamJoinDataSource.getTeams(userId)
+            if(teamList.isEmpty()) emit(FirebaseResult.Success(emptyList()))
+        else emit(FirebaseResult.Success(teamList.map {
+                TeamDTO(
+                    teamId = it.id,
+                    teamName = it.teamName
+                )
+            }))
     }.catch {
         emit(FirebaseResult.Failure(it))
     }

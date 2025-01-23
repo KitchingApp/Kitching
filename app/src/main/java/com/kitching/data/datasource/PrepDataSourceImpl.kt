@@ -7,10 +7,8 @@ import com.kitching.domain.entities.Prep
 import kotlinx.coroutines.tasks.await
 
 class PrepDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) : PrepDataSource {
-    override suspend fun getPrepList(categoryId: String): Result<List<Prep>> {
-        return runCatching {
-            db.collection(COLLECTION_PREP).whereEqualTo("categoryId", categoryId).get().await().toObjects(Prep::class.java)
-        }
+    override suspend fun getPrepList(categoryId: String): List<Prep> {
+        return db.collection(COLLECTION_PREP).whereEqualTo("categoryId", categoryId).get().await().toObjects(Prep::class.java)
     }
 
     override suspend fun createPrepList(categoryId: String, name: String): Boolean {

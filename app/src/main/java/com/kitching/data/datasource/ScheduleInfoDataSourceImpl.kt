@@ -14,21 +14,19 @@ class ScheduleInfoDataSourceImpl(
     private val userDataSource: UserDataSource = UserDataSourceImpl(),
     private val departmentDataSource: DepartmentDataSource = DepartmentDataSourceImpl(),
     private val scheduleTimeDataSource: ScheduleTimeDataSource = ScheduleTimeDataSourceImpl()
-): ScheduleInfoDataSource {
-    override suspend fun getScheduleInfos(teamId: String, date: String): Result<List<ScheduleInfo>> {
-        return runCatching {
-            scheduleDataSource.getSchedules(teamId, date).getOrThrow().map {
-                ScheduleInfo(
-                    schedule = it,
-                    user = userDataSource.getUser(it.userId).getOrThrow(),
-                    department = userTeamDataSource.getMember(it.teamId, it.userId).getOrThrow().departmentId?.let { departmentId ->
-                        departmentDataSource.getDepartment(
-                            departmentId
-                        ).getOrNull()
-                    },
-                    scheduleTime = scheduleTimeDataSource.getScheduleTime(it.scheduleTimeId).getOrThrow()
-                )
-            }
+) : ScheduleInfoDataSource {
+    override suspend fun getScheduleInfos(teamId: String, date: String): List<ScheduleInfo> {
+        return scheduleDataSource.getSchedules(teamId, date).map {
+            ScheduleInfo(
+                schedule = it,
+                user = userDataSource.getUser(it.userId) ?: throw Throwable("user is not exists"),
+                department = userTeamDataSource.getMember(it.teamId, it.userId)?.departmentId?.let { departmentId ->
+                    departmentDataSource.getDepartment(
+                        departmentId
+                    )
+                },
+                scheduleTime = scheduleTimeDataSource.getScheduleTime(it.scheduleTimeId) ?: throw Throwable("scheduleTime is not exists")
+            )
         }
     }
 }

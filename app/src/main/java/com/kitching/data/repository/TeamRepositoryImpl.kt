@@ -22,28 +22,31 @@ class TeamRepositoryImpl(
 ) : TeamRepository {
     override fun getTeamsByUserId(userId: String): Flow<FirebaseResult<List<TeamDTO>>> = flow {
         emit(FirebaseResult.Loading)
-        val teams = teamUserTeamJoinDataSource.getTeams(userId).getOrThrow().map {
+        val teams = teamUserTeamJoinDataSource.getTeams(userId)
+        if (teams.isEmpty()) emit(FirebaseResult.Success(emptyList()))
+        else emit(FirebaseResult.Success(teams.map {
             TeamDTO(
                 teamId = it.id,
                 teamName = it.teamName
             )
-        }
-        emit(FirebaseResult.Success(teams))
+        }))
     }.catch {
         emit(FirebaseResult.Failure(it))
     }
 
     override fun getTeam(teamId: String): Flow<FirebaseResult<TeamDTO>> = flow {
         emit(FirebaseResult.Loading)
-        val team = teamDataSource.getTeam(teamId).getOrThrow()
-        emit(
-            FirebaseResult.Success(
-                TeamDTO(
-                    teamId = team.id,
-                    teamName = team.teamName
+        val team = teamDataSource.getTeam(teamId)
+        if (team != null) {
+            emit(
+                FirebaseResult.Success(
+                    TeamDTO(
+                        teamId = team.id,
+                        teamName = team.teamName
+                    )
                 )
             )
-        )
+        } else throw Throwable("team is not exists")
     }.catch {
         emit(FirebaseResult.Failure(it))
     }
@@ -53,7 +56,7 @@ class TeamRepositoryImpl(
     ): Flow<FirebaseResult<Boolean>> = flow {
         emit(FirebaseResult.Loading)
         val inviteCode = UUID.randomUUID().toString().replace("-", "")
-        val teamId = teamDataSource.createTeam(inviteCode, ownerId, teamName).getOrThrow()
+        val teamId = teamDataSource.createTeam(inviteCode, ownerId, teamName)
         val result = userTeamDataSource.createUserTeams(userId = ownerId, teamId = teamId, true)
         emit(FirebaseResult.Success(result))
     }.catch {

@@ -19,17 +19,22 @@ class NoticeRepositoryImpl(
 ) : NoticeRepository {
     override fun getNotices(teamId: String): Flow<FirebaseResult<List<NoticeDTO>>> = flow {
         emit(FirebaseResult.Loading)
-        val notices = noticeInfoDataSource.getNoticeInfos(teamId).getOrThrow().map {
-            NoticeDTO(
-                noticeId = it.notice.id,
-                title = it.notice.title,
-                content = it.notice.content,
-                date = LocalDate.parse(it.notice.date, dateFormatter),
-                writerId = it.notice.writerId,
-                writerName = it.user.userName
-            )
-        }
-        emit(FirebaseResult.Success(notices))
+        val notices = noticeInfoDataSource.getNoticeInfos(teamId)
+        if (notices.isEmpty()) emit(FirebaseResult.Success(emptyList()))
+        else emit(FirebaseResult.Success(
+            notices.map {
+                NoticeDTO(
+                    noticeId = it.notice.id,
+                    title = it.notice.title,
+                    content = it.notice.content,
+                    date = LocalDate.parse(it.notice.date, dateFormatter),
+                    writerId = it.notice.writerId,
+                    writerName = it.user.userName
+                )
+            }
+        ))
+    }.catch {
+        emit(FirebaseResult.Failure(it))
     }
 
     override fun createNotice(

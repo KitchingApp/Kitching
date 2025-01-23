@@ -14,13 +14,15 @@ import kotlinx.coroutines.flow.flow
 class ScheduleRepositoryImpl(
     private val scheduleInfoDataSource: ScheduleInfoDataSource = ScheduleInfoDataSourceImpl(),
     private val scheduleDataSource: ScheduleDataSource = ScheduleDataSourceImpl()
-): ScheduleRepository {
+) : ScheduleRepository {
     override fun getSchedules(
         teamId: String,
         date: String
     ): Flow<FirebaseResult<List<ScheduleDTO>>> = flow {
         emit(FirebaseResult.Loading)
-        val scheduleInfos = scheduleInfoDataSource.getScheduleInfos(teamId, date).getOrThrow().map {
+        val scheduleInfos = scheduleInfoDataSource.getScheduleInfos(teamId, date)
+        if (scheduleInfos.isEmpty()) emit(FirebaseResult.Success(emptyList()))
+        else emit(FirebaseResult.Success(scheduleInfos.map {
             ScheduleDTO(
                 scheduleId = it.schedule.id,
                 date = it.schedule.date,
@@ -30,8 +32,7 @@ class ScheduleRepositoryImpl(
                 scheduleTimeName = it.scheduleTime.name,
                 isFix = it.schedule.isFix
             )
-        }
-        emit(FirebaseResult.Success(scheduleInfos))
+        }))
     }.catch {
         emit(FirebaseResult.Failure(it))
     }
@@ -44,7 +45,8 @@ class ScheduleRepositoryImpl(
         isFix: Boolean
     ): Flow<FirebaseResult<Boolean>> = flow {
         emit(FirebaseResult.Loading)
-        val result = scheduleDataSource.createSchedule(teamId, dateString, userId, scheduleTimeId, isFix)
+        val result =
+            scheduleDataSource.createSchedule(teamId, dateString, userId, scheduleTimeId, isFix)
         emit(FirebaseResult.Success(result))
     }.catch {
         emit(FirebaseResult.Failure(it))

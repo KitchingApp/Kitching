@@ -21,8 +21,8 @@ class UserTeamRepositoryImpl(
 ): UserTeamRepository {
     override fun getAllMembers(teamId: String): Flow<FirebaseResult<MemberListDTO>> = flow {
         emit(FirebaseResult.Loading)
-        val teamName = teamDataSource.getTeam(teamId).getOrThrow().teamName
-        val members = memberInfoDataSource.getMemberInfos(teamId).getOrThrow().map {
+        val teamName = teamDataSource.getTeam(teamId)?.teamName ?: throw Throwable("team is not exists")
+        val members = memberInfoDataSource.getMemberInfos(teamId).map {
             MemberDTO(
                 userId = it.user.id,
                 userName = it.user.userName,
@@ -42,7 +42,7 @@ class UserTeamRepositoryImpl(
 
     override fun getAllMembersForSchedule(teamId: String): Flow<FirebaseResult<List<DropDownMembersDTO>>> = flow {
         emit(FirebaseResult.Loading)
-        val members = memberInfoDataSource.getMemberInfos(teamId).getOrThrow().map {
+        val members = memberInfoDataSource.getMemberInfos(teamId).map {
             DropDownMembersDTO(
                 userId = it.user.id,
                 userName = it.user.userName,

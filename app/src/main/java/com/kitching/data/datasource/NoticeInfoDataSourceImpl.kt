@@ -8,15 +8,13 @@ import com.kitching.domain.entities.NoticeInfo
 class NoticeInfoDataSourceImpl(
     private val noticeDataSource: NoticeDataSource = NoticeDataSourceImpl(),
     private val userDataSource: UserDataSource = UserDataSourceImpl()
-): NoticeInfoDataSource {
-    override suspend fun getNoticeInfos(teamId: String): Result<List<NoticeInfo>> {
-        return runCatching {
-            noticeDataSource.getNotices(teamId).getOrThrow().map {
-                NoticeInfo(
-                    notice = it,
-                    user = userDataSource.getUser(it.writerId).getOrThrow()
-                )
-            }
+) : NoticeInfoDataSource {
+    override suspend fun getNoticeInfos(teamId: String): List<NoticeInfo> {
+        return noticeDataSource.getNotices(teamId).map {
+            NoticeInfo(
+                notice = it,
+                user = userDataSource.getUser(it.writerId) ?: throw Throwable("user is not exists")
+            )
         }
     }
 }

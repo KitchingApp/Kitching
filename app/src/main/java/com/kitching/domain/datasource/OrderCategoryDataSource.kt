@@ -4,7 +4,7 @@ import com.kitching.domain.entities.Order
 import com.kitching.domain.entities.OrderCategory
 
 interface OrderCategoryDataSource {
-    suspend fun getOrderCategory(teamId: String): Result<List<OrderCategory>>
+    suspend fun getOrderCategories(teamId: String): List<OrderCategory>
 
     suspend fun createOrderCategory(teamId: String, categoryName: String, color: String): Boolean
 

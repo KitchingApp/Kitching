@@ -10,35 +10,40 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
-class ScheduleTimeRepositoryImpl(private val scheduleTimeDataSource: ScheduleTimeDataSource = ScheduleTimeDataSourceImpl()): ScheduleTimeRepository {
-    override fun getScheduleTimes(teamId: String): Flow<FirebaseResult<List<ScheduleTimeListDTO>>> = flow {
-        emit(FirebaseResult.Loading)
-        val scheduleTimes = scheduleTimeDataSource.getScheduleTimes(teamId).getOrThrow().map {
-            ScheduleTimeListDTO(
-                scheduleTimeId = it.id,
-                scheduleTimeName = it.name,
-                color = it.color,
-                startTime = it.startTime,
-                endTime = it.endTime
-            )
+class ScheduleTimeRepositoryImpl(private val scheduleTimeDataSource: ScheduleTimeDataSource = ScheduleTimeDataSourceImpl()) :
+    ScheduleTimeRepository {
+    override fun getScheduleTimes(teamId: String): Flow<FirebaseResult<List<ScheduleTimeListDTO>>> =
+        flow {
+            emit(FirebaseResult.Loading)
+            val scheduleTimes = scheduleTimeDataSource.getScheduleTimes(teamId)
+            if (scheduleTimes.isEmpty()) emit(FirebaseResult.Success(emptyList()))
+            else emit(FirebaseResult.Success(scheduleTimes.map {
+                ScheduleTimeListDTO(
+                    scheduleTimeId = it.id,
+                    scheduleTimeName = it.name,
+                    color = it.color,
+                    startTime = it.startTime,
+                    endTime = it.endTime
+                )
+            }))
+        }.catch {
+            emit(FirebaseResult.Failure(it))
         }
-        emit(FirebaseResult.Success(scheduleTimes))
-    }.catch {
-        emit(FirebaseResult.Failure(it))
-    }
 
-    override fun getScheduleTimesForChips(teamId: String): Flow<FirebaseResult<List<ScheduleTimeChipsDTO>>> = flow {
-        emit(FirebaseResult.Loading)
-        val scheduleTimes = scheduleTimeDataSource.getScheduleTimes(teamId).getOrThrow().map {
-            ScheduleTimeChipsDTO(
-                scheduleTimeId = it.id,
-                scheduleTimeName = it.name
-            )
+    override fun getScheduleTimesForChips(teamId: String): Flow<FirebaseResult<List<ScheduleTimeChipsDTO>>> =
+        flow {
+            emit(FirebaseResult.Loading)
+            val scheduleTimes = scheduleTimeDataSource.getScheduleTimes(teamId)
+            if (scheduleTimes.isEmpty()) emit(FirebaseResult.Success(emptyList()))
+            else emit(FirebaseResult.Success(scheduleTimes.map {
+                ScheduleTimeChipsDTO(
+                    scheduleTimeId = it.id,
+                    scheduleTimeName = it.name
+                )
+            }))
+        }.catch {
+            emit(FirebaseResult.Failure(it))
         }
-        emit(FirebaseResult.Success(scheduleTimes))
-    }.catch {
-        emit(FirebaseResult.Failure(it))
-    }
 
     override fun createScheduleTime(
         teamId: String,
@@ -48,7 +53,8 @@ class ScheduleTimeRepositoryImpl(private val scheduleTimeDataSource: ScheduleTim
         endTime: String
     ): Flow<FirebaseResult<Boolean>> = flow {
         emit(FirebaseResult.Loading)
-        val result = scheduleTimeDataSource.createScheduleTime(teamId, name, color, startTime, endTime)
+        val result =
+            scheduleTimeDataSource.createScheduleTime(teamId, name, color, startTime, endTime)
         emit(FirebaseResult.Success(result))
     }.catch {
         emit(FirebaseResult.Failure(it))
@@ -62,7 +68,13 @@ class ScheduleTimeRepositoryImpl(private val scheduleTimeDataSource: ScheduleTim
         endTime: String
     ): Flow<FirebaseResult<Boolean>> = flow {
         emit(FirebaseResult.Loading)
-        val result = scheduleTimeDataSource.updateScheduleTime(scheduleTimeId, name, color, startTime, endTime)
+        val result = scheduleTimeDataSource.updateScheduleTime(
+            scheduleTimeId,
+            name,
+            color,
+            startTime,
+            endTime
+        )
         emit(FirebaseResult.Success(result))
     }.catch {
         emit(FirebaseResult.Failure(it))

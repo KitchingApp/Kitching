@@ -8,12 +8,10 @@ import com.kitching.domain.entities.Team
 class TeamUserTeamJoinDataSourceImpl(
     private val teamDataSource: TeamDataSource = TeamDataSourceImpl(),
     private val userTeamDataSource: UserTeamDataSource = UserTeamDataSourceImpl()
-): TeamUserTeamJoinDataSource {
-    override suspend fun getTeams(userId: String): Result<List<Team>> {
-        return runCatching {
-            userTeamDataSource.getUserTeams(userId).getOrThrow().map {
-                teamDataSource.getTeam(it.teamId).getOrThrow()
-            }
+) : TeamUserTeamJoinDataSource {
+    override suspend fun getTeams(userId: String): List<Team> {
+        return userTeamDataSource.getUserTeams(userId).map {
+            teamDataSource.getTeam(it.teamId) ?: throw Throwable("team is not exists")
         }
     }
 }

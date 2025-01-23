@@ -7,10 +7,8 @@ import com.kitching.domain.entities.Order
 import kotlinx.coroutines.tasks.await
 
 class OrderDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()): OrderDataSource {
-    override suspend fun getOrderList(categoryId: String): Result<List<Order>> {
-        return runCatching {
-            db.collection(COLLECTION_ORDER).whereEqualTo("categoryId", categoryId).get().await().toObjects(Order::class.java)
-        }
+    override suspend fun getOrderList(categoryId: String): List<Order> {
+        return db.collection(COLLECTION_ORDER).whereEqualTo("categoryId", categoryId).get().await().toObjects(Order::class.java)
     }
 
     override suspend fun createOrder(categoryId: String, name: String): Boolean {

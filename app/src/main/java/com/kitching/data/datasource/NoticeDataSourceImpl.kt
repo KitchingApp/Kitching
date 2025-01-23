@@ -8,14 +8,12 @@ import com.kitching.domain.entities.Notice
 import kotlinx.coroutines.tasks.await
 
 class NoticeDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) : NoticeDataSource {
-    override suspend fun getNotices(teamId: String): Result<List<Notice>> {
-        return runCatching {
-            db.collection(COLLECTION_NOTICE)
+    override suspend fun getNotices(teamId: String): List<Notice> {
+            return db.collection(COLLECTION_NOTICE)
                 .whereEqualTo("teamId", teamId)
                 .get()
                 .await()
                 .toObjects(Notice::class.java)
-        }
     }
 
     override suspend fun createNotice(

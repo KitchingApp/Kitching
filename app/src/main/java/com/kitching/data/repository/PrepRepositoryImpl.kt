@@ -11,28 +11,30 @@ import kotlinx.coroutines.flow.flow
 
 class PrepRepositoryImpl(
     private val prepDataSource: PrepDataSourceImpl = PrepDataSourceImpl()
-): PrepRepository {
+) : PrepRepository {
     override fun getPrepList(categoryId: String): Flow<FirebaseResult<List<PrepDTO>>> = flow {
         emit(FirebaseResult.Loading)
-        val prepList = prepDataSource.getPrepList(categoryId).getOrThrow().map {
+        val prepList = prepDataSource.getPrepList(categoryId)
+        if (prepList.isEmpty()) emit(FirebaseResult.Success(emptyList()))
+        else emit(FirebaseResult.Success(prepList.map {
             PrepDTO(
                 categoryId = it.categoryId,
                 prepId = it.id,
                 prepName = it.name
             )
-        }
-        emit(FirebaseResult.Success(prepList))
+        }))
     }.catch {
         emit(FirebaseResult.Failure(it))
     }
 
-    override fun createPrep(categoryId: String, name: String): Flow<FirebaseResult<Boolean>> = flow {
-        emit(FirebaseResult.Loading)
-        val result = prepDataSource.createPrepList(categoryId, name)
-        emit(FirebaseResult.Success(result))
-    }.catch {
-        emit(FirebaseResult.Failure(it))
-    }
+    override fun createPrep(categoryId: String, name: String): Flow<FirebaseResult<Boolean>> =
+        flow {
+            emit(FirebaseResult.Loading)
+            val result = prepDataSource.createPrepList(categoryId, name)
+            emit(FirebaseResult.Success(result))
+        }.catch {
+            emit(FirebaseResult.Failure(it))
+        }
 
     override fun updatePrep(prepId: String, name: String): Flow<FirebaseResult<Boolean>> = flow {
         emit(FirebaseResult.Loading)

@@ -3,7 +3,7 @@ package com.kitching.domain.datasource
 import com.kitching.domain.entities.Schedule
 
 interface ScheduleDataSource {
-    suspend fun getSchedules(teamId: String, dateString: String): Result<List<Schedule>>
+    suspend fun getSchedules(teamId: String, dateString: String): List<Schedule>
 
     suspend fun createSchedule(teamId: String, dateString: String, userId: String, scheduleTimeId: String, isFix: Boolean = true): Boolean
 

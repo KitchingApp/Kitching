@@ -12,33 +12,44 @@ import kotlinx.coroutines.flow.flow
 
 class DepartmentRepositoryImpl(
     private val departmentDataSource: DepartmentDataSource = DepartmentDataSourceImpl(),
-): DepartmentRepository {
+) : DepartmentRepository {
     override fun getDepartments(teamId: String): Flow<FirebaseResult<List<DepartmentDTO>>> = flow {
         emit(FirebaseResult.Loading)
-        val departments = departmentDataSource.getDepartments(teamId).getOrThrow().map {
-            DepartmentDTO(
-                departmentId = it.id,
-                departmentName = it.name,
-                color = it.color
+        val departmentsData = departmentDataSource.getDepartments(teamId)
+        if (departmentsData.isEmpty()) emit(FirebaseResult.Success(emptyList()))
+        else emit(
+            FirebaseResult.Success(
+                departmentsData.map {
+                    DepartmentDTO(
+                        departmentId = it.id,
+                        departmentName = it.name,
+                        color = it.color
+                    )
+                }
             )
-        }
-        emit(FirebaseResult.Success(departments))
+        )
     }.catch {
         emit(FirebaseResult.Failure(it))
     }
 
-    override fun getDepartmentsForDropdown(teamId: String): Flow<FirebaseResult<List<DropDownDepartmentsDTO>>> = flow {
-        emit(FirebaseResult.Loading)
-        val departments = departmentDataSource.getDepartments(teamId).getOrThrow().map {
-            DropDownDepartmentsDTO(
-                departmentId = it.id,
-                departmentName = it.name
+    override fun getDepartmentsForDropdown(teamId: String): Flow<FirebaseResult<List<DropDownDepartmentsDTO>>> =
+        flow {
+            emit(FirebaseResult.Loading)
+            val departmentsData = departmentDataSource.getDepartments(teamId)
+            if (departmentsData.isEmpty()) emit(FirebaseResult.Success(emptyList()))
+            else emit(
+                FirebaseResult.Success(
+                    departmentsData.map {
+                        DropDownDepartmentsDTO(
+                            departmentId = it.id,
+                            departmentName = it.name
+                        )
+                    }
+                )
             )
+        }.catch {
+            emit(FirebaseResult.Failure(it))
         }
-        emit(FirebaseResult.Success(departments))
-    }.catch {
-        emit(FirebaseResult.Failure(it))
-    }
 
     override fun createDepartment(
         teamId: String,

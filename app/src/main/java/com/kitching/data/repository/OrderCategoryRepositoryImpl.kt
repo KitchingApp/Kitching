@@ -14,14 +14,17 @@ class OrderCategoryRepositoryImpl(
 ): OrderCategoryRepository {
     override fun getOrderCategory(teamId: String): Flow<FirebaseResult<List<OrderCategoryDTO>>> = flow {
         emit(FirebaseResult.Loading)
-        val orderCategories = orderCategoryDataSource.getOrderCategory(teamId).getOrThrow().map {
-            OrderCategoryDTO(
-                categoryId = it.id,
-                categoryName = it.name,
-                color = it.color,
-            )
-        }
-        emit(FirebaseResult.Success(orderCategories))
+        val orderCategories = orderCategoryDataSource.getOrderCategories(teamId)
+        if (orderCategories.isEmpty()) emit(FirebaseResult.Success(emptyList()))
+        else emit(FirebaseResult.Success(
+            orderCategories.map {
+                OrderCategoryDTO(
+                    categoryId = it.id,
+                    categoryName = it.name,
+                    color = it.color,
+                )
+            }
+        ))
     }.catch {
         emit(FirebaseResult.Failure(it))
     }

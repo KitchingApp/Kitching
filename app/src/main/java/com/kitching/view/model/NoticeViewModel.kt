@@ -6,9 +6,7 @@ import com.kitching.common.firebaseFlowHandler
 import com.kitching.data.dto.NoticeDTO
 import com.kitching.data.firebase.FirebaseResult
 import com.kitching.data.repository.NoticeRepositoryImpl
-import com.kitching.data.repository.OtherRepository
 import com.kitching.domain.repository.NoticeRepository
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest

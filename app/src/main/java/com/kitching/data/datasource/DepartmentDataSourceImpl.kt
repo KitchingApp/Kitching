@@ -6,20 +6,15 @@ import com.kitching.domain.datasource.DepartmentDataSource
 import com.kitching.domain.entities.Department
 import kotlinx.coroutines.tasks.await
 
-class DepartmentDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()):
+class DepartmentDataSourceImpl(private val db: FirebaseFirestore = FirebaseFirestore.getInstance()) :
     DepartmentDataSource {
-    override suspend fun getDepartment(departmentId: String): Result<Department> {
-        return runCatching {
-            db.collection(COLLECTION_DEPARTMENT).whereEqualTo("departmentId", departmentId).get().await()
-                .toObjects(Department::class.java).first()
-        }
+    override suspend fun getDepartment(departmentId: String): Department? {
+        return db.collection(COLLECTION_DEPARTMENT).document(departmentId).get().await().toObject(Department::class.java)
     }
 
-    override suspend fun getDepartments(teamId: String): Result<List<Department>> {
-        return runCatching {
-            db.collection(COLLECTION_DEPARTMENT).whereEqualTo("teamId", teamId).get().await()
-                .toObjects(Department::class.java)
-        }
+    override suspend fun getDepartments(teamId: String): List<Department> {
+        return db.collection(COLLECTION_DEPARTMENT).whereEqualTo("teamId", teamId).get().await()
+            .toObjects(Department::class.java)
     }
 
     override suspend fun createDepartment(teamId: String, name: String, color: String): Boolean {
@@ -43,7 +38,8 @@ class DepartmentDataSourceImpl(private val db: FirebaseFirestore = FirebaseFires
         color: String
     ): Boolean {
         return runCatching {
-            db.collection(COLLECTION_DEPARTMENT).document(departmentId).update("name", name, "color", color).await()
+            db.collection(COLLECTION_DEPARTMENT).document(departmentId)
+                .update("name", name, "color", color).await()
         }.isSuccess
     }
 

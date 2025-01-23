@@ -11,19 +11,21 @@ import kotlinx.coroutines.flow.flow
 
 class StaffLevelRepositoryImpl(
     private val staffLevelDataSource: StaffLevelDataSource = StaffLevelDataSourceImpl()
-): StaffLevelRepository {
-    override fun getStaffLevels(departmentId: String): Flow<FirebaseResult<List<StaffLevelDTO>>> = flow {
-        emit(FirebaseResult.Loading)
-        val staffLevels = staffLevelDataSource.getStaffLevels(departmentId).getOrThrow().map {
-            StaffLevelDTO(
-                staffLevelId = it.id,
-                staffLevelName = it.name
-            )
+) : StaffLevelRepository {
+    override fun getStaffLevels(departmentId: String): Flow<FirebaseResult<List<StaffLevelDTO>>> =
+        flow {
+            emit(FirebaseResult.Loading)
+            val staffLevels = staffLevelDataSource.getStaffLevels(departmentId)
+            if (staffLevels.isEmpty()) emit(FirebaseResult.Success(emptyList()))
+            else emit(FirebaseResult.Success(staffLevels.map {
+                StaffLevelDTO(
+                    staffLevelId = it.id,
+                    staffLevelName = it.name
+                )
+            }))
+        }.catch {
+            emit(FirebaseResult.Failure(it))
         }
-        emit(FirebaseResult.Success(staffLevels))
-    }.catch {
-        emit(FirebaseResult.Failure(it))
-    }
 
     override fun createStaffLevel(
         departmentId: String,

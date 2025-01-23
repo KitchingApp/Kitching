@@ -4,7 +4,7 @@ import com.kitching.domain.entities.Prep
 import com.kitching.domain.entities.PrepCategory
 
 interface PrepDataSource {
-    suspend fun getPrepList(categoryId: String): Result<List<Prep>>
+    suspend fun getPrepList(categoryId: String): List<Prep>
 
     suspend fun createPrepList(categoryId: String, name: String): Boolean
 

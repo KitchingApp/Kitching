@@ -11,24 +11,21 @@ import com.kitching.domain.entities.MemberInfo
 class MemberInfoDataSourceImpl(
     private val userDataSource: UserDataSource = UserDataSourceImpl(),
     private val userTeamDataSource: UserTeamDataSource = UserTeamDataSourceImpl(),
-    private val teamDataSource: TeamDataSource = TeamDataSourceImpl(),
     private val departmentDataSource: DepartmentDataSource = DepartmentDataSourceImpl(),
     private val staffLevelDataSource: StaffLevelDataSource = StaffLevelDataSourceImpl()
-): MemberInfoDataSource {
-    override suspend fun getMemberInfos(teamId: String): Result<List<MemberInfo>> {
-        return runCatching {
-            userTeamDataSource.getAllMembers(teamId).getOrThrow().map {
-                MemberInfo(
-                    userTeam = it,
-                    user = userDataSource.getUser(it.userId).getOrThrow(),
-                    department = it.departmentId?.let { departmentId ->
-                        departmentDataSource.getDepartment(departmentId).getOrNull()
-                    },
-                    staffLevel = it.staffLevelId?.let { staffLevelId ->
-                        staffLevelDataSource.getStaffLevel(staffLevelId).getOrNull()
-                    }
-                )
-            }
+) : MemberInfoDataSource {
+    override suspend fun getMemberInfos(teamId: String): List<MemberInfo> {
+        return userTeamDataSource.getAllMembers(teamId).map {
+            MemberInfo(
+                userTeam = it,
+                user = userDataSource.getUser(it.userId) ?: throw Throwable("user is not exists"),
+                department = it.departmentId?.let { departmentId ->
+                    departmentDataSource.getDepartment(departmentId)
+                },
+                staffLevel = it.staffLevelId?.let { staffLevelId ->
+                    staffLevelDataSource.getStaffLevel(staffLevelId)
+                }
+            )
         }
     }
 }
