@@ -34,9 +34,6 @@ class MainActivity : AppCompatActivity() {
     private var backPressedTime: Long = 0
     private val delayTime = 1500L
 
-    // userId Mock Data
-    private val teamId = "3uM01g5GSz8lC49JA6vq"
-
     private lateinit var teamAdapter: TeamAdapter
 
     private val viewModel by viewModels<TeamViewModel> {
@@ -63,7 +60,6 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
 
-            PreferencesDataSource(this@MainActivity).saveTeamId(teamId)
             repeatOnLifecycle(Lifecycle.State.STARTED) {
               
                 viewModel.getTeams(userId.toString())
